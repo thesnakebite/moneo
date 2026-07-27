@@ -53,17 +53,11 @@
             value='Crear una cuenta'
             class="bg-gray-900 hover:bg-gray-800 w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
         />
-
-        <div class="space-y-2">
-            <div class="flex flex-col space-y-4 mt-8">
-                <label class="text-sm sm:text-base" for="">¿Ya tienes cuenta?</label>
-                <a
-                    href="/login"
-                    class="text-center border boder-gray-800 hover:bg-gray-900 hover:text-white w-full p-3 rounded-lg text-sm sm:text-base font-bold cursor-pointer"
-                >
-                    Iniciar Sesión
-                </a>
-            </div>
-        </div>
     </form>
+
+    <x-auth-switch-link
+        question="¿Ya tienes cuenta?"
+        label="Iniciar sesión"
+        route="login"
+    />
 </x-layouts.auth>

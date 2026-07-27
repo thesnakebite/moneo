@@ -33,17 +33,11 @@
             value='Iniciar Sesión'
             class="bg-gray-900 hover:bg-gray-800 w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
         />
-
-        <div class="space-y-2">
-            <div class="flex flex-col space-y-2 mt-8">
-                <label class="text-sm sm:text-base" for="">¿Ya tienes cuenta?</label>
-                <a
-                    href="/registro"
-                    class="text-center border boder-gray-800 hover:bg-gray-900 hover:text-white w-full p-3 rounded-lg text-sm sm:text-base font-bold cursor-pointer"
-                >
-                    Registrate
-                </a>
-            </div>
-        </div>
     </form>
+
+    <x-auth-switch-link
+        question="¿No tienes cuenta?"
+        label="Regístrate"
+        route="register"
+    />
 </x-layouts.auth>
