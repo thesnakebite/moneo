@@ -1,11 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/registro', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+// Authenticated
+Route::get('/registro', [RegisterController::class, 'index'])->name('register');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
