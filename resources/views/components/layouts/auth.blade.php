@@ -10,7 +10,7 @@
         <div
             class="hidden lg:flex lg:w-1/2 relative h-screen bg-cover bg-center bg-(image:--auth-image)"
             @if($image) style="--auth-image: url('{{ $image }}')" @endif
-            >
+        >
             {{-- Overlay optionl logo/text --}}
             <div class="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
