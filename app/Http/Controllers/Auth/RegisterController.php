@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
@@ -16,8 +17,11 @@ class RegisterController extends Controller
 
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        dd($validated);
+        User::create($data);
+
+        // Provisional
+        return redirect()->route('login');
     }
 }

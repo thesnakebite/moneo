@@ -18,6 +18,7 @@
                 placeholder="Tu Nombre"
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="name"
+                value="{{ old('name') }}"
             />
             @error('name')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
@@ -31,6 +32,7 @@
                 placeholder="Email de Registro"
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="email"
+                value="{{ old('email') }}"
             />
             @error('email')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
