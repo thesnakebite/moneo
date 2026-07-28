@@ -1,7 +1,14 @@
 <x-layouts.auth :image="asset('images/auth/register-cover.jpg')">
     <x-slot:title>Registro</x-slot:title>
 
-    <form class="mt-14 space-y-5" novalidate>
+    <form
+        method="POST"
+        action="{{ route('register.store') }}"
+        class="mt-14 space-y-5"
+        novalidate
+    >
+
+        @csrf
         <div class="space-y-2">
             <label class="font-bold block text-sm sm:text-base" for="name">Nombre</label>
 
@@ -12,6 +19,7 @@
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="name"
             />
+            @error('name')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
 
         <div class="space-y-2">
@@ -24,6 +32,7 @@
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="email"
             />
+            @error('email')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
 
         <div class="space-y-2">
@@ -35,6 +44,7 @@
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="password"
             />
+            @error('password')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
 
         <div class="space-y-2">
