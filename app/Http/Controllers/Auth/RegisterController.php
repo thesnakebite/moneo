@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\View\View;
 use App\Http\Requests\StoreUserRequest;
-use Illuminate\Http\RedirectResponse;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -19,7 +21,11 @@ class RegisterController extends Controller
     {
         $data = $request->validated();
 
-        User::create($data);
+        $user = User::create($data);
+
+        event(new Registered($user));
+
+        Auth::login($user);
 
         // Provisional
         return redirect()->route('login');

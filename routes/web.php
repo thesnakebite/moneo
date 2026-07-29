@@ -3,8 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // Auth and Register
 Route::get('/registro', [RegisterController::class, 'index'])->name('register');
 Route::post('/registro', [RegisterController::class, 'store'])->name('register.store');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
+// Email verification
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+})->middleware(['auth', 'signed'])->name('verification.verify');
