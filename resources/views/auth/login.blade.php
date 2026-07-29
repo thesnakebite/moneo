@@ -1,7 +1,13 @@
 <x-layouts.auth :image="asset('images/auth/login-cover.jpg')">
     <x-slot:title>Iniciar sesión</x-slot:title>
 
-    <form class="mt-14 space-y-5" novalidate>
+    <form
+        method="POST"
+        action="{{ route('login.store') }}"
+        class="mt-14 space-y-5"
+        novalidate
+    >
+        @csrf
         <div class="flex flex-col gap-2">
             <label class="font-bold text-sm sm:text-base" for="email">Email</label>
 
@@ -12,7 +18,9 @@
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="email"
                 tabindex="1"
+                value="{{ old('email') }}"
             />
+            @error('email')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
 
         <div class="flex flex-col gap-2">
@@ -27,6 +35,7 @@
                 name="password"
                 tabindex="2"
             />
+            @error('password')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
         </div>
         <input
             type="submit"
