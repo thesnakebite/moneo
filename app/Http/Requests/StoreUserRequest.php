@@ -25,7 +25,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:14'],
-            'email' => ['required', 'email:rfc, dns', 'unique:users,email'],
+            'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
             'password' => ['required', 'confirmed',
                 Password::min(8)
                     ->letters()
@@ -49,11 +49,13 @@ class StoreUserRequest extends FormRequest
             'name.min' => 'El nombre debe contener un mínimo de :min caracteres.',
             'name.max' => 'El nombre debe contener un máximo de :max caracteres.',
             'email.required' => 'El email es obligatorio.',
+            'email.email' => 'El campo email debe ser una dirección de correo válida.',
             'email.rfc' => 'El email debe ser válido.',
             'email.unique' => 'Este email ya esta registrado.',
             'password.required' => 'La contraseña es obligatoria.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'password.min' => 'La contraseña debe tener mínimo :min caracteres.',
+            'password.letters' => 'La contraseña debe contener al menos una letra.',
             'password.mixed' => 'La contraseña debe contener al menos una letra minúscula y otra mayúscula.',
             'password.symbols' => 'La contraseña debe contener al menos un simbolo especial (^*!?@.-).',
             'password.numbers' => 'La contraseña debe contener al menos un número.',

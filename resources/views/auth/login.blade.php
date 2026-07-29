@@ -20,7 +20,7 @@
                 tabindex="1"
                 value="{{ old('email') }}"
             />
-            @error('email')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
+            <x-input-error :messages="$errors->get('email')" />
         </div>
 
         <div class="flex flex-col gap-2">
@@ -35,8 +35,9 @@
                 name="password"
                 tabindex="2"
             />
-            @error('password')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
+            <x-input-error :messages="$errors->get('password')" />
         </div>
+
         <input
             type="submit"
             value='Iniciar Sesión'

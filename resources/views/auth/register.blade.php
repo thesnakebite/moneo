@@ -20,7 +20,7 @@
                 name="name"
                 value="{{ old('name') }}"
             />
-            @error('name')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
+            <x-input-error :messages="$errors->get('name')" />
         </div>
 
         <div class="space-y-2">
@@ -34,7 +34,7 @@
                 name="email"
                 value="{{ old('email') }}"
             />
-            @error('email')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
+            <x-input-error :messages="$errors->get('email')" />
         </div>
 
         <div class="space-y-2">
@@ -46,7 +46,7 @@
                 class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
                 name="password"
             />
-            @error('password')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
+            <x-input-error :messages="$errors->get('password')" />
         </div>
 
         <div class="space-y-2">
