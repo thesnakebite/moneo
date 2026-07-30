@@ -38,6 +38,17 @@
             <x-input-error :messages="$errors->get('password')" />
         </div>
 
+        <div class="flex items-center gap-2">
+            <input
+                type="checkbox"
+                class="appearance-none w-4 h-4 border border-gray-300 rounded checked:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:ring-offset-1"
+                id="remember"
+                name="remember"
+                tabindex="4"
+            />
+            <label for="remember" class="text-sm">Recuérdame</label>
+        </div>
+
         <input
             type="submit"
             value='Iniciar Sesión'
