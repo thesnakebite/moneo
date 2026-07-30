@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 // Auth and Register
 Route::get('/registro', [RegisterController::class, 'index'])->name('register');
@@ -19,6 +20,14 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return redirect()->route('dashboard');
+    }
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('success', 'Se ha reenviado el correo de verificación.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification-send');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
