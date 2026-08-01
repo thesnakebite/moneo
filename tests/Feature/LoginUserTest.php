@@ -45,3 +45,40 @@ it('does not log in with invalid credentials', function () {
 
     $this->assertGuest();
 });
+
+it('prevents unverified user from accessing the dashboard ', function () {
+    $user = User::factory()->unverified()->create([
+        'email' => 'juan@juan.com',
+        'password' => bcrypt('password'),
+        'email_verified_at' => null
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => 'juan@juan.com',
+        'password' => 'password'
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $this->assertAuthenticated();
+
+    $dashboardResponse = $this->get(route('dashboard'));
+    $dashboardResponse->assertRedirect(route('verification.notice'));
+});
+
+it('does not allow access to dashboard if email is not verified', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => null
+    ]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertRedirect(route('verification.notice'));
+});
+
+it('allow access to dashboard if email is verified', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now()
+    ]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+    $response->assertOk();
+});
