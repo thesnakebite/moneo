@@ -37,3 +37,19 @@ it('register a new user as unverified and dispatches the registered event', func
 
     Event::assertDispatched(Registered::class);
 });
+
+it('should validate required fields when the request body is empty', function () {
+    $response = $this->post(route('register.store'), []);
+
+    $response->assertSessionHasErrors([
+        'name',
+        'email',
+        'password',
+    ]);
+
+    $response->assertSessionHasErrors([
+        'name' => 'El nombre es obligatorio.',
+        'email' => 'El email es obligatorio.',
+        'password' => 'La contraseña es obligatoria.',
+    ]);
+});
