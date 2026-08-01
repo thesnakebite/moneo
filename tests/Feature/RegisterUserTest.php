@@ -53,3 +53,22 @@ it('should validate required fields when the request body is empty', function ()
         'password' => 'La contraseña es obligatoria.',
     ]);
 });
+
+it('prevent duplicate email addresses', function () {
+    User::factory()->create([
+        'email' => 'juan@juan.com'
+    ]);
+
+    $response = $this->post(route('register.store'), [
+        'name' => 'Juan Pérez',
+        'email' => 'juan@juan.com',
+        'password' => 'password12A$',
+        'password_confirmation' => 'password12A$'
+    ]);
+
+    $response->assertRedirect();
+
+    $response->assertSessionHasErrors([
+        'email' => 'Este email ya esta registrado.'
+    ]);
+});
