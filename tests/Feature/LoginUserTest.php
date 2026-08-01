@@ -26,3 +26,22 @@ it('logs in a verified user successfully', function () {
     $response->assertRedirect(route('dashboard'));
     $this->assertAuthenticated();
 });
+
+it('does not log in with invalid credentials', function () {
+    User::factory()->create([
+        'email' => 'juan@juan.com',
+        'password' => bcrypt('password')
+    ]);
+
+    $response = $this->from(route('login'))->post(route('login.store'), [
+        'email' => 'juan@juan.com',
+        'password' => 'incorrect-password'
+    ]);
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors([
+        'email' => 'Las credenciales no coinciden con nuestros registros.',
+    ]);
+
+    $this->assertGuest();
+});
