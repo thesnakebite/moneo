@@ -82,3 +82,18 @@ it('allow access to dashboard if email is verified', function () {
     $response = $this->actingAs($user)->get(route('dashboard'));
     $response->assertOk();
 });
+
+it('fails login if user does not exist', function () {
+    $response = $this->from(route('login'))
+        ->post(route('login.store'), [
+            'email' => 'noexiste@dominio.com',
+            'password' => 'password'
+        ]);
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors([
+        'email' => 'Las credenciales no coinciden con nuestros registros.',
+    ]);
+
+    $this->assertGuest();
+});
