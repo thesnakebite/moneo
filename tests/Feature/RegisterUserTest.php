@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 
 uses (RefreshDatabase::class);
 
@@ -71,4 +73,24 @@ it('prevent duplicate email addresses', function () {
     $response->assertSessionHasErrors([
         'email' => 'Este email ya esta registrado.'
     ]);
+});
+
+it('sends the verification email notification to the user', function () {
+    Notification::fake();
+
+    $response = $this->post(route('register.store'), [
+        'name' => 'Juan Pérez',
+        'email' => 'juan@juan.com',
+        'password' => 'password12A$',
+        'password_confirmation' => 'password12A$'
+    ]);
+
+    $user = User::where('email', 'juan@juan.com')->first();
+
+    expect($user)->not->toBeNull();
+    expect($user->name)->toBe('Juan Pérez');
+    expect($user->email)->toBe('juan@juan.com');
+    expect($user->hasVerifiedEmail())->toBeFalse();
+
+    Notification::assertSentTo($user, VerifyEmail::class);
 });
