@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 
 uses (RefreshDatabase::class);
 
@@ -93,4 +94,23 @@ it('sends the verification email notification to the user', function () {
     expect($user->hasVerifiedEmail())->toBeFalse();
 
     Notification::assertSentTo($user, VerifyEmail::class);
+});
+
+it('verifies the user email from a signed verification link', function () {
+    $user = User::factory()->unverified()->create();
+
+    $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->email),
+            ]
+        );
+
+    $response = $this->actingAs($user)->get($verificationUrl);
+
+    $response->assertRedirect(route('dashboard'));
+
+    expect($user->hasVerifiedEmail())->toBeTrue();
 });
