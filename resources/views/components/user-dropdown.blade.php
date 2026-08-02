@@ -22,7 +22,7 @@
             Cambiar contraseña
         </a>
 
-        <form>
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-900 hover:bg-gray-50">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-4 text-gray-400">
