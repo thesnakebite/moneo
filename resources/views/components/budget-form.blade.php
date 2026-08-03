@@ -45,11 +45,35 @@
         </details>
     </div>
 
-
     <select id="type" name="type" class="w-full border border-gray-300 p-3 rounded-lg text-xs sm:text-sm">
         <option value="">Tipo de Presupuesto</option>
         <option value="general" @selected(old('type') === 'general')>General - Con Categorías</option>
         <option value="goal" @selected(old('type') === 'goal')>Proyecto</option>
     </select>
-     <x-input-error :messages="$errors->get('type')" />
+    <x-input-error :messages="$errors->get('type')" />
+
+    <div class="flex justify-between gap-2 mb-2">
+        <div>
+            <label class="font-bold text-sm sm:text-base" for="starts_at">Fecha de inicio <span class="text-amber-500 text-xs">(opcional)</span></label>
+            <input
+                id="starts_at"
+                type="date"
+                class="w-full border border-gray-300 p-3 rounded-lg text-xs sm:text-sm"
+                name="starts_at"
+                value="{{ old('starts_at') }}"
+            />
+            <x-input-error :messages="$errors->get('starts_at')" />
+        </div>
+        <div>
+            <label class="font-bold text-sm sm:text-base" for="ends_at">Fecha de fin <span class="text-amber-500 text-xs">(opcional)</span></label>
+            <input
+                id="ends_at"
+                type="date"
+                class="w-full border border-gray-300 p-3 rounded-lg text-xs sm:text-sm"
+                name="ends_at"
+                value="{{ old('ends_at') }}"
+            />
+            <x-input-error :messages="$errors->get('ends_at')" />
+        </div>
+    </div>
 </div>
