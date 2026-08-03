@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Auth and Register
-Route::get('/registro', [RegisterController::class, 'index'])->name('register');
-Route::post('/registro', [RegisterController::class, 'store'])->name('register.store');
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::post('/logout', [LogoutController::class, 'destroy'])
@@ -34,10 +34,8 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('success', 'Se ha reenviado el correo de verificación.');
 })->middleware(['auth', 'throttle:6,1'])->name('verification-send');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard');
 
-Route::get('/budgets/create', [BudgetController::class, 'create'])
-    ->middleware(['auth', 'verified'])
-    ->name('budgets.create');
+Route::prefix('budgets')->name('budgets.')->group(function () {
+    Route::get('/create', [BudgetController::class, 'create'])->name('create');
+});
