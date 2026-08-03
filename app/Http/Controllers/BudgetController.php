@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 #[Middleware('auth')]
@@ -30,9 +32,11 @@ class BudgetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BudgetRequest $request)
     {
-        //
+        $budget = Auth::user()->budgets()->create($request->validated());
+
+        return redirect()->route('dashboard');
     }
 
     /**

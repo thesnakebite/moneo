@@ -38,4 +38,5 @@ Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard')
 
 Route::prefix('budgets')->name('budgets.')->group(function () {
     Route::get('/create', [BudgetController::class, 'create'])->name('create');
+    Route::post('/store', [BudgetController::class, 'store'])->name('store');
 });

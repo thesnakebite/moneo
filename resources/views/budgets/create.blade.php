@@ -12,7 +12,13 @@
         </x-slot:actions>
     </x-page-header>
 
-    <form class="mt-14 space-y-3 max-w-2xl mx-auto" novalidate>
+    <form
+        method="POST"
+        action="{{ route('budgets.store') }}"
+        class="mt-14 space-y-3 max-w-2xl mx-auto"
+        novalidate
+    >
+        @csrf
         <x-budget-form />
 
         <input
