@@ -13,4 +13,6 @@
     </x-page-header>
 
     {{-- Tabla de presupuestos --}}
+    <x-budget-table :budgets="$budgets" />
+
 </x-layouts.app>
