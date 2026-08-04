@@ -21,7 +21,9 @@
                                     <a class="font-bold text-gray-900 block hover:underline" href="#">{{ $budget->name }}</a>
                                     <p class="text-sm text-gray-500 mt-0.5">{{ number_format($budget->amount, 2, ',', '.') }} €</p>
                                 </td>
-                                <td class="py-6 px-6 flex justify-end gap-3"></td>
+                                <td class="py-6 px-6 flex justify-end gap-3">
+                                    <x-budget-dropdown />
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
