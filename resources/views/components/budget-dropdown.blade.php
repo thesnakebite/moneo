@@ -14,12 +14,14 @@
     >
       <div class="py-1">
         <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">
-            Ver presupuestos
+            Ver presupuesto
         </a>
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">
-            Editar presupuestos
+        <a
+            href="{{ route('budgets.edit', $budget) }}"
+            class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden"
+        >
+            Editar presupuesto
         </a>
-
 
         <button
             type="button"

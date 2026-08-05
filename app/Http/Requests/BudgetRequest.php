@@ -25,7 +25,10 @@ class BudgetRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'amount' => ['required', 'decimal:0,2', 'min:0.01'],
-            'type' => ['required', Rule::enum(BudgetType::class)],
+            'type' => [
+                $this->routeIs('budgets.store') ? 'required' : 'sometimes',
+                Rule::enum(BudgetType::class),
+            ],
             'starts_at' => ['nullable', 'date', 'required_with:ends_at'],
             'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at', 'required_with:starts_at'],
         ];
