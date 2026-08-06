@@ -33,3 +33,26 @@ it('allows the owner to update a budget', function () {
         'user_id' => $user->id,
     ]);
 });
+
+it('validates required fields when updating a budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.edit', $budget))
+        ->put(route('budgets.update', $budget), [
+            'name' => '',
+            'amount' => '',
+            'type' => '',
+        ]);
+
+    $response->assertRedirect(route('budgets.edit', $budget));
+    $response->assertSessionHasErrors([
+        'name',
+        'amount',
+        'type',
+    ]);
+});
