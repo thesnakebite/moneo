@@ -21,3 +21,35 @@ it('allows the owner to delete a budget', function () {
         'id' => $budget->id
     ]);
 });
+
+it('does not allow guests to delete budgets', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->delete(route('budgets.destroy', $budget));
+
+    $response->assertRedirect(route('login'));
+
+    $this->assertDatabaseHas('budgets', [
+        'id' => $budget->id
+    ]);
+});
+
+it('does not allow unverified users to delete budgets', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => null,
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)->delete(route('budgets.destroy', $budget));
+
+    $response->assertRedirect(route('verification.notice'));
+
+    $this->assertDatabaseHas('budgets', [
+        'id' => $budget->id
+    ]);
+});
