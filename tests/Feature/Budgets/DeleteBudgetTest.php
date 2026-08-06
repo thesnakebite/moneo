@@ -53,3 +53,27 @@ it('does not allow unverified users to delete budgets', function () {
         'id' => $budget->id
     ]);
 });
+
+it('does not allow other users to delete budgets', function () {
+    $owner = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $otherUser = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($owner)->create([
+        'name' => 'Presupuesto del owner',
+    ]);
+
+    $response = $this->actingAs($otherUser)->delete(route('budgets.destroy', $budget));
+
+    $response->assertForbidden();
+    $response->assertStatus(403);
+
+    $this->assertDatabaseHas('budgets', [
+        'id' => $budget->id,
+        'name' => 'Presupuesto del owner',
+    ]);
+});
