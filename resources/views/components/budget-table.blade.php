@@ -23,6 +23,13 @@
                                 </td>
                                 <td class="py-6 px-6 flex justify-end gap-3">
                                     <x-budget-dropdown :budget="$budget" />
+
+                                    <x-confirm-delete
+                                        :id="'delete-dialog-'.$budget->id"
+                                        :title="'Eliminar presupuesto: ' . $budget->name"
+                                        message="Se eliminará este presupuesto junto con todos sus gastos e ingresos asociados. Esta acción no se puede deshacer."
+                                        :action="route('budgets.destroy', $budget)"
+                                    />
                                 </td>
                             </tr>
                         @endforeach
