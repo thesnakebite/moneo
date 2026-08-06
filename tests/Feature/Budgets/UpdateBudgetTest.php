@@ -96,3 +96,19 @@ it('validates type must be valid when updating a budget', function () {
 
 
 });
+
+it('does not allow guests to update budgets', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->put(route('budgets.update', $budget), [
+        'name' => 'Presupuesto actualizado',
+        'amount' => 1500,
+        'type' => 'goal',
+    ]);
+
+    $response->assertRedirect(route('login'));
+});
