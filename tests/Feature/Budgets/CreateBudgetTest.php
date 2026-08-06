@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Budget;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -37,5 +38,27 @@ it('does not allow guest to create budget', function () {
     $response->assertRedirect(route('login'));
 
     $this->assertDatabaseCount('budgets', 0);
+});
+
+it('assigns the created budget to the authenticated user', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now()
+    ]);
+
+    $this->actingAs($user)->post(route('budgets.store'), [
+        'name' => 'Viaje a las Vegas 🎰',
+        'amount' => 10000,
+        'type' => 'goal',
+    ]);
+
+    $this->assertDatabaseHas('budgets', [
+        'name' => 'Viaje a las Vegas 🎰',
+        'amount' => 10000,
+        'type' => 'goal',
+        'user_id' => $user->id,
+    ]);
+
+    $budget = Budget::first();
+    expect($budget->user_id)->toBe($user->id);
 });
 
