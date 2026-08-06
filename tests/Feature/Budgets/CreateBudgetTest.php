@@ -62,3 +62,34 @@ it('assigns the created budget to the authenticated user', function () {
     expect($budget->user_id)->toBe($user->id);
 });
 
+it('does not allow unverifies users to create budgets', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => null
+    ]);
+
+    $response = $this->actingAs($user)->post(route('budgets.store'), [
+        'name' => 'Viaje a las Vegas 🎰',
+        'amount' => 10000,
+        'type' => 'goal',
+    ]);
+
+    $response->assertRedirect(route('verification.notice'));
+});
+
+it('validates amount must be greter than zero', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now()
+    ]);
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.create'))
+        ->post(route('budgets.store'), [
+            'name' => 'Boda',
+            'amount' => -10,
+            'type' => 'general',
+        ]);
+
+        $response->assertRedirect(route('budgets.create'));
+
+        $response->assertSessionHasErrors(['amount']);
+});
