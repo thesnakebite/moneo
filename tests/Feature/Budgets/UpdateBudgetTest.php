@@ -112,3 +112,31 @@ it('does not allow guests to update budgets', function () {
 
     $response->assertRedirect(route('login'));
 });
+
+it('does not allow other users to update budgets', function () {
+    $owner = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $otherUser = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($owner)->create([
+        'name' => 'Presupuesto Original'
+    ]);
+
+    $response = $this->actingAs($otherUser)
+        ->put(route('budgets.update', $budget), [
+            'name' => 'Hackeado!!',
+            'amount' => 99999,
+            'type' => 'goal',
+        ]);
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseHas('budgets', [
+            'id' => $budget->id,
+            'name' => 'Presupuesto Original'
+        ]);
+});
