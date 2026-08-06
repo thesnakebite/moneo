@@ -56,3 +56,43 @@ it('validates required fields when updating a budget', function () {
         'type',
     ]);
 });
+
+it('validates amount must be greater than zero when updating a budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.edit', $budget))
+        ->put(route('budgets.update', $budget), [
+            'name' => 'Presupuesto',
+            'amount' => 0,
+            'type' => 'general',
+        ]);
+
+    $response->assertRedirect(route('budgets.edit', $budget));
+    $response->assertSessionHasErrors(['amount']);
+});
+
+it('validates type must be valid when updating a budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.edit', $budget))
+        ->put(route('budgets.update', $budget), [
+            'name' => 'Presupuesto',
+            'amount' => 1000,
+            'type' => 'not_valid',
+        ]);
+
+    $response->assertRedirect(route('budgets.edit', $budget));
+    $response->assertSessionHasErrors(['type']);
+
+
+});
