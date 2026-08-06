@@ -22,3 +22,14 @@ it('allows the owner to view the edit budget form', function () {
     $response->assertOk();
     $response->assertSee('Viaje a las Vegas 🎰');
 });
+
+it('does not allow guests to view the edit budget form', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create();
+
+    $response = $this->get(route('budgets.edit', $budget));
+    $response->assertRedirect(route('login'));
+});
