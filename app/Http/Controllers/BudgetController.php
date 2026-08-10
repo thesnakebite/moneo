@@ -10,6 +10,8 @@ use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
@@ -48,9 +50,12 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Budget $budget)
+    #[Authorize('view', 'budget')]
+    public function show(Budget $budget): Response
     {
-        //
+        return Inertia::render('Budgets/Show', [
+            'budget' => $budget,
+        ]);
     }
 
     /**
