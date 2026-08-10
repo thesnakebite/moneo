@@ -7,4 +7,18 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --font-unique : 'Unique', sans-serif;
+}
+
+@layer base {
+    @font-face {
+        font-family: 'Unique';
+        src: url('/resources/fonts/Unique-SemiBold.woff2') format('woff2'),
+            url('/resources/fonts/Unique-SemiBold.woff') format('woff');
+        font-weight: 600;
+        font-style: normal;
+        text-rendering: optimizeLegibility;
+        font-display: swap;
+    }
 }

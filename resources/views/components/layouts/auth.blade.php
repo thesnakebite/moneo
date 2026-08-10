@@ -15,7 +15,7 @@
             <div class="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent"></div>
 
             <div class="relative z-10 flex flex-col justify-end p-10 text-white">
-                <span class="text-2xl font-semibold">{{ config('app.name') }}</span>
+                <span class="text-7xl font-unique">{{ config('app.name') }}</span>
                 <p class="mt-2 text-sm text-white/80">Gestiona tus gastos e ingresos en un único lugar.</p>
             </div>
         </div>
