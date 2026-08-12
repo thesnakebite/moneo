@@ -23,14 +23,14 @@ export default function Show({budget} : Props) {
                     </div>
 
                     <div className="flex flex-col gap-2.5">
+                        <ExpenseModal budget={budget.id}/>
+
                         <a
                             href="/dashboard"
                             className="bg-gray-900 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold"
                         >
                             Volver al dashboard
                         </a>
-
-                        <ExpenseModal />
                     </div>
                 </div>
             </div>

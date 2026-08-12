@@ -1,7 +1,12 @@
 import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import ExpenseForm from './ExpenseForm'
 
-export default function ExpenseModal() {
+type Props = {
+    budget: number
+}
+
+export default function ExpenseModal({budget}: Props) {
     const open = useExpenseModalStore(state => state.open)
     const openCreateModal = useExpenseModalStore((state) => state.openCreateModal)
     const closeModal = useExpenseModalStore((state) => state.closeModal)
@@ -32,14 +37,15 @@ export default function ExpenseModal() {
                         </DialogTitle>
 
                         <div className="mt-4">
-                            {/* aquí irá el formulario del gasto */}
+                            {/* Expense form */}
+                            <ExpenseForm />
                         </div>
 
-                        <div className="mt-6 flex justify-end gap-3">
+                        <div className="flex justify-end">
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="bg-red-500 hover:bg-red-400 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold"
+                                className="bg-red-500 hover:bg-red-400 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 w-full rounded-lg text-xs sm:text-sm font-bold"
                             >
                                 Cancelar
                             </button>
