@@ -22,6 +22,16 @@ class Budget extends Model
         ];
     }
 
+    public function isGeneral(): bool
+    {
+        return $this->type === BudgetType::General;
+    }
+
+    public function isGoal(): bool
+    {
+        return $this->type === BudgetType::Goal;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
