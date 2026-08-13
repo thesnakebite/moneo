@@ -2,12 +2,13 @@ import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { useForm } from '@inertiajs/react'
 import Ziggy from '@/ziggy'
 import { route } from 'ziggy-js'
+import InputError from './InputError'
 
 export default function ExpenseForm() {
     const budget = useExpenseModalStore(state => state.budget)
     const categories = useExpenseModalStore(state => state.categories)
 
-    const { data, setData, post } = useForm({
+    const { data, setData, post, errors } = useForm({
         name: '',
         amount: '',
         category: ''
@@ -35,6 +36,7 @@ export default function ExpenseForm() {
                     value={data.name}
                     onChange={e => setData('name', e.target.value)}
                 />
+                {errors.name && <InputError>{errors.name}</InputError>}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -51,6 +53,7 @@ export default function ExpenseForm() {
                     value={data.amount}
                     onChange={e => setData('amount', e.target.value)}
                 />
+                {errors.amount && <InputError>{errors.amount}</InputError>}
             </div>
 
             {budget.type === 'general' && (
@@ -70,6 +73,7 @@ export default function ExpenseForm() {
                         </option>)}
 
                     </select>
+                    {errors.category && <InputError>{errors.category}</InputError>}
                 </div>
             )}
 
