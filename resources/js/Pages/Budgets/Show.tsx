@@ -1,9 +1,9 @@
+import { Head, usePage } from "@inertiajs/react"
 import AmountDisplay from "@/Components/AmountDisplay"
 import ExpenseModal from "@/Components/ExpenseModal"
 import { useExpenseModalStore } from "@/stores/expense-modal-store"
 import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
-import { Head } from "@inertiajs/react"
 
 type Props = {
     budget: Budget
@@ -13,6 +13,8 @@ type Props = {
 export default function Show({budget, categories} : Props) {
     useExpenseModalStore.getState().setBudget(budget)
     useExpenseModalStore.getState().setCategories(categories)
+
+    const { flash } = usePage().props
 
     return (
         <>
