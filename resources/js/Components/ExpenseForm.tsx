@@ -1,5 +1,7 @@
 import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { useForm } from '@inertiajs/react'
+import Ziggy from '@/ziggy'
+import { route } from 'ziggy-js'
 
 export default function ExpenseForm() {
     const budget = useExpenseModalStore(state => state.budget)
@@ -15,6 +17,8 @@ export default function ExpenseForm() {
 
     const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        post(route('budgets.expenses.store', budget.id))
     }
 
     return (
