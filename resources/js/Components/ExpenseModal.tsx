@@ -2,11 +2,7 @@ import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import ExpenseForm from './ExpenseForm'
 
-type Props = {
-    budget: number
-}
-
-export default function ExpenseModal({budget}: Props) {
+export default function ExpenseModal() {
     const open = useExpenseModalStore(state => state.open)
     const openCreateModal = useExpenseModalStore((state) => state.openCreateModal)
     const closeModal = useExpenseModalStore((state) => state.closeModal)

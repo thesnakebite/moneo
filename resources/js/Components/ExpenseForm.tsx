@@ -1,6 +1,11 @@
+import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { useForm } from '@inertiajs/react'
 
 export default function ExpenseForm() {
+    const budget = useExpenseModalStore(state => state.budget)
+    const categories = useExpenseModalStore(state => state.categories)
+    
+    if (!budget) return null
 
     return (
         <form className="space-y-4">
@@ -30,19 +35,23 @@ export default function ExpenseForm() {
                 />
             </div>
 
-            <div className="flex flex-col gap-2">
-                <label htmlFor="category" className="text-sm font-bold text-gray-700">
-                    Categoría
-                </label>
-                <select
-                    id="category"
-                    className="w-full border border-gray-300 p-3 rounded-lg text-sm"
-                >
-                    <option value="">Selecciona una categoría</option>
-                    <option></option>
-                </select>
+            {budget.type === 'general' && (
+                <div className="flex flex-col gap-2">
+                    <label htmlFor="category" className="text-sm font-bold text-gray-700">
+                        Categoría
+                    </label>
+                    <select
+                        id="category"
+                        className="w-full border border-gray-300 p-3 rounded-lg text-sm"
+                    >
+                        <option value="">Selecciona una categoría</option>
+                        {categories.map(category => <option key={category.value} value={category.value}>
+                            {category.label}
+                        </option>)}
 
-            </div>
+                    </select>
+                </div>
+            )}
 
             <div className="flex justify-end gap-3 pt-2 mb-2">
                 <button
