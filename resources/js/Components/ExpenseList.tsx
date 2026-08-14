@@ -26,10 +26,12 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
                         <li key={expense.id} className="flex items-start justify-between py-3">
                             <div>
                                 <p className="text-xs text-gray-400">{formatDate(expense.created_at)}</p>
+                                <p className="font-semibold text-sm mt-0.5 mb-1.5">{expense.name}</p>
 
-                                <p className="font-semibold text-gray-900 text-sm mt-0.5">{expense.name}</p>
-                                {budgetType === 'general' && expense.category && (
-                                    <p className="text-xs text-gray-500 mt-0.5">{expense.category}</p>
+                                {budgetType === 'general' && expense.category_label && (
+                                    <span className={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${expense.category_color}`}>
+                                        {expense.category_label}
+                                    </span>
                                 )}
                             </div>
                             <p className="font-bold text-gray-900 text-sm">
