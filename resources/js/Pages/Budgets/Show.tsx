@@ -6,6 +6,7 @@ import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
 import { toast, Toaster } from "sonner"
 import { useEffect } from "react"
+import ExpenseList from "@/Components/ExpenseList"
 
 type Props = {
     budget: Budget
@@ -50,6 +51,8 @@ export default function Show({budget, categories} : Props) {
                             Volver al dashboard
                         </a>
                     </div>
+
+                    <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
                 </div>
             </div>
         </>

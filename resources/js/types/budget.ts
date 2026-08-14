@@ -1,4 +1,6 @@
-type BudgetType = 'general' | 'goal'
+import { Expense } from "./expense"
+
+export type BudgetType = 'general' | 'goal'
 
 export type Budget = {
     id: number
@@ -6,4 +8,5 @@ export type Budget = {
     amount: string
     type: BudgetType
     created_at: string
+    expenses: Expense[]
 }

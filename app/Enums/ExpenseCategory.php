@@ -15,7 +15,7 @@ enum ExpenseCategory: string
     public function label(): string
     {
         return match ($this) {
-            self:: Food => 'Comida',
+            self::Food => 'Comida',
             self::Transport => 'Transporte',
             self::Housing => 'Vivienda',
             self::Leisure => 'Ocio',
