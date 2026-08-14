@@ -4,6 +4,8 @@ import ExpenseModal from "@/Components/ExpenseModal"
 import { useExpenseModalStore } from "@/stores/expense-modal-store"
 import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
+import { toast, Toaster } from "sonner"
+import { useEffect } from "react"
 
 type Props = {
     budget: Budget
@@ -15,6 +17,12 @@ export default function Show({budget, categories} : Props) {
     useExpenseModalStore.getState().setCategories(categories)
 
     const { flash } = usePage().props
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success)
+        }
+    }, [flash.success])
 
     return (
         <>
@@ -32,6 +40,8 @@ export default function Show({budget, categories} : Props) {
 
                     <div className="flex flex-col gap-2.5">
                         <ExpenseModal />
+
+                        <Toaster position="bottom-center" />
 
                         <a
                             href="/dashboard"

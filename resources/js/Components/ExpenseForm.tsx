@@ -7,8 +7,9 @@ import InputError from './InputError'
 export default function ExpenseForm() {
     const budget = useExpenseModalStore(state => state.budget)
     const categories = useExpenseModalStore(state => state.categories)
+    const closeModal = useExpenseModalStore(state => state.closeModal)
 
-    const { data, setData, post, errors } = useForm({
+    const { data, setData, post, errors, reset, processing} = useForm({
         name: '',
         amount: '',
         category: ''
@@ -19,7 +20,12 @@ export default function ExpenseForm() {
     const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        post(route('budgets.expenses.store', budget.id))
+        post(route('budgets.expenses.store', budget.id), {
+            onSuccess: () => {
+                reset()
+                closeModal()
+            }
+        })
     }
 
     return (
@@ -79,10 +85,11 @@ export default function ExpenseForm() {
 
             <div className="flex justify-end gap-3 pt-2 mb-2">
                 <button
+                    disabled={processing}
                     type="submit"
-                    className="bg-gray-900 hover:bg-gray-800 disabled:opacity-50 text-white px-4 py-2.5 w-full rounded-lg text-sm font-bold"
+                    className={`${processing ? 'opacity-60 cursor-not-allowed' : 'hover:bg-gray-800 cursor-pointer'} bg-gray-900 text-white px-4 py-2.5 w-full rounded-lg text-sm font-bold` }
                 >
-                    Agregar Gasto
+                    {processing ? 'Guardando' : 'Agregar Gasto'}
                 </button>
             </div>
         </form>

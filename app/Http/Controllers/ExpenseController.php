@@ -17,7 +17,9 @@ class ExpenseController extends Controller
     {
         $budget->expenses()->create($request->validated());
 
-        return redirect()->route('budgets.show', $budget);
+        return redirect()
+            ->route('budgets.show', $budget)
+            ->with('success', 'Gasto añadido correctamente');
     }
 
     /**
