@@ -31,7 +31,7 @@ export const useExpenseModalStore = create<ExpenseModalStore>()(devtools((set) =
         })
     },
     closeModal: () => {
-        set({ open: false, expense: null })
+        set({ open: false })
     },
     setBudget : (budget) => {
         set({ budget })

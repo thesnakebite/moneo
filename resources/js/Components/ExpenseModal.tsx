@@ -6,6 +6,9 @@ export default function ExpenseModal() {
     const open = useExpenseModalStore(state => state.open)
     const openCreateModal = useExpenseModalStore((state) => state.openCreateModal)
     const closeModal = useExpenseModalStore((state) => state.closeModal)
+    const expense = useExpenseModalStore((state) => state.expense)
+
+    const isEditing = !!expense
 
     return (
         <>
@@ -29,7 +32,7 @@ export default function ExpenseModal() {
                         className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl duration-200 ease-out data-closed:scale-95 data-closed:opacity-0"
                     >
                         <DialogTitle className="text-lg font-bold text-gray-900">
-                            Nuevo gasto
+                            {isEditing ? 'Editar gasto' : 'Nuevo gasto'}
                         </DialogTitle>
 
                         <div className="mt-4">

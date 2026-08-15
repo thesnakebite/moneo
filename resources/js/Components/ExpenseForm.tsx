@@ -6,13 +6,16 @@ import InputError from './InputError'
 
 export default function ExpenseForm() {
     const budget = useExpenseModalStore(state => state.budget)
+    const expense = useExpenseModalStore(state => state.expense)
     const categories = useExpenseModalStore(state => state.categories)
     const closeModal = useExpenseModalStore(state => state.closeModal)
 
+    const isEditing = !!expense
+
     const { data, setData, post, errors, reset, processing} = useForm({
-        name: '',
-        amount: '',
-        category: ''
+        name: expense?.name ?? '',
+        amount: expense?.amount ?? '',
+        category: expense?.category ?? ''
     })
 
     if (!budget) return null
@@ -89,7 +92,7 @@ export default function ExpenseForm() {
                     type="submit"
                     className={`${processing ? 'opacity-60 cursor-not-allowed' : 'hover:bg-gray-800 cursor-pointer'} bg-gray-900 text-white px-4 py-2.5 w-full rounded-lg text-sm font-bold` }
                 >
-                    {processing ? 'Guardando' : 'Agregar Gasto'}
+                    {processing ? 'Guardando...' : isEditing ? 'Guardando cambios' : 'Agregar gasto'}
                 </button>
             </div>
         </form>
