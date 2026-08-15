@@ -1,6 +1,7 @@
 import { Expense } from '@/types/expense'
 import { BudgetType } from '@/types/budget'
 import { formatCurrency, formatDate } from '@/utils'
+import ExpenseDropdown from '@/Components/ExpenseDropdown'
 
 type Props = {
     expenses: Expense[]
@@ -34,9 +35,14 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
                                     </span>
                                 )}
                             </div>
-                            <p className="font-bold text-gray-900 text-sm">
-                                {formatCurrency(Number(expense.amount))}
-                            </p>
+
+                            <div className='flex items-center gap-3'>
+                                <p className="font-bold text-gray-900 text-sm">
+                                    {formatCurrency(Number(expense.amount))}
+                                </p>
+
+                                <ExpenseDropdown expense={expense} />
+                            </div>
                         </li>
                     ))}
                 </ul>
