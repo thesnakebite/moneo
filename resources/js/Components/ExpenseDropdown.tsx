@@ -1,3 +1,4 @@
+import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { Expense } from '@/types/expense'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { PencilIcon, TrashIcon } from '@heroicons/react/16/solid'
@@ -7,7 +8,7 @@ type Props = {
 }
 
 export default function ExpenseDropdown({ expense }: Props) {
-
+    const openEditModal = useExpenseModalStore(state => state.openEditModal)
 
     return (
         <Menu>
@@ -26,6 +27,8 @@ export default function ExpenseDropdown({ expense }: Props) {
             >
                 <MenuItem>
                     <button
+                        type="button"
+                        onClick={() => openEditModal(expense)}
                         className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-focus:bg-gray-100 focus:outline-none"
                     >
                         <PencilIcon className="size-4 fill-gray-400" />
