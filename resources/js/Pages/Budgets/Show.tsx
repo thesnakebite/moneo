@@ -12,9 +12,10 @@ import ProgressBar from "@/Components/ProgressBar"
 type Props = {
     budget: Budget
     categories: Category[]
+    spent: string
 }
 
-export default function Show({budget, categories} : Props) {
+export default function Show({budget, categories, spent} : Props) {
     useExpenseModalStore.getState().setBudget(budget)
     useExpenseModalStore.getState().setCategories(categories)
 
@@ -26,6 +27,9 @@ export default function Show({budget, categories} : Props) {
         }
     }, [flash.success])
 
+    const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
+    const remaining = Number(budget.amount) - Number(spent)
+
     return (
         <>
             <Head title={`Presupuesto: ${budget.name}`} />
@@ -36,15 +40,15 @@ export default function Show({budget, categories} : Props) {
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
-                            <ProgressBar percentageUsed={0} />
+                            <ProgressBar percentageUsed={percentageUsed} />
                         </div>
 
                         <div>
                             <div>
                                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Te queda</p>
-                                <p className="text-3xl font-bold text-gray-900 mt-0.5">{formatCurrency(0)}</p>
+                                <p className="text-3xl font-bold text-gray-900 mt-0.5">{formatCurrency(remaining)}</p>
                                 <p className="text-xs text-gray-500 mt-2">
-                                    {formatCurrency(0)} gastados de {formatCurrency(Number(budget.amount))}
+                                    {formatCurrency(Number(spent))} gastados de {formatCurrency(Number(budget.amount))}
                                 </p>
                             </div>
                         </div>
