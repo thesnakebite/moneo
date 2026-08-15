@@ -5,7 +5,7 @@ import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
 import { formatCurrency } from "@/utils"
 import { toast, Toaster } from "sonner"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 
@@ -16,9 +16,6 @@ type Props = {
 }
 
 export default function Show({budget, categories, spent} : Props) {
-    useExpenseModalStore.getState().setBudget(budget)
-    useExpenseModalStore.getState().setCategories(categories)
-
     const { flash } = usePage().props
 
     useEffect(() => {
@@ -27,8 +24,21 @@ export default function Show({budget, categories, spent} : Props) {
         }
     }, [flash.success])
 
-    const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
+    useExpenseModalStore.getState().setBudget(budget)
+    useExpenseModalStore.getState().setCategories(categories)
+
     const remaining = Number(budget.amount) - Number(spent)
+    const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
+
+    const [progress, setProgress] = useState(0)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setProgress(percentageUsed)
+        }, 200);
+
+        return () => clearTimeout(timeout)
+    }, [percentageUsed])
 
     return (
         <>
@@ -40,7 +50,7 @@ export default function Show({budget, categories, spent} : Props) {
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
-                            <ProgressBar percentageUsed={percentageUsed} />
+                            <ProgressBar percentageUsed={progress} />
                         </div>
 
                         <div>
