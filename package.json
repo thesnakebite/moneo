@@ -23,6 +23,7 @@
         "@inertiajs/vite": "^3.6.1",
         "@vitejs/plugin-react": "^6.0.5",
         "react": "^19.2.8",
+        "react-circular-progressbar": "^2.2.0",
         "react-dom": "^19.2.8",
         "sonner": "^2.0.8",
         "ziggy-js": "^2.6.3",
