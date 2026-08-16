@@ -6,7 +6,7 @@ use App\Http\Requests\ExpenseRequest;
 use App\Models\Budget;
 use App\Models\Expense;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ExpenseController extends Controller
 {
@@ -25,7 +25,8 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ExpenseRequest $request, Budget $budget, Expense $expense)
+    #[Authorize('update', 'expense')]
+    public function update(ExpenseRequest $request, Budget $budget, Expense $expense): RedirectResponse
     {
         $expense->update($request->validated());
 
@@ -37,8 +38,13 @@ class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense)
+    #[Authorize('delete', 'expense')]
+    public function destroy(Budget $budget, Expense $expense): RedirectResponse
     {
-        //
+        $expense->delete();
+
+        return redirect()
+            ->route('budgets.show', $budget)
+            ->with('success', 'Gasto eliminado correctamente');
     }
 }

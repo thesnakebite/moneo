@@ -69,6 +69,17 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "budgets.expenses.destroy": [
+        {
+            "name": "budget",
+            "required": true
+        },
+        {
+            "name": "expense",
+            "required": true,
+            "binding": "id"
+        }
+    ],
     "storage.local": [
         {
             "name": "path",

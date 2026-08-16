@@ -1,3 +1,4 @@
+import { useDeleteExpenseStore } from '@/stores/expense-delete-store'
 import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { Expense } from '@/types/expense'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
@@ -9,6 +10,7 @@ type Props = {
 
 export default function ExpenseDropdown({ expense }: Props) {
     const openEditModal = useExpenseModalStore(state => state.openEditModal)
+    const openDeleteModal = useDeleteExpenseStore(state => state.openModal)
 
     return (
         <Menu>
@@ -39,7 +41,10 @@ export default function ExpenseDropdown({ expense }: Props) {
                 <div className="my-1 h-px bg-gray-100" />
 
                 <MenuItem>
-                    <button className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-red-600 data-focus:bg-red-50 focus:outline-none">
+                    <button
+                        onClick={() => openDeleteModal(expense)}
+                        className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-red-600 data-focus:bg-red-50 focus:outline-none"
+                    >
                         <TrashIcon className="size-4 fill-red-400" />
                         Eliminar
                     </button>

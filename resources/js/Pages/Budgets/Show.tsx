@@ -8,6 +8,7 @@ import { toast, Toaster } from "sonner"
 import { useEffect, useState } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
+import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 
 type Props = {
     budget: Budget
@@ -66,6 +67,7 @@ export default function Show({budget, categories, spent} : Props) {
 
                     <div className="flex flex-col gap-2.5">
                         <ExpenseModal />
+                        <DeleteExpenseModal />
 
                         <Toaster position="bottom-center" />
 
