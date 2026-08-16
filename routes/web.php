@@ -45,4 +45,5 @@ Route::prefix('budgets')->name('budgets.')->group(function () {
     Route::put('/{budget}', [BudgetController::class, 'update'])->name('update');
     Route::delete('/{budget}', [BudgetController::class, 'destroy'])->name('destroy');
     Route::post('/{budget}/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::put('/{budget}/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
 });

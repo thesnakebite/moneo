@@ -53,7 +53,20 @@ declare module 'ziggy-js' {
     "budgets.expenses.store": [
         {
             "name": "budget",
-            "required": true
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "budgets.expenses.update": [
+        {
+            "name": "budget",
+            "required": true,
+            "binding": "id"
+        },
+        {
+            "name": "expense",
+            "required": true,
+            "binding": "id"
         }
     ],
     "storage.local": [

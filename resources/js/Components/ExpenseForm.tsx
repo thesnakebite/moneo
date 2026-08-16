@@ -12,7 +12,7 @@ export default function ExpenseForm() {
 
     const isEditing = !!expense
 
-    const { data, setData, post, errors, reset, processing} = useForm({
+    const { data, setData, post, put, errors, reset, processing} = useForm({
         name: expense?.name ?? '',
         amount: expense?.amount ?? '',
         category: expense?.category ?? ''
@@ -23,11 +23,23 @@ export default function ExpenseForm() {
     const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if(isEditing && expense) {
+            put(route('budgets.expenses.update', [budget.id, expense.id]), {
+                onSuccess: () => {
+                    reset()
+                    closeModal()
+                },
+                preserveScroll: true,
+            })
+            return
+        }
+
         post(route('budgets.expenses.store', budget.id), {
             onSuccess: () => {
                 reset()
                 closeModal()
-            }
+            },
+            preserveScroll: true,
         })
     }
 
