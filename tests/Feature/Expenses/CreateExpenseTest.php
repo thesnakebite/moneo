@@ -118,3 +118,76 @@ it('does not allow other users to create expenses in someone else budget', funct
         'budget_id' => $budget->id,
     ]);
 });
+
+it('validates required fields when creating an expense in a general budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'general',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.show', $budget))
+        ->post(route('budgets.expenses.store', $budget), [
+            'name' => '',
+            'amount' => '',
+            'category' => '',
+        ]);
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHasErrors([
+        'name',
+        'amount',
+        'category',
+    ]);
+});
+
+it('validates category must be valid for a general budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'general',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.show', $budget))
+        ->post(route('budgets.expenses.store', $budget), [
+            'name' => 'Perfume',
+            'amount' => '300',
+            'category' => 'not_valid',
+        ]);
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHasErrors([
+        'category',
+    ]);
+});
+
+it('does not require category for a goal budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'goal',
+    ]);
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.show', $budget))
+        ->post(route('budgets.expenses.store', $budget), [
+            'name' => '',
+            'amount' => '',
+            'category' => '',
+        ]);
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHasErrors([
+        'name',
+        'amount',
+    ]);
+    $response->assertSessionDoesntHaveErrors(['category']);
+});
