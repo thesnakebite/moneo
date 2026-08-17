@@ -71,3 +71,50 @@ it('does not allow guests to create expenses', function () {
 
     $this->assertDatabaseCount('expenses', 0);
 });
+
+it('does not allow unverified users to create expenses', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => null,
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'general',
+    ]);
+
+    $response = $this->actingAs($user)->post(route('budgets.expenses.store', $budget), [
+        'name' => 'Zalando',
+        'amount' => '56',
+        'category' => 'shopping',
+    ]);
+
+    $response->assertRedirect(route('verification.notice'));
+});
+
+it('does not allow other users to create expenses in someone else budget', function () {
+    $owner = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $otherUser = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($owner)->create([
+        'type' => 'general',
+    ]);
+
+    $response = $this->actingAs($otherUser)->post(route('budgets.expenses.store', $budget), [
+        'name' => 'Zalando',
+        'amount' => '56',
+        'category' => 'shopping',
+    ]);
+
+    $response->assertForbidden();
+
+    $this->assertDatabaseMissing('expenses', [
+        'name' => 'Zalando',
+        'amount' => '56',
+        'category' => 'shopping',
+        'budget_id' => $budget->id,
+    ]);
+});
