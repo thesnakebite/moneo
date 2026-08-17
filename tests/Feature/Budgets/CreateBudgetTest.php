@@ -6,6 +6,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+it('redirects to the created budget show page with success message', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $response = $this->actingAs($user)->post(route('budgets.store'), [
+        'name' => 'Reforma cocina',
+        'amount' => 3200,
+        'type' => 'general',
+    ]);
+
+    $budget = Budget::first();
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHas('success', 'Presupuesto creado correctamente');
+});
+
 it('validates required fields when creating a budget', function () {
     $user = User::factory()->create([
         'email_verified_at' => now()
