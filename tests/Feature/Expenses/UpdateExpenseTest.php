@@ -92,3 +92,60 @@ it('does not allow unverified users to update expenses', function () {
         'id' => $expense->id,
     ]);
 });
+
+it('does not allow other users to update expenses they do not own', function () {
+    $owner = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $otherUser = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($owner)->create([
+        'type' => 'general',
+    ]);
+
+    $expense = Expense::factory()->for($budget)->create([
+        'name' => 'Original',
+    ]);
+
+    $response = $this->actingAs($otherUser)->put(route('budgets.expenses.update', [$budget, $expense]), [
+        'name' => 'Hackeado!!',
+        'amount' => 1200.00,
+        'category' => 'food',
+    ]);
+
+    $response->assertForbidden();
+    $this->assertDatabaseHas('expenses', [
+        'id' => $expense->id,
+        'name' => 'Original',
+    ]);
+});
+
+it('validates required field when updating an expense in a general budget', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'general',
+    ]);
+
+    $expense = Expense::factory()->for($budget)->create();
+
+    $response = $this->actingAs($user)
+        ->from(route('budgets.show', $budget))
+        ->put(route('budgets.expenses.update', [$budget, $expense]), [
+        'name' => '',
+        'amount' => '',
+        'category' => null,
+    ]);
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHasErrors([
+        'name',
+        'amount',
+        'category',
+    ]);
+});
