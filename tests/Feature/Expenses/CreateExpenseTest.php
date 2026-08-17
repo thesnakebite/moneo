@@ -31,3 +31,43 @@ it('allows the budget owner to create an expense in a general budget', function 
         'budget_id' => $budget->id
     ]);
 });
+
+it('allows the budget owner to create an expense in a goal budget without category', function () {
+    $user = User::factory()->create([
+        'email_verified_at' => now(),
+    ]);
+
+    $budget = Budget::factory()->for($user)->create([
+        'type' => 'goal'
+    ]);
+
+    $response = $this->actingAs($user)->post(route('budgets.expenses.store', $budget), [
+        'name' => 'Fisioterapia',
+        'amount' => "78"
+    ]);
+
+    $response->assertRedirect(route('budgets.show', $budget));
+    $response->assertSessionHas('success', 'Gasto añadido correctamente');
+
+    $this->assertDatabaseHas('expenses', [
+        'name' => 'Fisioterapia',
+        'amount' => "78",
+        'budget_id' => $budget->id
+    ]);
+});
+
+it('does not allow guests to create expenses', function () {
+    $budget = Budget::factory()->create([
+        'type' => 'general',
+    ]);
+
+    $response = $this->post(route('budgets.expenses.store', $budget), [
+        'name' => 'Supermercado',
+        'amount' => '284',
+        'category' => 'shopping',
+    ]);
+
+    $response->assertRedirect(route('login'));
+
+    $this->assertDatabaseCount('expenses', 0);
+});

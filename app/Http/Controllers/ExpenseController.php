@@ -7,7 +7,10 @@ use App\Models\Budget;
 use App\Models\Expense;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 
+#[Middleware('auth')]
+#[Middleware('verified')]
 class ExpenseController extends Controller
 {
     /**
