@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
 
 type Props = {
     budgetId: number
@@ -7,6 +8,12 @@ type Props = {
 
 export default function MoneoAgent({ budgetId }: Props) {
     const [input, setInput] = useState('')
+
+    const { sendMessage } = useChat({
+        transport: new DefaultChatTransport({
+            api: `/budgets/${budgetId}/chat`,
+        }),
+    })
 
     return (
         <section className="mt-10 rounded-2xl border border-gray-200 p-6">
@@ -23,7 +30,16 @@ export default function MoneoAgent({ budgetId }: Props) {
                 Pregunta sobre tu presupuesto, añade gastos por texto o sube un ticket.
             </p>
 
-            <form onSubmit={() => {}} className="flex flex-col gap-3">
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    if (input.trim()) {
+                        sendMessage({text: input})
+                        setInput('')
+                    }
+                }}
+                className="flex flex-col gap-3"
+            >
                 <div className="border border-gray-200 rounded-xl p-3">
                     <textarea
                         value={input}

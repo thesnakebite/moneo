@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BudgetChatController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
@@ -47,4 +48,6 @@ Route::prefix('budgets')->name('budgets.')->group(function () {
     Route::post('/{budget}/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
     Route::put('/{budget}/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
     Route::delete('/{budget}/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
+
+    Route::post('/{budget}/chat', [BudgetChatController::class, 'store'])->name('chat');
 });
