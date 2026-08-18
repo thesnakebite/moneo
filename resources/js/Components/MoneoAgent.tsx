@@ -9,12 +9,16 @@ type Props = {
 export default function MoneoAgent({ budgetId }: Props) {
     const [input, setInput] = useState('')
 
-    const { sendMessage } = useChat({
+    const { sendMessage, messages } = useChat({
         transport: new DefaultChatTransport({
             api: `/budgets/${budgetId}/chat`,
+            headers: {
+            'X-CSRF-TOKEN': document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '',
+        },
         }),
     })
 
+    console.log(messages);
     return (
         <section className="mt-10 rounded-2xl border border-gray-200 p-6">
             <div className="flex items-center gap-2 mb-1">
