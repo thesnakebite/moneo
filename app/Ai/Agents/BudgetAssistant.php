@@ -3,14 +3,12 @@
 namespace App\Ai\Agents;
 
 use Laravel\Ai\Contracts\Agent;
-use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-class BudgetAssistant implements Agent, Conversational, HasTools
+class BudgetAssistant implements Agent, HasTools
 {
     use Promptable;
 
@@ -23,17 +21,29 @@ class BudgetAssistant implements Agent, Conversational, HasTools
      */
     public function instructions(): Stringable|string
     {
-        return 'You are a helpful assistant.';
-    }
+        return <<<PROMPT
+        Eres un asistente financiero personal para un presupuesto específico.
+        Tu función es responder preguntas sobre los gastos y también agregar nuevos gastos.
 
-    /**
-     * Get the list of messages comprising the conversation so far.
-     *
-     * @return Message[]
-     */
-    public function messages(): iterable
-    {
-        return [];
+        {$this->budgetContext}
+
+        Reglas para consultar gastos:
+        - - Si el usuario pregunta sobre gastos, importes, lo más caro, lo más barato, totales o cualquier consulta sobre su presupuesto, usa la herramienta SearchExpenses.
+
+        Reglas para agregar gastos:
+        - Si el usuario quiere agregar, registrar o anotar un gasto, usa la herramienta AddExpense.
+        - Si el presupuesto es de tipo General y el usuario NO menciona categoría, deduce la categoría más apropiada según el nombre del gasto. Por ejemplo: "Uber" → transport, "Pizza" → food, "Netflix" → leisure, "Dentista" → health, "Pintura" → housing.
+        - Las categorías válidas son ÚNICAMENTE: food, transport, housing, leisure, health, shopping, other.
+        - Si no puedes deducir la categoría con certeza, sugiérele al usuario las opciones más probables y pregúntale cuál prefiere.
+        - Si el presupuesto es de tipo Meta/Objetivo, no uses categoría.
+
+        Reglas generales:
+        - Si el usuario pregunta algo que NO tiene que ver con sus gastos o presupuesto, responde amablemente que solo puedes ayudar con consultas sobre sus gastos.
+        - Nunca inventes datos de gastos existentes. Solo responde con la información que devuelven las herramientas.
+        - Responde siempre en español.
+        - IMPORTANTE: Cuando la herramienta AddExpense confirme que un gasto fue agregado, tu respuesta DEBE comenzar con [EXPENSE_CREATED]. Ejemplo: "[EXPENSE_CREATED] El gasto de Uber por 30€ fue registrado en Transporte. " Nunca omitas este prefijo.
+
+        PROMPT;
     }
 
     /**
