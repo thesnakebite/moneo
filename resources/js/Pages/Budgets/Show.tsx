@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
+import MoneoAgent from "@/Components/MoneoAgent"
 
 type Props = {
     budget: Budget
@@ -82,6 +83,7 @@ export default function Show({budget, categories, spent} : Props) {
                     </div>
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
+                    <MoneoAgent budgetId={budget.id} />
                 </div>
             </div>
         </>
