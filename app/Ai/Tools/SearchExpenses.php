@@ -49,9 +49,9 @@ class SearchExpenses implements Tool
         return "Gastos encontrados ({$expenses->count()}):\n" .
         $expenses->map(function ($e) {
             $cat = $e->category ? $e->category->label() : 'Sin categoría';
-            return "- {$e->name}: \${$e->amount} ({$cat})";
+            return "- {$e->name}: {$e->amount}€ ({$cat})";
         })->implode("\n") .
-        "\n\nTotal: \${$total}";
+        "\n\nTotal: {$total}€";
     }
 
     /**
