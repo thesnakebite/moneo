@@ -28,9 +28,9 @@ class BudgetChatController extends Controller
         $agent->hasCategories = $budget->isGeneral();
 
         if ($budget->isGoal()) {
-            $agent->budgetContext = "Este presupuesto es de tipo Meta/Objetivo llamado '{$budget->name}' con un monto total de {$budget->amount}€. Los gastos NO tienen categorías, solo nombre y monto.";
+            $agent->budgetContext = "Este presupuesto es de tipo Meta/Objetivo llamado '{$budget->name}' con un importe total de {$budget->amount}€. Los gastos NO tienen categorías, solo nombre e importe.";
         } else {
-            $agent->budgetContext = "Este presupuesto es de tipo General llamado '{$budget->name}' con un monto total de {$budget->amount}€. Los gastos tienen nombre, monto y categoría.";
+            $agent->budgetContext = "Este presupuesto es de tipo General llamado '{$budget->name}' con un importe total de {$budget->amount}€. Los gastos tienen nombre, importe y categoría.";
         }
 
         return $agent

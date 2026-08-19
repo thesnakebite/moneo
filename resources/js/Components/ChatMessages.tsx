@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { Children, useEffect, useRef } from 'react'
+import ReactMarkdown  from 'react-markdown'
 import type { UIMessage } from 'ai'
 
 type Props = {
@@ -28,7 +29,7 @@ export default function ChatMessages({ messages, userName }: Props) {
                             if (!text) return null
 
                             return (
-                                <p
+                                <div
                                     key={i}
                                     className={`text-sm px-3 py-2 rounded-xl ${
                                         m.role === 'user'
@@ -36,8 +37,14 @@ export default function ChatMessages({ messages, userName }: Props) {
                                             : 'bg-gray-100 text-gray-900 rounded-bl-sm'
                                     }`}
                                 >
-                                    {text}
-                                </p>
+                                    <ReactMarkdown
+                                        components={{
+                                            p: ({ children }) => <p className="m-0">{children}</p>,
+                                        }}
+                                    >
+                                        {text}
+                                    </ReactMarkdown>
+                                </div>
                             )
                         })}
                     </div>
