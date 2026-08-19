@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default function Show({budget, categories, spent} : Props) {
-    const { flash } = usePage().props
+    const { flash, user } = usePage().props
 
     useEffect(() => {
         if (flash.success) {
@@ -83,7 +83,7 @@ export default function Show({budget, categories, spent} : Props) {
                     </div>
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
-                    <MoneoAgent budgetId={budget.id} />
+                    <MoneoAgent budgetId={budget.id} userName={user?.name ?? 'Tú'} />
                 </div>
             </div>
         </>

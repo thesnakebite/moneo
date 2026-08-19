@@ -4,10 +4,11 @@ import { DefaultChatTransport } from 'ai'
 import ChatMessages from './ChatMessages'
 
 type Props = {
-    budgetId: number
+    budgetId: number,
+    userName: string,
 }
 
-export default function MoneoAgent({ budgetId }: Props) {
+export default function MoneoAgent({ budgetId, userName }: Props) {
     const [input, setInput] = useState('')
 
     const { sendMessage, messages } = useChat({
@@ -19,7 +20,6 @@ export default function MoneoAgent({ budgetId }: Props) {
         }),
     })
 
-    console.log(messages);
     return (
         <section className="mt-10 rounded-2xl border border-gray-200 p-6">
             <div className="flex items-center gap-2 mb-1">
@@ -35,7 +35,7 @@ export default function MoneoAgent({ budgetId }: Props) {
                 Pregunta sobre tu presupuesto, añade gastos por texto o sube un ticket.
             </p>
 
-            <ChatMessages messages={messages} />
+            <ChatMessages messages={messages} userName={userName} />
 
             <form
                 onSubmit={(e) => {

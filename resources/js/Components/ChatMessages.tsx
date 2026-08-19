@@ -3,9 +3,10 @@ import type { UIMessage } from 'ai'
 
 type Props = {
     messages: UIMessage[]
+    userName: string
 }
 
-export default function ChatMessages({ messages }: Props) {
+export default function ChatMessages({ messages, userName }: Props) {
     const bottomRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -15,7 +16,11 @@ export default function ChatMessages({ messages }: Props) {
     return (
         <div className="max-h-56 overflow-y-auto flex flex-col gap-2 pr-1 mb-4">
             {messages.map((m) => (
-                <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div key={m.id} className={`flex flex-col ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
+                    <span className="text-[10px] font-semibold text-gray-400 mb-0.5 px-1">
+                        {m.role === 'user' ? userName : 'Moneo AI'}
+                    </span>
+
                     <div className="flex flex-col gap-1 max-w-[80%]">
                         {m.parts.map((part, i) => {
                             if (part.type !== 'text') return null
