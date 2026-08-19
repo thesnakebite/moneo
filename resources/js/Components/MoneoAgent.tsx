@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
+import ChatMessages from './ChatMessages'
 
 type Props = {
     budgetId: number
@@ -33,6 +34,8 @@ export default function MoneoAgent({ budgetId }: Props) {
             <p className="text-xs text-gray-500 mb-4">
                 Pregunta sobre tu presupuesto, añade gastos por texto o sube un ticket.
             </p>
+
+            <ChatMessages messages={messages} />
 
             <form
                 onSubmit={(e) => {
