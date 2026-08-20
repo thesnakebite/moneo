@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import ChatMessages from './ChatMessages'
+import { toast } from 'sonner'
+import { router } from '@inertiajs/react'
 
 type Props = {
     budgetId: number,
@@ -15,9 +17,21 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
         transport: new DefaultChatTransport({
             api: `/budgets/${budgetId}/chat`,
             headers: {
-            'X-CSRF-TOKEN': document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '',
-        },
+                'X-CSRF-TOKEN': document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? '',
+            },
         }),
+        onFinish: ({ message }) => {
+            const expenseCreated = message.parts.some((part) => {
+                const isAddExpenseTool = part.type === 'tool-AddExpense'
+                const finished = 'state' in part && part.state === 'output-available'
+                return isAddExpenseTool && finished
+            })
+
+            if (expenseCreated) {
+                toast.success('Gasto añadido correctamente')
+                router.reload({ only: ['budget', 'spent'] })
+            }
+        },
     })
 
     return (

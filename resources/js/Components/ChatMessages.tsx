@@ -25,7 +25,11 @@ export default function ChatMessages({ messages, userName }: Props) {
                     <div className="flex flex-col gap-1 max-w-[80%]">
                         {m.parts.map((part, i) => {
                             if (part.type !== 'text') return null
-                            const text = part.text.trim()
+
+                            const text = part.text
+                                .replace(/\[EXPENSE_CREATED\]/g, '')
+                                .trim()
+
                             if (!text) return null
 
                             return (
