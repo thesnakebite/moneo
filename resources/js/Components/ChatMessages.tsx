@@ -28,6 +28,7 @@ export default function ChatMessages({ messages, userName }: Props) {
 
                             const text = part.text
                                 .replace(/\[EXPENSE_CREATED\]/g, '')
+                                .replace(/\[EXPENSE_DELETED\]/g, '')
                                 .trim()
 
                             if (!text) return null

@@ -21,14 +21,21 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
             },
         }),
         onFinish: ({ message }) => {
-            const expenseCreated = message.parts.some((part) => {
-                const isAddExpenseTool = part.type === 'tool-AddExpense'
-                const finished = 'state' in part && part.state === 'output-available'
-                return isAddExpenseTool && finished
+            const addedExpense = message.parts.some((part) => {
+                return part.type === 'tool-AddExpense' && 'state' in part && part.state === 'output-available'
             })
 
-            if (expenseCreated) {
+            const deletedExpense = message.parts.some((part) => {
+                return part.type === 'tool-DeleteExpense' && 'state' in part && part.state === 'output-available'
+            })
+
+            if (addedExpense) {
                 toast.success('Gasto añadido correctamente')
+                router.reload({ only: ['budget', 'spent'] })
+            }
+
+            if (deletedExpense) {
+                toast.success('Gasto eliminado correctamente')
                 router.reload({ only: ['budget', 'spent'] })
             }
         },
