@@ -7,6 +7,8 @@ type Props = {
     userName: string
 }
 
+const MARKERS = ['[EXPENSE_CREATED]', '[EXPENSE_DELETED]', '[EXPENSE_ERROR]', '[EXPENSE_AMBIGUOUS]']
+
 export default function ChatMessages({ messages, userName }: Props) {
     const bottomRef = useRef<HTMLDivElement>(null)
 
@@ -26,9 +28,8 @@ export default function ChatMessages({ messages, userName }: Props) {
                         {m.parts.map((part, i) => {
                             if (part.type !== 'text') return null
 
-                            const text = part.text
-                                .replace(/\[EXPENSE_CREATED\]/g, '')
-                                .replace(/\[EXPENSE_DELETED\]/g, '')
+                            const text = MARKERS
+                                .reduce((acc, marker) => acc.replaceAll(marker, ''), part.text)
                                 .trim()
 
                             if (!text) return null
