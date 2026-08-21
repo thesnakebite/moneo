@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { DefaultChatTransport } from 'ai'
 import ChatMessages from './ChatMessages'
@@ -12,8 +12,9 @@ type Props = {
 
 export default function MoneoAgent({ budgetId, userName }: Props) {
     const [input, setInput] = useState('')
+    const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { sendMessage, messages } = useChat({
+    const { sendMessage, messages, setMessages } = useChat({
         transport: new DefaultChatTransport({
             api: `/budgets/${budgetId}/chat`,
             headers: {
@@ -40,6 +41,52 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
             }
         },
     })
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setMessages(prev => [
+            ...prev,
+            {
+                id: crypto.randomUUID(),
+                role: 'user' as const,
+                content: 'Ticket de compra subido',
+                parts: [{type: 'text' as const, text: 'Ticket de compra subido 🧾'}]
+            }
+        ])
+
+        try {
+            const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? ''
+            const formData = new FormData()
+            formData.append('image', file)
+
+            const response = await fetch(`/budgets/${budgetId}/scan-ticket`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                credentials: 'same-origin',
+                body: formData,
+            })
+
+        } catch (error) {
+            console.error('Error al procesar el ticket: ' , error)
+
+            setMessages(prev => [
+            ...prev,
+            {
+                id: crypto.randomUUID(),
+                role: 'assistant' as const,
+                content: 'Error al procesar el ticket 🧾. Prueba de nuevo.',
+                parts: [{type: 'text' as const, text: 'Error al procesar el ticket. Prueba de nuevo.'}]
+            }
+        ])
+        } finally {
+            if(fileInputRef.current) fileInputRef.current.value = ''
+        }
+    }
 
     return (
         <section className="mt-10 rounded-2xl border border-gray-200 p-6">
@@ -81,7 +128,7 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 <div className="flex items-center justify-between">
                     <button
                         type="button"
-                        onClick={() => {}}
+                        onClick={() => fileInputRef.current?.click()}
                         className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50"
                         title="Sube la foto de un ticket para que la analicemos"
                     >
@@ -105,6 +152,8 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                     type="file"
                     accept="image/*"
                     className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
                 />
             </form>
         </section>
