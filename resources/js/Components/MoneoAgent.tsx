@@ -71,6 +71,23 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 body: formData,
             })
 
+            const data = await response.json()
+
+            setMessages(prev => [
+                ...prev,
+                {
+                    id: crypto.randomUUID(),
+                    role: 'assistant' as const,
+                    content: data.message,
+                    parts: [{ type: 'text' as const, text: data.message }]
+                }
+            ])
+
+            if (data.success) {
+                toast.success('Gastos del ticket registrados')
+                router.reload()
+            }
+
         } catch (error) {
             console.error('Error al procesar el ticket: ' , error)
 
