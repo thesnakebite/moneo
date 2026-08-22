@@ -12,9 +12,10 @@ type Props = {
 
 export default function MoneoAgent({ budgetId, userName }: Props) {
     const [input, setInput] = useState('')
+    const [isUploadingReceipt, setIsUploadingReceipt] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
-    const { sendMessage, messages, setMessages } = useChat({
+    const { sendMessage, messages, setMessages, status } = useChat({
         transport: new DefaultChatTransport({
             api: `/budgets/${budgetId}/chat`,
             headers: {
@@ -45,6 +46,8 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
+
+        setIsUploadingReceipt(true)
 
         setMessages(prev => [
             ...prev,
@@ -101,9 +104,12 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
             }
         ])
         } finally {
+            setIsUploadingReceipt(false)
             if(fileInputRef.current) fileInputRef.current.value = ''
         }
     }
+
+    const isLoading = status === 'submitted' || status === 'streaming' || isUploadingReceipt
 
     return (
         <section className="mt-10 rounded-2xl border border-gray-200 p-6">
@@ -136,6 +142,7 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                     <textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
+                        disabled={isLoading}
                         placeholder="Ej. ¿Cuánto me queda? o «Añade 40€ de gasolina»"
                         rows={2}
                         className="w-full resize-none text-xs outline-none placeholder:text-gray-400"
@@ -146,22 +153,44 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50"
-                        title="Sube la foto de un ticket para que la analicemos"
+                        disabled={isLoading}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors ${
+                            isUploadingReceipt
+                                ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
+                                : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                        }`}
                     >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-4">
-                            <path d="M6 2h12a1 1 0 0 1 1 1v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21V3a1 1 0 0 1 1-1Z" strokeLinejoin="round" />
-                            <path d="M8 7h8M8 11h8M8 15h5" strokeLinecap="round" />
-                        </svg>
-                        Subir ticket
+                        {isUploadingReceipt ? (
+                            <svg className="animate-spin size-4" viewBox="0 0 24 24" fill="none">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                            </svg>
+                        ) : (
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="size-4">
+                                <path d="M6 2h12a1 1 0 0 1 1 1v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21V3a1 1 0 0 1 1-1Z" strokeLinejoin="round" />
+                                <path d="M8 7h8M8 11h8M8 15h5" strokeLinecap="round" />
+                            </svg>
+                        )}
+                        {isUploadingReceipt ? 'Analizando' : 'Subir ticket'}
                     </button>
 
                     <button
                         type="submit"
-                        disabled={!input.trim()}
-                        className="bg-gray-900 hover:bg-gray-800 disabled:opacity-40 text-white px-4 py-2 rounded-lg text-sm font-bold"
+                        disabled={!input.trim() || isLoading}
+                        className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${
+                            isLoading
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-gray-900 hover:bg-gray-800 text-white'
+                        }`}
                     >
-                        Consultar
+                        {status === 'streaming' && (
+                            <svg className="animate-spin size-3.5" viewBox="0 0 24 24" fill="none">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                            </svg>
+                        )}
+
+                        {status === 'streaming' ? 'Pensando...' : 'Enviar'}
                     </button>
                 </div>
 

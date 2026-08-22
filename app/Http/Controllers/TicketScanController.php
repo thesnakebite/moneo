@@ -28,7 +28,7 @@ class TicketScanController extends Controller
             'Lee este ticket de venta y extrae la información',
             attachments: [Image::fromUpload($request->file('image'))],
             provider: 'openrouter',
-            model: 'nvidia/llama-nemotron-rerank-vl-1b-v2:free',
+            model: 'nvidia/nemotron-nano-12b-v2-vl:free',
             // model: 'nvidia/nemotron-nano-12b-v2-vl:free',
             timeout: 120,
         );
