@@ -11,9 +11,9 @@ export default function ProgressBar({ percentageUsed }: Props) {
             value={percentageUsed}
             text={`${percentageUsed}%`}
             styles={buildStyles({
-                pathColor: '#111827',
-                trailColor: '#e5e7eb',
-                textColor: '#111827',
+                pathColor: '#AA7452',
+                trailColor: '#c4b4b1',
+                textColor: '#051822',
                 textSize: '22px',
             })}
         />
