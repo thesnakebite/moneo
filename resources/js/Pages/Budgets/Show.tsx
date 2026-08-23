@@ -71,12 +71,11 @@ export default function Show({budget, categories, spent} : Props) {
                     <div className="flex flex-col gap-2.5">
                         <ExpenseModal />
                         <DeleteExpenseModal />
-
                         <Toaster position="bottom-center" />
 
                         <a
                             href="/dashboard"
-                            className="bg-gray-900 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold"
+                            className="inline-block border border-border-soft text-ink hover:bg-accent/10 hover:border-accent/40 text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
                         >
                             Volver al dashboard
                         </a>
