@@ -9,9 +9,22 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 
     --font-unique : 'Unique', sans-serif;
+
+    /* Colors */
+    --color-surface: #D4C9C7;
+    --color-ink: #051822;
+    --color-accent: #AA7452;
+    --color-accent-dark: #7C5841;
+    --color-muted: #2D383E;
+    --color-border-soft: #969A9E;
 }
 
 @layer base {
+    body {
+        background-color: var(--color-surface);
+        color: var(--color-ink);
+    }
+
     @font-face {
         font-family: 'Unique';
         src: url('/resources/fonts/Unique-SemiBold.woff2') format('woff2'),
