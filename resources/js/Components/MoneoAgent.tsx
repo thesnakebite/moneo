@@ -112,17 +112,17 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
     const isLoading = status === 'submitted' || status === 'streaming' || isUploadingReceipt
 
     return (
-        <section className="mt-10 rounded-2xl border border-gray-200 p-6">
+        <section className="mt-10 rounded-2xl border border-border-soft p-6">
             <div className="flex items-center gap-2 mb-1">
-                <div className="flex size-6 items-center justify-center rounded-md bg-gray-900">
+                <div className="flex size-6 items-center justify-center rounded-md bg-ink">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="size-3.5">
                         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
                     </svg>
                 </div>
-                <h2 className="text-sm font-bold text-gray-900">Moneo AI</h2>
+                <h2 className="text-sm font-bold">Moneo AI</h2>
             </div>
 
-            <p className="text-xs text-gray-500 mb-4">
+            <p className="text-xs text-muted mb-4">
                 Pregunta sobre tu presupuesto, añade gastos por texto o sube un ticket.
             </p>
 
@@ -138,26 +138,27 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 }}
                 className="flex flex-col gap-3"
             >
-                <div className="border border-gray-200 rounded-xl p-3">
+                <div className="border border-border-soft/50 rounded-xl p-3">
                     <textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
                         placeholder="Ej. ¿Cuánto me queda? o «Añade 40€ de gasolina»"
                         rows={2}
-                        className="w-full resize-none text-xs outline-none placeholder:text-gray-400"
+                        className="w-full resize-none text-xs rounded-xl border border-border-soft p-3 outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors placeholder:text-border-soft"
                     />
                 </div>
 
+                {/* Acciones */}
                 <div className="flex items-center justify-between">
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isLoading}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors ${
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-bold transition-colors ${
                             isUploadingReceipt
-                                ? 'border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed'
-                                : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                                ? 'bg-border-soft text-muted cursor-not-allowed'
+                                : 'border-border-soft text-muted hover:bg-accent/10'
                         }`}
                     >
                         {isUploadingReceipt ? (
@@ -178,9 +179,9 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                         type="submit"
                         disabled={!input.trim() || isLoading}
                         className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors ${
-                            isLoading
-                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                : 'bg-gray-900 hover:bg-gray-800 text-white'
+                            !input.trim() || isLoading
+                                ? 'bg-accent/30 text-white cursor-not-allowed'
+                                : 'bg-accent hover:bg-accent-dark text-white'
                         }`}
                     >
                         {status === 'streaming' && (
