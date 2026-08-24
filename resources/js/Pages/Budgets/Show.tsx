@@ -75,7 +75,7 @@ export default function Show({budget, categories, spent} : Props) {
 
                         <a
                             href="/dashboard"
-                            className="inline-block border border-border-soft text-ink hover:bg-accent/10 hover:border-accent/40 text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
+                            className="inline-block bg-accent text-white hover:bg-accent-dark text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
                         >
                             Volver al dashboard
                         </a>

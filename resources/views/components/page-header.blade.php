@@ -10,7 +10,7 @@
             @endisset
         </div>
 
-        <p class="mt-1 text-sm text-gray-500">{{ $description }}</p>
+        <p class="mt-1 text-sm text-muted">{{ $description }}</p>
     </div>
 
     <div>

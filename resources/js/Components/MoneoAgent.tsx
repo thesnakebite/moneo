@@ -138,14 +138,14 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 }}
                 className="flex flex-col gap-3"
             >
-                <div className="border border-border-soft/50 rounded-xl p-3">
+                <div className="p-3">
                     <textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
                         placeholder="Ej. ¿Cuánto me queda? o «Añade 40€ de gasolina»"
                         rows={2}
-                        className="w-full resize-none text-xs rounded-xl border border-border-soft p-3 outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors placeholder:text-border-soft"
+                        className="w-full resize-none text-xs rounded-xl border border-border-soft shadow-md bg-white/30 p-3 outline-none focus:shadow-lg transition-shadow focus:ring-0 focus:ring-border-soft placeholder:text-border-soft"
                     />
                 </div>
 

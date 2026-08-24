@@ -15,7 +15,7 @@ export default function ExpenseModal() {
             <button
                 type="button"
                 onClick={openCreateModal}
-                className="bg-ink hover:bg-ink/85 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
+                className="bg-ink hover:bg-muted text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
             >
                 Añadir gasto
             </button>
