@@ -6,7 +6,6 @@ use App\Enums\ExpenseCategory;
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +20,19 @@ class BudgetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(): Response
     {
-        $budgets = Auth::user()->budgets()->get();
+        $budgets = Auth::user()
+            ->budgets()
+            ->with('expenses')
+            ->latest()
+            ->get();
 
-        return view('dashboard', [
+        $totalManaged = $budgets->sum('amount');
+
+        return Inertia::render('Dashboard', [
             'budgets' => $budgets,
+            'totalManaged' => (string) $totalManaged,
         ]);
     }
 
