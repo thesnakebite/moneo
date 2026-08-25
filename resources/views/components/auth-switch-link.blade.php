@@ -9,7 +9,7 @@
         <label class="text-xs">{{ $question }}</label>
         <a
             href="{{ route($route) }}"
-            class="text-center border border-gray-800 hover:bg-gray-900 hover:text-white w-full p-3 rounded-lg text-sm sm:text-base font-bold cursor-pointer"
+            class="text-center bg-ink hover:bg-muted text-white w-full p-3 rounded-lg text-sm sm:text-base font-bold cursor-pointer"
         >
             {{ $label }}
         </a>

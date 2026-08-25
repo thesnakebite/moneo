@@ -15,7 +15,7 @@
                 id="email"
                 type="email"
                 placeholder="Email de Registro"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="email"
                 tabindex="1"
                 value="{{ old('email') }}"
@@ -25,13 +25,14 @@
 
         <div class="flex flex-col gap-2">
             <div class="flex items-center justify-between">
-                <label class="font-bold text-sm sm:text-base">Password</label>
-                <a href="#" class="text-indigo-950 text-xs" tabindex="3">¿Olvidaste tu Contraseña?</a>
+                <label class="font-bold text-sm sm:text-base" for="password">Password</label>
+                <a href="#" class="text-accent-dark text-xs font-semibold" tabindex="3">¿Olvidaste tu Contraseña?</a>
             </div>
             <input
+                id="password"
                 type="password"
                 placeholder="Password de Registro"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="password"
                 tabindex="2"
             />
@@ -41,7 +42,7 @@
         <div class="flex items-center gap-2">
             <input
                 type="checkbox"
-                class="appearance-none w-4 h-4 border border-gray-300 rounded checked:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-300 focus:ring-offset-1"
+                class="appearance-none w-4 h-4 border border-border-soft rounded checked:bg-accent focus:outline-none focus:ring-1 focus:ring-muted focus:ring-offset-1 bg-transparent"
                 id="remember"
                 name="remember"
                 tabindex="4"
@@ -52,7 +53,7 @@
         <input
             type="submit"
             value='Iniciar Sesión'
-            class="bg-gray-900 hover:bg-gray-800 w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
+            class="bg-accent hover:bg-accent-dark w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
         />
     </form>
 

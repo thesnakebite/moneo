@@ -7,7 +7,6 @@
         class="mt-14 space-y-5"
         novalidate
     >
-
         @csrf
         <div class="space-y-2">
             <label class="font-bold block text-sm sm:text-base" for="name">Nombre</label>
@@ -16,7 +15,7 @@
                 id="name"
                 type="text"
                 placeholder="Tu Nombre"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="name"
                 value="{{ old('name') }}"
             />
@@ -30,7 +29,7 @@
                 id="email"
                 type="email"
                 placeholder="Email de Registro"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="email"
                 value="{{ old('email') }}"
             />
@@ -38,12 +37,13 @@
         </div>
 
         <div class="space-y-2">
-            <label class="font-bold block text-sm sm:text-base">Password</label>
+            <label class="font-bold block text-sm sm:text-base" for="password">Password</label>
 
             <input
+                id="password"
                 type="password"
                 placeholder="Password de Registro"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="password"
             />
             <x-input-error :messages="$errors->get('password')" />
@@ -53,17 +53,18 @@
             <label class="font-bold block text-sm sm:text-base" for="password_confirmation">Repetir Password</label>
 
             <input
+                id="password_confirmation"
                 type="password"
-                placeholder="Password de Registro"
-                class="w-full border border-gray-300 p-3 rounded-lg text-sm sm:text-base"
+                placeholder="Repite tu contraseña"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="password_confirmation"
             />
         </div>
 
         <input
             type="submit"
-            value='Crear una cuenta'
-            class="bg-gray-900 hover:bg-gray-800 w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
+            value="Crear una cuenta"
+            class="bg-accent hover:bg-accent-dark w-full p-3 rounded-lg text-sm sm:text-base text-white font-bold cursor-pointer"
         />
     </form>
 
