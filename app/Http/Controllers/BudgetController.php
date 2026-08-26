@@ -82,9 +82,9 @@ class BudgetController extends Controller
      * Show the form for editing the specified resource.
      */
     #[Authorize('update', 'budget')]
-    public function edit(Budget $budget): View
+    public function edit(Budget $budget): Response
     {
-        return view('budgets.edit', [
+        return Inertia::render('Budgets/Edit', [
             'budget' => $budget
         ]);
     }
@@ -98,7 +98,7 @@ class BudgetController extends Controller
         $budget->update($request->validated());
 
         return redirect()
-            ->route('budgets.show', $budget)
+            ->route('dashboard', $budget)
             ->with('success', 'Presupuesto actualizado correctamente');
     }
 
