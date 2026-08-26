@@ -5,6 +5,7 @@ import { Budget } from '@/types/budget'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { ReactElement } from 'react'
 import ProgressBar from '@/Components/ProgressBar'
+import BudgetDropdown from '@/Components/BudgetDropdown'
 
 type Props = {
     budgets: Budget[]
@@ -37,11 +38,7 @@ function Dashboard({ budgets, totalManaged }: Props) {
                         const percentageUsed = Number(budget.amount) > 0 ? Math.round((spent / Number(budget.amount)) * 100) : 0
 
                         return (
-                            <Link
-                                key={budget.id}
-                                href={`/budgets/${budget.id}`}
-                                className="relative overflow-hidden bg-linear-to-br from-ink via-ink to-muted border border-accent/50 rounded-xl p-5 hover:border-accent hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
-                            >
+                            <div className="relative overflow-hidden bg-linear-to-br from-ink via-ink to-muted border border-accent rounded-xl p-5 z-0">
                                 {/* Capa de rejilla decorativa, sobre el gradiente */}
                                 <div
                                     className="absolute inset-0 pointer-events-none opacity-40"
@@ -67,10 +64,16 @@ function Dashboard({ budgets, totalManaged }: Props) {
                                         </div>
                                     </div>
 
-                                    <p className="text-lg font-bold text-accent">{formatCurrency(spent)}</p>
-                                    <p className="text-xs text-surface/60 mt-0.5">de {formatCurrency(Number(budget.amount))}</p>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-lg font-bold text-accent">{formatCurrency(spent)}</p>
+                                            <p className="text-xs text-surface/60 mt-0.5">de {formatCurrency(Number(budget.amount))}</p>
+                                        </div>
+
+                                        <BudgetDropdown budget={budget} />
+                                    </div>
                                 </div>
-                            </Link>
+                            </div>
                         )
                     })}
 
