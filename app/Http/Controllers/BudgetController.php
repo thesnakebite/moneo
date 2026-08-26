@@ -49,10 +49,10 @@ class BudgetController extends Controller
      */
     public function store(BudgetRequest $request): RedirectResponse
     {
-        $budget = Auth::user()->budgets()->create($request->validated());
+        Auth::user()->budgets()->create($request->validated());
 
         return redirect()
-            ->route('budgets.show', $budget)
+            ->route('dashboard')
             ->with('success', 'Presupuesto creado correctamente');
     }
 
