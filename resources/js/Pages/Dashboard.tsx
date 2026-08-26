@@ -6,6 +6,7 @@ import { PlusIcon } from '@heroicons/react/24/outline'
 import { ReactElement } from 'react'
 import ProgressBar from '@/Components/ProgressBar'
 import BudgetDropdown from '@/Components/BudgetDropdown'
+import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
 
 type Props = {
     budgets: Budget[]
@@ -38,7 +39,10 @@ function Dashboard({ budgets, totalManaged }: Props) {
                         const percentageUsed = Number(budget.amount) > 0 ? Math.round((spent / Number(budget.amount)) * 100) : 0
 
                         return (
-                            <div className="relative overflow-hidden bg-linear-to-br from-ink via-ink to-muted border border-accent rounded-xl p-5 z-0">
+                            <div
+                                key={budget.id}
+                                className="relative overflow-hidden bg-linear-to-br from-ink via-ink to-muted border border-accent rounded-xl p-5 z-0"
+                            >
                                 {/* Capa de rejilla decorativa, sobre el gradiente */}
                                 <div
                                     className="absolute inset-0 pointer-events-none opacity-40"
@@ -92,6 +96,8 @@ function Dashboard({ budgets, totalManaged }: Props) {
                     </p>
                 )}
             </div>
+
+            <DeleteBudgetModal />
         </>
     )
 }

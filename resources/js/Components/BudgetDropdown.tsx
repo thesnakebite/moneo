@@ -1,15 +1,18 @@
 import { Link } from '@inertiajs/react'
+import { useRef } from 'react'
+import { Budget } from '@/types/budget'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { EllipsisVerticalIcon, EyeIcon, PencilIcon, Trash2Icon } from '@animateicons/react/lucide'
 import type { PencilIconHandle, Trash2IconHandle, EyeIconHandle } from '@animateicons/react/lucide'
-import { Budget } from '@/types/budget'
-import { useRef } from 'react'
+import { useBudgetDeleteModalStore } from '@/stores/budget-delete-store'
 
 type Props = {
     budget: Budget
 }
 
 export default function BudgetDropdown({ budget }: Props) {
+    const openDeleteModal = useBudgetDeleteModalStore((state) => state.openModal)
+
     const viewIconRef = useRef<EyeIconHandle>(null)
     const editIconRef = useRef<PencilIconHandle>(null)
     const deleteIconRef = useRef<Trash2IconHandle>(null)
@@ -57,6 +60,7 @@ export default function BudgetDropdown({ budget }: Props) {
                 <MenuItem>
                     <button
                         type="button"
+                        onClick={() => openDeleteModal(budget)}
                         onMouseEnter={() => deleteIconRef.current?.startAnimation()}
                         onMouseLeave={() => deleteIconRef.current?.stopAnimation()}
                         className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-red-600 data-focus:bg-red-50 focus:outline-none"
