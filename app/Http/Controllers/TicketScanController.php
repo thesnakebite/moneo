@@ -27,8 +27,8 @@ class TicketScanController extends Controller
         $response = (new TicketScanner)->prompt(
             'Lee este ticket de venta y extrae la información',
             attachments: [Image::fromUpload($request->file('image'))],
-            provider: 'openrouter',
-            model: 'nvidia/nemotron-nano-12b-v2-vl:free',
+            provider: 'openai',
+            model: 'gpt-4o-mini',
             // model: 'nvidia/nemotron-nano-12b-v2-vl:free',
             timeout: 120,
         );

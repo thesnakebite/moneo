@@ -36,9 +36,10 @@ class BudgetChatController extends Controller
         return $agent
             ->stream(
                 $prompt,
-                provider:'openrouter',
+                provider:'openai',
+                model: 'gpt-4o-mini',
                 // model: 'poolside/laguna-s-2.1:free',
-                model: 'google/gemma-4-26b-a4b-it:free',
+                // model: 'google/gemma-4-26b-a4b-it:free',
                 // model: 'nvidia/nemotron-3-ultra-550b-a55b:free',
             )->usingVercelDataProtocol();
     }
