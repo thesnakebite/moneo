@@ -4,6 +4,8 @@ import { ReactElement } from "react"
 import InputError from "@/Components/InputError"
 import { Field, Label, Description, Input, Radio, RadioGroup } from "@headlessui/react"
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import PageHeader from "@/Components/PageHeader"
+import { PlusIcon } from "@animateicons/react/lucide"
 
 
 export default function Create()
@@ -30,23 +32,13 @@ export default function Create()
         <>
         <Head title="Crear presupuesto" />
 
+        <PageHeader
+            title="Crear presupuesto"
+            description="Crear un presupuesto es sencillo: añade un nombre y cantidad."
+            icon={<PlusIcon size={24} color="var(--color-accent)" />}
+        />
+
         <div className="max-w-2xl mx-auto">
-            <div className="flex items-start justify-between mb-10">
-                <div>
-                    <h1 className="text-2xl font-bold text-ink">Crear presupuesto</h1>
-                    <p className="text-sm text-muted mt-1">
-                        Crear un presupuesto es sencillo: añade un nombre y cantidad.
-                    </p>
-                </div>
-
-                <Link
-                    href="/dashboard"
-                    className="bg-ink text-white hover:bg-muted text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
-                >
-                    Volver a presupuestos
-                </Link>
-            </div>
-
             <form
                 onSubmit={submit}
                 className="space-y-4"

@@ -4,6 +4,8 @@ import { Field, Label, Description, Input } from '@headlessui/react'
 import AppLayout from '@/Layouts/AppLayout'
 import InputError from '@/Components/InputError'
 import { Budget } from '@/types/budget'
+import PageHeader from '@/Components/PageHeader'
+import { PencilIcon } from '@animateicons/react/lucide'
 
 type Props = {
     budget: Budget
@@ -26,8 +28,14 @@ export default function Edit({ budget }: Props) {
         <>
             <Head title={`Editar ${budget.name}`} />
 
+            <PageHeader
+                title='Editar presupuesto'
+                description='Realiza los ajustes necesarios de tu presupuesto.'
+                icon={<PencilIcon size={18} color="var(--color-accent)" />}
+            />
+
             <div className="max-w-2xl mx-auto">
-                <div className="flex items-start justify-between mb-10">
+                {/* <div className="flex items-start justify-between mb-10">
                     <div>
                         <h1 className="text-2xl font-bold text-ink">Editar presupuesto</h1>
                         <p className="text-sm text-muted mt-1">
@@ -41,7 +49,7 @@ export default function Edit({ budget }: Props) {
                     >
                         Volver a presupuestos
                     </Link>
-                </div>
+                </div> */}
 
                 <form onSubmit={submit} className="space-y-4">
                     <Field>
