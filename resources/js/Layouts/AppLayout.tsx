@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import UserDropdown from '@/Components/UserDropdown'
+import Footer from '@/Components/Footer'
 
 export default function AppLayout({ children }: PropsWithChildren) {
     const { user } = usePage().props
@@ -23,6 +24,8 @@ export default function AppLayout({ children }: PropsWithChildren) {
             </header>
 
             <main className="flex-1 p-6">{children}</main>
+
+            <Footer />
         </div>
     )
 }
