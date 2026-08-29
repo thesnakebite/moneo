@@ -36,12 +36,21 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $authUser = $request->user();
+        $subscribed = $authUser?->subscribed('default') ?? false;
+
         return [
             ...parent::share($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
             ],
-            'user' => fn () => $request->user() ? new UserResource($request->user()) : null,
+            'user' => [
+                'user' => $authUser ? new UserResource($authUser) : null,
+                'subscribed' => $subscribed,
+                'plan' => $subscribed
+                ? ($authUser->subscribedToPrice(config('services.stripe.price_ai_yearly'), 'default') ? 'yearly' : 'monthly')
+                : null,
+            ],
         ];
     }
 }

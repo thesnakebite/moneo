@@ -1,4 +1,4 @@
-import { Head, usePage } from "@inertiajs/react"
+import { Head, usePage, Link } from "@inertiajs/react"
 import ExpenseModal from "@/Components/ExpenseModal"
 import { useExpenseModalStore } from "@/stores/expense-modal-store"
 import { Budget } from "@/types/budget"
@@ -82,7 +82,19 @@ export default function Show({budget, categories, spent} : Props) {
                     </div>
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
-                    <MoneoAgent budgetId={budget.id} userName={user?.name ?? 'Tú'} />
+                    
+                    {user?.subscribed ? (
+                        <MoneoAgent budgetId={budget.id} userName={user?.user.name ?? 'Tú'} />
+                    ) : (
+                        <div className="mt-10 rounded-2xl border border-border-soft p-6 text-center">
+                            <p className="text-sm text-muted">
+                                El asistente de IA es una función exclusiva para suscriptores.
+                            </p>
+                            <Link href="/billing" className="mt-3 inline-block bg-accent hover:bg-accent-dark text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-colors">
+                                Ver planes
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </>
