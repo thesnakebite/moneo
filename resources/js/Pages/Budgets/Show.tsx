@@ -82,7 +82,6 @@ export default function Show({budget, categories, spent} : Props) {
                     </div>
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
-                    
                     {user?.subscribed ? (
                         <MoneoAgent budgetId={budget.id} userName={user?.user.name ?? 'Tú'} />
                     ) : (

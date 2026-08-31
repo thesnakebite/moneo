@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BudgetChatController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
@@ -53,3 +54,5 @@ Route::prefix('budgets')->name('budgets.')->group(function () {
     Route::post('/{budget}/chat', [BudgetChatController::class, 'store'])->name('chat');
     Route::post('/{budget}/scan-ticket', [TicketScanController::class, 'store'])->name('scan-ticket');
 });
+
+Route::get('/billing', [BillingController::class, 'index'])->name('billing');
