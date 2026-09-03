@@ -1,6 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import AppLayout from '@/Layouts/AppLayout'
 import { formatCurrency } from '@/utils'
 import { Budget } from '@/types/budget'
@@ -9,6 +8,7 @@ import { ReactElement } from 'react'
 import ProgressBar from '@/Components/ProgressBar'
 import BudgetDropdown from '@/Components/BudgetDropdown'
 import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
+import WelcomeProModal from '@/Components/WelcomeAiModal'
 
 type Props = {
     budgets: Budget[]
@@ -109,34 +109,7 @@ function Dashboard({ budgets, totalManaged }: Props) {
             </div>
 
             <DeleteBudgetModal />
-
-            <Dialog open={showWelcome} onClose={() => setShowWelcome(false)} className="relative z-50">
-                <DialogBackdrop transition className="fixed inset-0 bg-ink/40 duration-200 ease-out data-closed:opacity-0" />
-
-                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                    <DialogPanel transition className="w-full max-w-md rounded-2xl bg-surface p-8 text-center shadow-xl duration-200 ease-out data-closed:scale-95 data-closed:opacity-0">
-                        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-accent/15 mb-4">
-                            {/* icono, pendiente de decidir */}
-                        </div>
-
-                        <DialogTitle className="text-xl font-bold text-ink">
-                            ¡Bienvenido a Moneo Pro!
-                        </DialogTitle>
-
-                        <p className="mt-2 text-sm text-muted">
-                            Tu suscripción ya está activa. Ahora tienes acceso al asistente de IA y al escaneo de tickets en todos tus presupuestos.
-                        </p>
-
-                        <button
-                            type="button"
-                            onClick={() => setShowWelcome(false)}
-                            className="mt-6 bg-accent hover:bg-accent-dark text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-colors"
-                        >
-                            Empezar
-                        </button>
-                    </DialogPanel>
-                </div>
-            </Dialog>
+            <WelcomeProModal />
         </>
     )
 }

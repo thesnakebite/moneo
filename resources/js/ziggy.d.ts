@@ -2,6 +2,13 @@
 declare module 'ziggy-js' {
   interface RouteList {
     "boost.browser-logs": [],
+    "cashier.payment": [
+        {
+            "name": "id",
+            "required": true
+        }
+    ],
+    "cashier.webhook": [],
     "register": [],
     "register.store": [],
     "login": [],
@@ -88,6 +95,22 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "budgets.scan-ticket": [
+        {
+            "name": "budget",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "billing": [],
+    "subscription.checkout": [
+        {
+            "name": "plan",
+            "required": true
+        }
+    ],
+    "billing.success": [],
+    "billing.cancel": [],
     "storage.local": [
         {
             "name": "path",
