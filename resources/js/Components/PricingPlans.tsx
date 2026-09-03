@@ -1,4 +1,6 @@
-import { Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
+import { useState } from 'react'
+import { route } from 'ziggy-js'
 
 type Props = {
     monthlyPriceId: string,
@@ -24,7 +26,15 @@ const plans = [
 ]
 
 export default function PricingPlans({ monthlyPriceId, yearlyPriceId }: Props) {
-    const priceId = { monthly: monthlyPriceId, yearly: yearlyPriceId }
+    const [loading, setLoading] = useState<string | null>(null)
+
+    const subscribe = (plan: 'monthly' | 'yearly') => {
+        setLoading(plan)
+
+        router.post(route('subscription.checkout', { plan }), {}, {
+            onError: () => setLoading(null),
+        })
+    }
 
     return (
         <div className="text-center mt-10">
@@ -62,16 +72,17 @@ export default function PricingPlans({ monthlyPriceId, yearlyPriceId }: Props) {
                             ))}
                         </ul>
 
-                        <Link
-                            href={`/subscribe/${plan.priceKey}`}
-                            className={`mt-6 block text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                        <button
+                            onClick={() => subscribe(plan.priceKey)}
+                            disabled={loading !== null}
+                            className={`mt-6 block w-full text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors ${
                                 plan.featured
-                                    ? 'bg-accent hover:bg-accent-dark text-white'
-                                    : 'border border-border-soft text-ink hover:bg-accent/10'
+                                    ? 'bg-accent hover:bg-accent-dark text-white disabled:opacity-40'
+                                    : 'border border-border-soft text-ink hover:bg-accent/10 disabled:opacity-40'
                             }`}
                         >
-                            Elegir {plan.name}
-                        </Link>
+                            {loading === plan.priceKey ? 'Redirigiendo...' : `Elegir ${plan.name}`}
+                        </button>
                     </div>
                 ))}
             </div>
