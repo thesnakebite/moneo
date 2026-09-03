@@ -5,6 +5,7 @@ declare module '@inertiajs/core' {
         sharedPageProps: {
             flash: {
                 success?: string
+                subscribed?: boolean
             },
             user: {
                 user: {

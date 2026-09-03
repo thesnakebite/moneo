@@ -43,6 +43,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
+                'subscribed' => fn () => $request->session()->get('subscribed', false),
             ],
             'user' => [
                 'user' => $authUser ? new UserResource($authUser) : null,
