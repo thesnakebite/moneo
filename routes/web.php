@@ -56,3 +56,8 @@ Route::prefix('budgets')->name('budgets.')->group(function () {
 });
 
 Route::get('/billing', [BillingController::class, 'index'])->name('billing');
+Route::post('/billing/checkout/{plan}', [BillingController::class, 'checkout'])
+    ->name('subscription.checkout')
+    ->whereIn('plan', ['monthly', 'yearly']);
+Route::get('/billing/success', [BillingController::class, 'success'])->name('billing.success');
+Route::get('/billing/cancel', [BillingController::class, 'cancel'])->name('billing.cancel');
