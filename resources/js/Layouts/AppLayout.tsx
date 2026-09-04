@@ -18,7 +18,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
                     </div>
 
                     <div className="flex lg:flex-1 lg:justify-end">
-                        {user && <UserDropdown userName={user.name} />}
+                        {user?.user && <UserDropdown userName={user.user.name} subscribed={user.subscribed} />}
                     </div>
                 </nav>
             </header>

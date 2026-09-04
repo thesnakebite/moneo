@@ -5,13 +5,24 @@ import { Cog6ToothIcon, KeyIcon, ArrowRightStartOnRectangleIcon } from '@heroico
 
 type Props = {
     userName: string
+    subscribed: boolean
 }
 
-export default function UserDropdown({ userName }: Props) {
+export default function UserDropdown({ userName, subscribed }: Props) {
     return (
         <Menu>
-            <MenuButton className="flex items-center gap-2 text-sm font-semibold text-muted outline-none">
-                {userName}
+            <MenuButton className="flex items-center gap-1.5 text-sm font-semibold text-muted outline-none hover:text-ink transition-colors">
+                <div className="relative">
+                    <div className="flex size-7 items-center justify-center rounded-full bg-border-soft text-ink text-xs font-bold">
+                        {userName.charAt(0).toUpperCase()}
+                    </div>
+
+                    {subscribed && (
+                        <span className="absolute -bottom-1.5 -right-2 text-[8px] font-bold text-white bg-accent px-1.5 py-0.5 rounded-full ring-2 ring-surface leading-none whitespace-nowrap">
+                            PRO
+                        </span>
+                    )}
+                </div>
                 <ChevronDownIcon className="size-4 text-border-soft" />
             </MenuButton>
 
