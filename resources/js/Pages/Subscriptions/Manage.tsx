@@ -1,13 +1,13 @@
-import PageHeader from '@/Components/PageHeader';
+import PageHeader from '@/Components/PageHeader'
+import SubscriptionStatus from '@/Components/subscriptions/SubscriptionStatus'
 import AppLayout from '@/Layouts/AppLayout'
+import { Subscription } from '@/types/subscription'
 import { Head } from '@inertiajs/react'
 import { ReactElement } from 'react'
 
-type Props = {
-    plan: 'monthly' | 'yearly'
-}
+type Props = Subscription
 
-export default function Manage({ plan }: Props) {
+export default function Manage({ plan, onGracePeriod, endsAt }: Props) {
 
 
     return (
@@ -20,7 +20,7 @@ export default function Manage({ plan }: Props) {
             />
 
             <div className="max-w-2xl mx-auto">
-                {/* aquí irá SubscriptionStatus */}
+                <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} />
             </div>
         </>
     )
