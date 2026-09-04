@@ -48,9 +48,7 @@ class HandleInertiaRequests extends Middleware
             'user' => [
                 'user' => $authUser ? new UserResource($authUser) : null,
                 'subscribed' => $subscribed,
-                'plan' => $subscribed
-                ? ($authUser->subscribedToPrice(config('services.stripe.price_ai_yearly'), 'default') ? 'yearly' : 'monthly')
-                : null,
+                'plan' => $authUser?->currentPlan(),
             ],
         ];
     }
