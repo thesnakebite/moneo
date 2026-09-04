@@ -1,7 +1,9 @@
+import { useRef } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/16/solid'
-import { Cog6ToothIcon, KeyIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline'
-
+import { ChevronDownIcon, CreditCardIcon, KeySquareIcon, LogOutIcon } from "@animateicons/react/lucide"
+import type { CreditCardIconHandle, KeySquareIconHandle, LogOutIconHandle } from "@animateicons/react/lucide"
+import { Settings02Icon, Settings02IconHandle } from "@animateicons/react/huge"
+import { Link } from '@inertiajs/react'
 
 type Props = {
     userName: string
@@ -9,6 +11,11 @@ type Props = {
 }
 
 export default function UserDropdown({ userName, subscribed }: Props) {
+    const billingIconRef = useRef<CreditCardIconHandle>(null)
+    const settingIconRef = useRef<Settings02IconHandle>(null)
+    const passwordIconRef = useRef<KeySquareIconHandle>(null)
+    const logoutIconRef = useRef<LogOutIconHandle>(null)
+
     return (
         <Menu>
             <MenuButton className="flex items-center gap-1.5 text-sm font-semibold text-muted outline-none hover:text-ink transition-colors">
@@ -23,7 +30,7 @@ export default function UserDropdown({ userName, subscribed }: Props) {
                         </span>
                     )}
                 </div>
-                <ChevronDownIcon className="size-4 text-border-soft" />
+                <ChevronDownIcon size={16} duration={1} color="var(--color-accent)" />
             </MenuButton>
 
             <MenuItems
@@ -32,24 +39,53 @@ export default function UserDropdown({ userName, subscribed }: Props) {
                 className="w-48 rounded-xl bg-surface shadow-lg outline-1 outline-border-soft/30 py-2 z-10 transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0"
             >
                 <MenuItem>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10">
-                        <Cog6ToothIcon className="size-4 text-muted" />
+                    <Link
+                        href={subscribed ? '/subscription' : '/billing'}
+                        onMouseEnter={() => billingIconRef.current?.startAnimation()}
+                        onMouseLeave={() => billingIconRef.current?.stopAnimation()}
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10"
+                    >
+                        <CreditCardIcon ref={billingIconRef} size={18} duration={1} color='currentColor' />
+                        {subscribed ? 'Mi suscripción' : 'Hazte PRO'}
+                    </Link>
+                </MenuItem>
+
+                <MenuItem>
+                    <a
+                        href="#"
+                        onMouseEnter={() => settingIconRef.current?.startAnimation()}
+                        onMouseLeave={() => settingIconRef.current?.stopAnimation()}
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10"
+                    >
+                        <Settings02Icon ref={settingIconRef} size={18} duration={1} color='currentColor' />
                         Ajustes
                     </a>
                 </MenuItem>
 
                 <MenuItem>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10">
-                        <KeyIcon className="size-4 text-muted" />
+                    <a
+                        href="#"
+                        onMouseEnter={() => passwordIconRef.current?.startAnimation()}
+                        onMouseLeave={() => passwordIconRef.current?.stopAnimation()}
+                        className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10"
+                    >
+                        <KeySquareIcon ref={passwordIconRef} size={18} duration={1} color='currentColor'/>
                         Cambiar contraseña
                     </a>
                 </MenuItem>
 
+                <div className="my-0.5 h-px bg-muted/20" />
+
                 <MenuItem>
                     <form action="/logout" method="POST">
                         <input type="hidden" name="_token" value={document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? ''} />
-                        <button type="submit" className="group w-full flex items-center gap-3 px-4 py-2 text-sm text-ink hover:bg-red-50 hover:text-red-600 data-focus:bg-red-50 data-focus:text-red-600">
-                            <ArrowRightStartOnRectangleIcon className="size-4 text-muted group-hover:text-red-500" />
+                        <button
+                            type="submit"
+                            onMouseEnter={() => logoutIconRef.current?.startAnimation()}
+                            onMouseLeave={() => logoutIconRef.current?.stopAnimation()}
+                            className="group w-full flex items-center gap-3 px-4 py-2 text-sm text-ink hover:bg-red-50 hover:text-red-600 data-focus:bg-red-50 data-focus:text-red-600"
+                        >
+                            <LogOutIcon ref={logoutIconRef} size={18} duration={1} color='currentColor' />
                             Cerrar sesión
                         </button>
                     </form>
