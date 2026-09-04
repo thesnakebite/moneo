@@ -7,6 +7,7 @@ use App\Http\Controllers\BudgetChatController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TicketScanController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -61,3 +62,5 @@ Route::post('/billing/checkout/{plan}', [BillingController::class, 'checkout'])
     ->whereIn('plan', ['monthly', 'yearly']);
 Route::get('/billing/success', [BillingController::class, 'success'])->name('billing.success');
 Route::get('/billing/cancel', [BillingController::class, 'cancel'])->name('billing.cancel');
+
+Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription.manage');
