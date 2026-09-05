@@ -16,7 +16,7 @@ const statusColors = {
     gray: 'bg-gray-50 text-gray-600 border-gray-200',
 }
 
-export default function Manage({ plan, onGracePeriod, endsAt }: Props) {
+export default function Manage({ plan, onGracePeriod, endsAt, price }: Props) {
 
 
     return (
@@ -29,7 +29,7 @@ export default function Manage({ plan, onGracePeriod, endsAt }: Props) {
             />
 
             <div className="max-w-2xl mx-auto">
-                <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} />
+                <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} price={price} />
             </div>
         </>
     )

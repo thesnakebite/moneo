@@ -7,9 +7,15 @@ type StatusLabel = {
 
 export type PlanType = 'monthly' | 'yearly'
 
+export type SubscriptionAmount = {
+    amount: number
+    currency: string
+}
+
 export type Subscription = {
     plan: PlanType
     onGracePeriod: boolean
     endsAt: string | null
     status_label: StatusLabel
+    price: SubscriptionAmount | null
 }
