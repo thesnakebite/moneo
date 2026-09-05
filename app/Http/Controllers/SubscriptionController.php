@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,12 +17,40 @@ class SubscriptionController extends Controller
         $user = auth()->user();
         $subscription = $user->subscription('default');
 
+        $nextBillingDate = $subscription ? $this->getNextBillingDate($subscription) :null;
+
         return Inertia::render('Subscriptions/Manage', [
             'plan' => $user->currentPlan(),
             'onGracePeriod' => $subscription?->onGracePeriod() ?? false,
             'endsAt' => $subscription->ends_at?->format('d/m/Y'),
             'price' => $subscription ? $this->getSubscriptionAmount($subscription) : null,
+            'status_label' => $subscription ? $this->buildStatusLabel($subscription, $nextBillingDate) : null,
         ]);
+    }
+
+    private function getNextBillingDate($subscription): ?string
+    {
+        return cache()->remember(
+            "stripe.next_billing.{$subscription->id}",
+            now()->addHours(1),
+            function () use ($subscription) {
+                try {
+                    $stripe = $subscription->asStripeSubscription();
+
+                    $periodEnd = $stripe->items->data[0]->current_period_end ?? null;
+
+                    return $periodEnd
+                        ? Carbon::createFromTimestamp($periodEnd)->toIso8601String()
+                        : null;
+                } catch (\Exception $e) {
+                    logger()->error('Error obteniendo next billing date', [
+                        'error' => $e->getMessage(),
+                        'subscription_id' => $subscription->id,
+                    ]);
+                    return null;
+                }
+            }
+        );
     }
 
     private function getSubscriptionAmount($subscription): ?array
