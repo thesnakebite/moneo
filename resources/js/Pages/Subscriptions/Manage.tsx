@@ -7,16 +7,7 @@ import { ReactElement } from 'react'
 
 type Props = Subscription
 
-const statusColors = {
-    green: 'bg-green-50 text-green-600 border-green-200',
-    yellow: 'bg-yellow-50 text-yellow-600 border-yellow-200',
-    amber: 'bg-amber-50 text-amber-600 border-amber-200',
-    orange: 'bg-orange-50 text-orange-600 border-orange-200',
-    red: 'bg-red-50 text-red-600 border-red-200',
-    gray: 'bg-gray-50 text-gray-600 border-gray-200',
-}
-
-export default function Manage({ plan, onGracePeriod, endsAt, price }: Props) {
+export default function Manage({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
 
 
     return (
@@ -29,7 +20,11 @@ export default function Manage({ plan, onGracePeriod, endsAt, price }: Props) {
             />
 
             <div className="max-w-2xl mx-auto">
-                <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} price={price} />
+                <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} price={price} status_label={status_label} />
+            </div>
+
+            <div className="flex items-center mt-8 mx-auto justify-center">
+                <p className="text-sm text-muted font-bold">Cancelar suscripción</p>
             </div>
         </>
     )

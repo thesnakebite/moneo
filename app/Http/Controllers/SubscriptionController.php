@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Cashier\Subscription;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
@@ -28,7 +29,7 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    private function getNextBillingDate($subscription): ?string
+    private function getNextBillingDate(Subscription $subscription): ?string
     {
         return cache()->remember(
             "stripe.next_billing.{$subscription->id}",
@@ -40,7 +41,7 @@ class SubscriptionController extends Controller
                     $periodEnd = $stripe->items->data[0]->current_period_end ?? null;
 
                     return $periodEnd
-                        ? Carbon::createFromTimestamp($periodEnd)->toIso8601String()
+                        ? Carbon::createFromTimestamp($periodEnd)->format('d.m.Y')
                         : null;
                 } catch (\Exception $e) {
                     logger()->error('Error obteniendo next billing date', [
@@ -53,7 +54,7 @@ class SubscriptionController extends Controller
         );
     }
 
-    private function getSubscriptionAmount($subscription): ?array
+    private function getSubscriptionAmount(Subscription $subscription): ?array
     {
         try {
             $stripe = $subscription->asStripeSubscription();
@@ -77,7 +78,7 @@ class SubscriptionController extends Controller
         }
     }
 
-    private function buildStatusLabel($subscription, ?string $nextBillingDate): array
+    private function buildStatusLabel(Subscription $subscription, ?string $nextBillingDate): array
     {
         if ($subscription->ended()) {
             return [
@@ -132,7 +133,7 @@ class SubscriptionController extends Controller
         ];
     }
 
-    private function latestInvoiceIsPaid($subscription): bool
+    private function latestInvoiceIsPaid(Subscription $subscription): bool
     {
         $invoice = $subscription->latestInvoice();
 
