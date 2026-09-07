@@ -1,6 +1,9 @@
+import { Link } from "@inertiajs/react"
+import { useRef } from 'react'
 import { Subscription } from "@/types/subscription"
 import { formatCurrency } from "@/utils"
-import { TagIcon } from "@animateicons/react/lucide"
+import { TagIcon, ZapIcon, ChevronRightIcon } from "@animateicons/react/lucide"
+import type { ZapIconHandle } from "@animateicons/react/lucide"
 
 type Props = {
     plan: Subscription['plan']
@@ -25,6 +28,8 @@ const statusColors = {
 }
 
 export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
+    const ZapIconRef = useRef<ZapIconHandle>(null)
+
     return (
         <div className="rounded-2xl border border-border-soft bg-muted/10 p-6">
             <div className="flex items-start justify-between">
@@ -57,6 +62,32 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                     )}
                 </div>
             )}
+
+            {onGracePeriod ? (
+                <p className="mt-4 text-sm text-muted border-t border-border-soft pt-4">
+                    Tu suscripción está cancelada y finalizará el {endsAt}. Podrás elegir un nuevo plan después.
+                </p>
+            ) : plan === 'monthly' ? (
+                <Link
+                    href="/billing"
+                    onMouseEnter={() => ZapIconRef.current?.startAnimation()}
+                    onMouseLeave={() => ZapIconRef.current?.stopAnimation()}
+                    className="mt-4 flex items-center justify-between border-t border-border-soft pt-4 group"
+                >
+                    <div>
+                        <p className="text-sm font-bold text-ink">Cambiar suscripción</p>
+                        <p className="text-xs text-muted mt-0.5">Actualiza a anual y ahorra dos meses</p>
+                    </div>
+
+                    <div className="flex items-center gap-0.5">
+                        <span className="flex items-center gap-0.5 bg-accent/10 text-accent text-xs font-stretch-90% font-bold px-2 py-1 rounded">
+                            <ZapIcon ref={ZapIconRef} size={20} duration={1} color="currentColor" />
+                            Mejora tu plan
+                        </span>
+                        <ChevronRightIcon size={20} duration={0} color="var(--color-muted)" />
+                    </div>
+                </Link>
+            ) : null}
         </div>
     )
 }

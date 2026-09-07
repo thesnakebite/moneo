@@ -23,7 +23,7 @@ class SubscriptionController extends Controller
         return Inertia::render('Subscriptions/Manage', [
             'plan' => $user->currentPlan(),
             'onGracePeriod' => $subscription?->onGracePeriod() ?? false,
-            'endsAt' => $subscription->ends_at?->format('d/m/Y'),
+            'endsAt' => $subscription->ends_at?->format('d.m.Y'),
             'price' => $subscription ? $this->getSubscriptionAmount($subscription) : null,
             'status_label' => $subscription ? $this->buildStatusLabel($subscription, $nextBillingDate) : null,
         ]);
@@ -84,7 +84,7 @@ class SubscriptionController extends Controller
             return [
                 'text' => 'Suscripción terminada',
                 'description' => 'Terminó el',
-                'date' => $subscription->ends_at?->toIso8601String(),
+                'date' => $subscription->ends_at?->format('d.m.Y'),
                 'color' => 'gray',
             ];
         }
@@ -93,7 +93,7 @@ class SubscriptionController extends Controller
             return [
                 'text' => 'Cancelada',
                 'description' => 'Acceso hasta',
-                'date' => $subscription->ends_at?->toIso8601String(),
+                'date' => $subscription->ends_at?->format('d.m.Y'),
                 'color' => 'orange',
             ];
         }

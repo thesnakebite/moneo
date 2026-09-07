@@ -23,7 +23,7 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
                 <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} price={price} status_label={status_label} />
             </div>
 
-            <div className="flex items-center mt-8 mx-auto justify-center">
+            <div className="flex items-center mt-4 mx-auto justify-center">
                 <p className="text-sm text-muted font-bold">Cancelar suscripción</p>
             </div>
         </>
