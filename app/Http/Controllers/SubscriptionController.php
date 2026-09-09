@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -27,6 +28,67 @@ class SubscriptionController extends Controller
             'price' => $subscription ? $this->getSubscriptionAmount($subscription) : null,
             'status_label' => $subscription ? $this->buildStatusLabel($subscription, $nextBillingDate) : null,
         ]);
+    }
+
+    public function previewSwap(Request $request, string $plan)
+    {
+        $prices = [
+            'monthly' => config('services.stripe.price_ai_monthly'),
+            'yearly' => config('services.stripe.price_ai_yearly'),
+        ];
+
+        abort_unless(isset($prices[$plan]), 404);
+
+        $user = $request->user();
+        $subscription = $user->subscription('default');
+
+        try {
+            $invoice = $subscription->previewInvoice($prices[$plan]);
+            $newPlanLine = collect($invoice->lines->data)->first(fn ($line) => $line->amount > 0);
+
+            return response()->json([
+                'amount_due' => $invoice->amount_due / 100,
+                'next_payment_amount' => $newPlanLine ? $newPlanLine->amount / 100 : null,
+                'next_payment_date' => $newPlanLine ? \Carbon\Carbon::createFromTimestamp($newPlanLine->period->end)->format('d.m.Y') : null,
+            ]);
+        } catch (\Exception $e) {
+            logger()->error('Error obteniendo preview del swap', ['error' => $e->getMessage()]);
+
+            return response()->json(['error' => 'No se pudo calcular el importe.'], 500);
+        }
+    }
+
+    public function swap(Request $request, string $plan)
+    {
+        $prices = [
+            'monthly' => config('services.stripe.price_ai_monthly'),
+            'yearly' => config('services.stripe.price_ai_yearly'),
+        ];
+
+        abort_unless(isset($prices[$plan]), 404);
+
+        $user = $request->user();
+        $subscription = $user->subscription('default');
+        $currentPlan = $user->currentPlan();
+
+        if ($currentPlan === 'yearly' && $plan === 'monthly') {
+            return back()->with('error', 'No puedes cambiar de plan anual a mensual. Si quieres hacerlo, cancela tu suscripción actual y podrás elegir el plan mensual cuando finalice tu periodo de acceso.');
+        }
+
+        if ($currentPlan === $plan) {
+            return back()->with('error', 'Ya tienes activo este plan.');
+        }
+
+        $subscription->swap($prices[$plan]);
+
+        cache()->forget("stripe.next_billing.{$subscription->id}");
+
+        $planLabel = $plan === 'yearly' ? 'anual' : 'mensual';
+        $extra = $plan === 'yearly' ? ' Disfruta de tu ahorro.' : '.';
+
+        return redirect()
+            ->route('subscription.manage')
+            ->with('success', "Tu plan se ha actualizado correctamente a {$planLabel}.{$extra}");
     }
 
     private function getNextBillingDate(Subscription $subscription): ?string

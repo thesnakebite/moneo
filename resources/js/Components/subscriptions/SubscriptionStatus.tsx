@@ -4,6 +4,7 @@ import { Subscription } from "@/types/subscription"
 import { formatCurrency } from "@/utils"
 import { TagIcon, ZapIcon, ChevronRightIcon } from "@animateicons/react/lucide"
 import type { ZapIconHandle } from "@animateicons/react/lucide"
+import { useSwapModalStore } from "@/stores/swap-modal-store"
 
 type Props = {
     plan: Subscription['plan']
@@ -29,6 +30,7 @@ const statusColors = {
 
 export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
     const ZapIconRef = useRef<ZapIconHandle>(null)
+    const openSwapModal = useSwapModalStore((state) => state.openModal)
 
     return (
         <div className="rounded-2xl border border-border-soft bg-muted/10 p-6">
@@ -68,11 +70,12 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                     Tu suscripción está cancelada y finalizará el {endsAt}. Podrás elegir un nuevo plan después.
                 </p>
             ) : plan === 'monthly' ? (
-                <Link
-                    href="/billing"
+                <button
+                    type="button"
+                    onClick={openSwapModal}
                     onMouseEnter={() => ZapIconRef.current?.startAnimation()}
                     onMouseLeave={() => ZapIconRef.current?.stopAnimation()}
-                    className="mt-4 flex items-center justify-between border-t border-border-soft pt-4 group"
+                    className="mt-4 flex items-center justify-between border-t border-border-soft pt-4 group w-full text-left cursor-pointer"
                 >
                     <div>
                         <p className="text-sm font-bold text-ink">Cambiar suscripción</p>
@@ -86,7 +89,7 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                         </span>
                         <ChevronRightIcon size={20} duration={0} color="var(--color-muted)" />
                     </div>
-                </Link>
+                </button>
             ) : null}
         </div>
     )

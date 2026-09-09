@@ -111,6 +111,19 @@ declare module 'ziggy-js' {
     ],
     "billing.success": [],
     "billing.cancel": [],
+    "subscription.manage": [],
+    "subscription.preview-swap": [
+        {
+            "name": "plan",
+            "required": true
+        }
+    ],
+    "subscription.swap": [
+        {
+            "name": "plan",
+            "required": true
+        }
+    ],
     "storage.local": [
         {
             "name": "path",

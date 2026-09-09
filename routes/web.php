@@ -64,3 +64,6 @@ Route::get('/billing/success', [BillingController::class, 'success'])->name('bil
 Route::get('/billing/cancel', [BillingController::class, 'cancel'])->name('billing.cancel');
 
 Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription.manage');
+Route::get('/subscription/preview-swap/{plan}', [SubscriptionController::class, 'previewSwap'])
+    ->name('subscription.preview-swap');
+Route::post('/subscription/swap/{plan}', [SubscriptionController::class, 'swap'])->name('subscription.swap');

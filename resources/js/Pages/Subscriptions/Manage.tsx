@@ -1,14 +1,25 @@
+import { Head, usePage } from '@inertiajs/react'
 import PageHeader from '@/Components/PageHeader'
 import SubscriptionStatus from '@/Components/subscriptions/SubscriptionStatus'
+import SwapPlanModal from '@/Components/SwapPlanModal'
 import AppLayout from '@/Layouts/AppLayout'
 import { Subscription } from '@/types/subscription'
-import { Head } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { ReactElement, useEffect } from 'react'
+import { toast, Toaster } from "sonner"
 
 type Props = Subscription
 
 export default function Manage({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
+    const { flash } = usePage().props
 
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success)
+        }
+        if (flash.error) {
+            toast.error(flash.error)
+        }
+    }, [flash.success])
 
     return (
         <>
@@ -26,6 +37,9 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
             <div className="flex items-center mt-4 mx-auto justify-center">
                 <p className="text-sm text-muted font-bold">Cancelar suscripción</p>
             </div>
+
+            <SwapPlanModal />
+            <Toaster position="bottom-center" />
         </>
     )
 }
