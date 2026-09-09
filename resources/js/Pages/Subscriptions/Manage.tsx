@@ -6,11 +6,14 @@ import AppLayout from '@/Layouts/AppLayout'
 import { Subscription } from '@/types/subscription'
 import { ReactElement, useEffect } from 'react'
 import { toast, Toaster } from "sonner"
+import CancelSubscriptionModal from '@/Components/subscriptions/CancelSubscriptionModal'
+import { useCancelSubscriptionModalStore } from '@/stores/cancel-subscription-modal-store'
 
 type Props = Subscription
 
-export default function Manage({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
+export default function Manage({ plan, onGracePeriod, endsAt, price, status_label, currentPeriodEnd }: Props) {
     const { flash } = usePage().props
+    const openCancelSubscription = useCancelSubscriptionModalStore((state) => state.openModal)
 
     useEffect(() => {
         if (flash.success) {
@@ -34,11 +37,21 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
                 <SubscriptionStatus plan={plan} onGracePeriod={onGracePeriod} endsAt={endsAt} price={price} status_label={status_label} />
             </div>
 
-            <div className="flex items-center mt-4 mx-auto justify-center">
-                <p className="text-sm text-muted font-bold">Cancelar suscripción</p>
-            </div>
+            {onGracePeriod ? (
+                <p>Component ResumeSubscription</p>
+            ) : (
+                <div className="flex items-center mt-4 mx-auto justify-center">
+                        <button
+                            onClick={openCancelSubscription}
+                            className="text-sm text-muted font-bold cursor-pointer"
+                        >
+                            Cancelar suscripción
+                        </button>
+                </div>
+            )}
 
             <SwapPlanModal />
+            <CancelSubscriptionModal currentPeriodEnd={currentPeriodEnd} />
             <Toaster position="bottom-center" />
         </>
     )

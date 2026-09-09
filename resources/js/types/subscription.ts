@@ -18,4 +18,5 @@ export type Subscription = {
     endsAt: string | null
     status_label: StatusLabel
     price: SubscriptionAmount | null
+    currentPeriodEnd: string | null
 }

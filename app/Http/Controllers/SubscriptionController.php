@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Inertia\Inertia;
@@ -27,6 +28,7 @@ class SubscriptionController extends Controller
             'endsAt' => $subscription->ends_at?->format('d.m.Y'),
             'price' => $subscription ? $this->getSubscriptionAmount($subscription) : null,
             'status_label' => $subscription ? $this->buildStatusLabel($subscription, $nextBillingDate) : null,
+            'currentPeriodEnd' => $nextBillingDate,
         ]);
     }
 
@@ -89,6 +91,14 @@ class SubscriptionController extends Controller
         return redirect()
             ->route('subscription.manage')
             ->with('success', "Tu plan se ha actualizado correctamente a {$planLabel}.{$extra}");
+    }
+
+    public function cancel(Request $request): RedirectResponse
+    {
+        $request->user()->subscription('default')->cancel();
+
+        return redirect()->route('subscription.manage')
+            ->with('success', 'Tu suscripción se cancelará al finalizar el periodo actual.');
     }
 
     private function getNextBillingDate(Subscription $subscription): ?string

@@ -124,6 +124,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "subscription.cancel": [],
     "storage.local": [
         {
             "name": "path",
