@@ -1,7 +1,7 @@
 import { Head, usePage } from '@inertiajs/react'
 import PageHeader from '@/Components/PageHeader'
 import SubscriptionStatus from '@/Components/subscriptions/SubscriptionStatus'
-import SwapPlanModal from '@/Components/SwapPlanModal'
+import SwapPlanModal from '@/Components/subscriptions/SwapPlanModal'
 import AppLayout from '@/Layouts/AppLayout'
 import { Subscription } from '@/types/subscription'
 import { ReactElement, useEffect } from 'react'

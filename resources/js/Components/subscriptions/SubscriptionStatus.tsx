@@ -83,11 +83,11 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                     </div>
 
                     <div className="flex items-center gap-0.5">
-                        <span className="flex items-center gap-0.5 bg-accent/10 text-accent text-xs font-stretch-90% font-bold px-2 py-1 rounded">
-                            <ZapIcon ref={ZapIconRef} size={20} duration={1} color="currentColor" />
+                        <span className="flex items-center gap-0.5 bg-accent/10 text-muted text-xs font-stretch-90% font-bold px-2 py-1 rounded">
+                            <ZapIcon ref={ZapIconRef} size={20} duration={1} color="var(--color-accent)" />
                             Mejora tu plan
                         </span>
-                        <ChevronRightIcon size={20} duration={0} color="var(--color-muted)" />
+                        <ChevronRightIcon size={20} duration={0} color="var(--color-accent)" />
                     </div>
                 </button>
             ) : null}
