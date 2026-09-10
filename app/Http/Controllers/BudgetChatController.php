@@ -9,6 +9,7 @@ use Illuminate\Routing\Attributes\Controllers\Middleware;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
+#[Middleware('subscribed')]
 class BudgetChatController extends Controller
 {
     public function store(Request $request, Budget $budget)

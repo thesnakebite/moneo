@@ -14,6 +14,7 @@ use Laravel\Ai\Files\Image;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
+#[Middleware('subscribed')]
 class TicketScanController extends Controller
 {
     #[Authorize('update', 'budget')]
