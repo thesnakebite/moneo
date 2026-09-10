@@ -68,3 +68,4 @@ Route::get('/subscription/preview-swap/{plan}', [SubscriptionController::class, 
     ->name('subscription.preview-swap');
 Route::post('/subscription/swap/{plan}', [SubscriptionController::class, 'swap'])->name('subscription.swap');
 Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');

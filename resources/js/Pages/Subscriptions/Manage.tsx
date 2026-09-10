@@ -8,6 +8,7 @@ import { ReactElement, useEffect } from 'react'
 import { toast, Toaster } from "sonner"
 import CancelSubscriptionModal from '@/Components/subscriptions/CancelSubscriptionModal'
 import { useCancelSubscriptionModalStore } from '@/stores/cancel-subscription-modal-store'
+import ResumeSubscription from '@/Components/subscriptions/ResumeSubscription'
 
 type Props = Subscription
 
@@ -38,7 +39,7 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
             </div>
 
             {onGracePeriod ? (
-                <p>Component ResumeSubscription</p>
+                <ResumeSubscription endsAt={endsAt} />
             ) : (
                 <div className="flex items-center mt-4 mx-auto justify-center">
                         <button

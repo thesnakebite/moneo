@@ -101,6 +101,14 @@ class SubscriptionController extends Controller
             ->with('success', 'Tu suscripción se cancelará al finalizar el periodo actual.');
     }
 
+    public function resume(Request $request): RedirectResponse
+    {
+        $request->user()->subscription('default')->resume();
+
+        return redirect()->route('subscription.manage')
+            ->with('success', 'Tu suscripción ha sido reactivada correctamente.');
+    }
+
     private function getNextBillingDate(Subscription $subscription): ?string
     {
         return cache()->remember(
