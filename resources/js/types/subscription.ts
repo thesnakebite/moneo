@@ -20,3 +20,16 @@ export type Subscription = {
     price: SubscriptionAmount | null
     currentPeriodEnd: string | null
 }
+
+export type PaymentMethod = {
+    brand: string
+    last4: string
+}
+
+export type Invoice = {
+    id: string
+    date: string
+    total: string
+    status: string
+    description: string | null
+}

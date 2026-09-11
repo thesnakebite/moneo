@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { Subscription } from "@/types/subscription"
 import { formatCurrency } from "@/utils"
 import { TagIcon, ZapIcon, ChevronRightIcon } from "@animateicons/react/lucide"
-import type { ZapIconHandle } from "@animateicons/react/lucide"
+import type { ChevronRightIconHandle, TagIconHandle } from "@animateicons/react/lucide"
 import { useSwapModalStore } from "@/stores/swap-modal-store"
 
 type Props = {
@@ -29,7 +29,8 @@ const statusColors = {
 }
 
 export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price, status_label }: Props) {
-    const ZapIconRef = useRef<ZapIconHandle>(null)
+    const swapChevronRef = useRef<ChevronRightIconHandle>(null)
+    const invoicesChevronRef = useRef<ChevronRightIconHandle>(null)
     const openSwapModal = useSwapModalStore((state) => state.openModal)
 
     return (
@@ -73,8 +74,8 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                 <button
                     type="button"
                     onClick={openSwapModal}
-                    onMouseEnter={() => ZapIconRef.current?.startAnimation()}
-                    onMouseLeave={() => ZapIconRef.current?.stopAnimation()}
+                    onMouseEnter={() => swapChevronRef.current?.startAnimation()}
+                    onMouseLeave={() => swapChevronRef.current?.stopAnimation()}
                     className="mt-4 flex items-center justify-between border-t border-border-soft pt-4 group w-full text-left cursor-pointer"
                 >
                     <div>
@@ -84,13 +85,25 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
 
                     <div className="flex items-center gap-0.5">
                         <span className="flex items-center gap-0.5 bg-accent/10 text-muted text-xs font-stretch-90% font-bold px-2 py-1 rounded">
-                            <ZapIcon ref={ZapIconRef} size={20} duration={1} color="var(--color-accent)" />
+                            <ZapIcon size={20} duration={1} color="var(--color-accent)" />
                             Mejora tu plan
                         </span>
-                        <ChevronRightIcon size={20} duration={0} color="var(--color-accent)" />
+                        <ChevronRightIcon ref={swapChevronRef} size={20} duration={1} color="var(--color-accent)" />
                     </div>
                 </button>
             ) : null}
+
+            <Link
+                href="/subscription/invoices"
+                onMouseEnter={() => invoicesChevronRef.current?.startAnimation()}
+                onMouseLeave={() => invoicesChevronRef.current?.stopAnimation()}
+                className="text-sm font-bold"
+            >
+                <div className="mt-4 flex items-center justify-between gap-x-1.5 border-t border-border-soft pt-4">
+                        Ver historial de pago
+                    <ChevronRightIcon ref={invoicesChevronRef} size={20} duration={1} color="var(--color-accent)" />
+                </div>
+            </Link>
         </div>
     )
 }

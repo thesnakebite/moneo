@@ -126,6 +126,7 @@ declare module 'ziggy-js' {
     ],
     "subscription.cancel": [],
     "subscription.resume": [],
+    "subscription.invoices": [],
     "storage.local": [
         {
             "name": "path",

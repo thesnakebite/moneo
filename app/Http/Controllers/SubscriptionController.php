@@ -109,6 +109,36 @@ class SubscriptionController extends Controller
             ->with('success', 'Tu suscripción ha sido reactivada correctamente.');
     }
 
+    public function invoices(): Response
+    {
+        $user = auth()->user();
+
+        $invoices = cache()->remember(
+            "stripe.invoices.{$user->id}",
+            now()->addHours(1),
+
+            function () use ($user) {
+                return $user->invoices()->map(function ($invoice) {
+                    $stripeInvoice = $invoice->asStripeInvoice();
+                    $lineItems = $invoice->invoiceLineItems();
+                    $planLabel = str_contains($lineItems[0]->description ?? '', 'Anual') ? 'Plan Anual' : 'Plan Mensual';
+
+                    return [
+                        'id' => $invoice->id,
+                        'date' => $invoice->date()->format('d.m.Y'),
+                        'total' => $invoice->total(),
+                        'status' => $stripeInvoice->status,
+                        'description' => $planLabel,
+                    ];
+                })->values()->toArray();
+            }
+        );
+
+        return Inertia::render('Subscriptions/Invoices', [
+            'invoices' => $invoices,
+        ]);
+    }
+
     private function getNextBillingDate(Subscription $subscription): ?string
     {
         return cache()->remember(
