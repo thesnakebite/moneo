@@ -15,7 +15,7 @@
                 id="email"
                 type="email"
                 placeholder="Email de Registro"
-                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-ink/5 outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="email"
                 tabindex="1"
                 value="{{ old('email') }}"
@@ -32,7 +32,7 @@
                 id="password"
                 type="password"
                 placeholder="Password de Registro"
-                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-transparent outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
+                class="w-full border border-border-soft p-3 rounded-lg text-sm sm:text-base bg-ink/5 outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                 name="password"
                 tabindex="2"
             />

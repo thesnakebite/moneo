@@ -18,6 +18,9 @@
     --color-accent-dark: #7C5841;
     --color-muted: #2D383E;
     --color-border-soft: #969A9E;
+    
+    /* Autofill */
+    --color-autofill: #cac0bf;
 }
 
 @layer base {
