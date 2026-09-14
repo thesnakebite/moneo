@@ -1,5 +1,6 @@
 <?php
 
+use Inertia\Testing\AssertableInertia as Assert;
 use App\Models\Budget;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +21,10 @@ it('allows the owner to view the edit budget form', function () {
     $response = $this->actingAs($user)->get(route('budgets.edit', $budget));
 
     $response->assertOk();
-    $response->assertSee('Viaje a las Vegas 🎰');
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Budgets/Edit')
+        ->where('budget.name', 'Viaje a las Vegas 🎰')
+    );
 });
 
 it('does not allow guests to view the edit budget form', function () {

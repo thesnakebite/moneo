@@ -17,10 +17,8 @@ it('redirects to the created budget show page with success message', function ()
         'type' => 'general',
     ]);
 
-    $budget = Budget::first();
-
-    $response->assertRedirect(route('budgets.show', $budget));
-    $response->assertSessionHas('success', 'Presupuesto creado correctamente');
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('success', 'Presupuesto creado correctamente.');
 });
 
 it('validates required fields when creating a budget', function () {

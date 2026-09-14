@@ -1,5 +1,6 @@
 <?php
 
+use Inertia\Testing\AssertableInertia as Assert;
 use App\Models\Budget;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,8 +15,10 @@ it('shows empty state when the user has no budgets', function () {
     $response = $this->actingAs($user)->get(route('dashboard'));
 
     $response->assertOk();
-    $response->assertSee('No hay presupuestos.');
-    $response->assertSee('Comienza creando uno');
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Dashboard')
+        ->has('budgets', 0)
+    );
 });
 
 it('only shows the authenticated user budgets', function () {
