@@ -1,11 +1,10 @@
-import { Head, usePage } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import PageHeader from '@/Components/PageHeader'
 import SubscriptionStatus from '@/Components/subscriptions/SubscriptionStatus'
 import SwapPlanModal from '@/Components/subscriptions/SwapPlanModal'
 import AppLayout from '@/Layouts/AppLayout'
 import { Subscription } from '@/types/subscription'
-import { ReactElement, useEffect } from 'react'
-import { toast, Toaster } from "sonner"
+import { ReactElement } from 'react'
 import CancelSubscriptionModal from '@/Components/subscriptions/CancelSubscriptionModal'
 import { useCancelSubscriptionModalStore } from '@/stores/cancel-subscription-modal-store'
 import ResumeSubscription from '@/Components/subscriptions/ResumeSubscription'
@@ -13,17 +12,7 @@ import ResumeSubscription from '@/Components/subscriptions/ResumeSubscription'
 type Props = Subscription
 
 export default function Manage({ plan, onGracePeriod, endsAt, price, status_label, currentPeriodEnd }: Props) {
-    const { flash } = usePage().props
     const openCancelSubscription = useCancelSubscriptionModalStore((state) => state.openModal)
-
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success)
-        }
-        if (flash.error) {
-            toast.error(flash.error)
-        }
-    }, [flash.success])
 
     return (
         <>
@@ -53,7 +42,6 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
 
             <SwapPlanModal />
             <CancelSubscriptionModal currentPeriodEnd={currentPeriodEnd} />
-            <Toaster position="bottom-center" />
         </>
     )
 }

@@ -1,10 +1,21 @@
-import { PropsWithChildren } from 'react'
 import { Link, usePage } from '@inertiajs/react'
+import { PropsWithChildren, useEffect } from 'react'
 import UserDropdown from '@/Components/UserDropdown'
 import Footer from '@/Components/Footer'
+import { toast, Toaster } from 'sonner'
 
 export default function AppLayout({ children }: PropsWithChildren) {
     const { user } = usePage().props
+    const { flash } = usePage().props
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success)
+        }
+        if (flash.error) {
+            toast.error(flash.error)
+        }
+    }, [flash.success])
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -26,6 +37,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
             <main className="flex-1 p-6">{children}</main>
 
             <Footer />
+            <Toaster position="bottom-center" />
         </div>
     )
 }

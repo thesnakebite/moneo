@@ -68,7 +68,7 @@ export default function Show({budget, categories, spent} : Props) {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-2.5">
+                    <div className="flex flex-col gap-1">
                         <ExpenseModal />
                         <DeleteExpenseModal />
                         <Toaster position="bottom-center" />

@@ -53,7 +53,7 @@ class BudgetController extends Controller
 
         return redirect()
             ->route('dashboard')
-            ->with('success', 'Presupuesto creado correctamente');
+            ->with('success', 'Presupuesto creado correctamente.');
     }
 
     /**
@@ -98,8 +98,8 @@ class BudgetController extends Controller
         $budget->update($request->validated());
 
         return redirect()
-            ->route('dashboard', $budget)
-            ->with('success', 'Presupuesto actualizado correctamente');
+            ->route('dashboard')
+            ->with('success', 'Presupuesto actualizado correctamente.');
     }
 
     /**
@@ -110,6 +110,7 @@ class BudgetController extends Controller
     {
         $budget->delete();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')
+            ->with('success', 'Presupuesto eliminado correctamente.');
     }
 }

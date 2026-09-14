@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react'
+import { Head, useForm } from '@inertiajs/react'
 import { ReactElement } from 'react'
 import { Field, Label, Description, Input } from '@headlessui/react'
 import AppLayout from '@/Layouts/AppLayout'
@@ -35,22 +35,6 @@ export default function Edit({ budget }: Props) {
             />
 
             <div className="max-w-2xl mx-auto">
-                {/* <div className="flex items-start justify-between mb-10">
-                    <div>
-                        <h1 className="text-2xl font-bold text-ink">Editar presupuesto</h1>
-                        <p className="text-sm text-muted mt-1">
-                            Realiza los ajustes necesarios de tu presupuesto.
-                        </p>
-                    </div>
-
-                    <Link
-                        href="/dashboard"
-                        className="border border-border-soft text-ink hover:bg-accent/10 hover:border-accent/40 text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
-                    >
-                        Volver a presupuestos
-                    </Link>
-                </div> */}
-
                 <form onSubmit={submit} className="space-y-4">
                     <Field>
                         <Label htmlFor="name" className="text-sm font-bold text-ink">Nombre</Label>
