@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TicketScanController;
+use App\Http\Controllers\UpdateProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,10 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification-send');
 
 Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard');
+
+Route::prefix('settings')->name('settings.')->group(function () {
+    Route::get('/profile', [UpdateProfileController::class, 'edit'])->name('profile');
+});
 
 Route::prefix('budgets')->name('budgets.')->group(function () {
     Route::get('/create', [BudgetController::class, 'create'])->name('create');

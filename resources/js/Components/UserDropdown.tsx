@@ -51,15 +51,15 @@ export default function UserDropdown({ userName, subscribed }: Props) {
                 </MenuItem>
 
                 <MenuItem>
-                    <a
-                        href="#"
+                    <Link
+                        href="/settings/profile"
                         onMouseEnter={() => settingIconRef.current?.startAnimation()}
                         onMouseLeave={() => settingIconRef.current?.stopAnimation()}
                         className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10"
                     >
                         <Settings02Icon ref={settingIconRef} size={18} duration={1} color='currentColor' />
                         Ajustes
-                    </a>
+                    </Link>
                 </MenuItem>
 
                 <MenuItem>
