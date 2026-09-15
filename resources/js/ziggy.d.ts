@@ -28,6 +28,7 @@ declare module 'ziggy-js' {
     "verification-send": [],
     "dashboard": [],
     "settings.profile": [],
+    "settings.profile.update": [],
     "budgets.create": [],
     "budgets.store": [],
     "budgets.edit": [

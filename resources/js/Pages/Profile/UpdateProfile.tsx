@@ -1,8 +1,10 @@
 import { Head, useForm, Link } from "@inertiajs/react"
 import { ReactElement } from "react"
+import { route } from 'ziggy-js'
 import AppLayout from "@/Layouts/AppLayout"
 import PageHeader from "@/Components/PageHeader"
 import { UserCogIcon } from "@animateicons/react/lucide"
+import InputError from "@/Components/InputError"
 
 type Props = {
     profile : {
@@ -13,10 +15,15 @@ type Props = {
 
 export default function UpdateProfile({ profile }:Props) {
 
-    const { data, setData, processing } = useForm({
+    const { data, setData, put, errors, processing } = useForm({
         name: profile.name,
         email: profile.email,
     })
+
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        put(route('settings.profile.update'))
+    }
 
     return (
         <>
@@ -46,6 +53,7 @@ export default function UpdateProfile({ profile }:Props) {
 
                 {/* Credentials profile */}
                 <form
+                    onSubmit={submit}
                     className="rounded-2xl border border-border-soft bg-muted/10 p-6 space-y-4"
                 >
                     <p className="text-sm font-bold text-ink">Información personal</p>
@@ -59,6 +67,7 @@ export default function UpdateProfile({ profile }:Props) {
                             type="text"
                             className="w-full border border-border-soft bg-ink/5 autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)] p-3 rounded-lg text-sm outline-none focus:border-accent focus:ring-0"
                         />
+                        {errors.name && <InputError>{errors.name}</InputError>}
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -70,6 +79,7 @@ export default function UpdateProfile({ profile }:Props) {
                             type="email"
                             className="w-full border border-border-soft bg-ink/5 autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)] p-3 rounded-lg text-sm outline-none focus:border-accent focus:ring-0"
                         />
+                        {errors.email && <InputError>{errors.email}</InputError>}
                     </div>
 
                     <button

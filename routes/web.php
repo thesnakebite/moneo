@@ -44,6 +44,7 @@ Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard')
 
 Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/profile', [UpdateProfileController::class, 'edit'])->name('profile');
+    Route::put('/profile', [UpdateProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::prefix('budgets')->name('budgets.')->group(function () {
