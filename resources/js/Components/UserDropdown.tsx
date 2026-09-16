@@ -7,10 +7,11 @@ import { Link } from '@inertiajs/react'
 
 type Props = {
     userName: string
+    avatarUrl: string | null
     subscribed: boolean
 }
 
-export default function UserDropdown({ userName, subscribed }: Props) {
+export default function UserDropdown({ userName, avatarUrl, subscribed }: Props) {
     const billingIconRef = useRef<CreditCardIconHandle>(null)
     const settingIconRef = useRef<Settings02IconHandle>(null)
     const passwordIconRef = useRef<KeySquareIconHandle>(null)
@@ -20,9 +21,17 @@ export default function UserDropdown({ userName, subscribed }: Props) {
         <Menu>
             <MenuButton className="flex items-center gap-1.5 text-sm font-semibold text-muted outline-none hover:text-ink transition-colors">
                 <div className="relative">
-                    <div className="flex size-7 items-center justify-center rounded-full bg-border-soft text-ink text-xs font-bold">
-                        {userName.charAt(0).toUpperCase()}
-                    </div>
+                    {avatarUrl ? (
+                        <img
+                            src={avatarUrl}
+                            alt={userName}
+                            className="flex size-7 rounded-full object-cover"
+                        />
+                    ) : (
+                        <div className="flex size-7 items-center justify-center rounded-full bg-border-soft text-ink text-xs font-bold">
+                            {userName.charAt(0).toUpperCase()}
+                        </div>
+                    )}
 
                     {subscribed && (
                         <span className="absolute -bottom-1.5 -right-2 text-[8px] font-bold text-white bg-accent px-1.5 py-0.5 rounded-full ring-2 ring-surface leading-none whitespace-nowrap">

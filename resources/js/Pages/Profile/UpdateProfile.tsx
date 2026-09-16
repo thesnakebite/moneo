@@ -1,5 +1,5 @@
-import { Head, useForm, Link } from "@inertiajs/react"
-import { ReactElement } from "react"
+import { Head, useForm, Link, router, usePage } from "@inertiajs/react"
+import { ReactElement, useRef, useState } from "react"
 import { route } from 'ziggy-js'
 import AppLayout from "@/Layouts/AppLayout"
 import PageHeader from "@/Components/PageHeader"
@@ -9,16 +9,39 @@ import InputError from "@/Components/InputError"
 type Props = {
     profile : {
         name: string,
-        email: string
+        email: string,
+        avatar_url: string | null,
     }
 }
 
-export default function UpdateProfile({ profile }:Props) {
+export default function UpdateProfile({ profile }: Props) {
+    const { errors: pageErrors } = usePage().props
+
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const [uploading, setUploading] = useState(false)
 
     const { data, setData, put, errors, processing } = useForm({
         name: profile.name,
         email: profile.email,
     })
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setUploading(true)
+
+        const formData = new FormData()
+        formData.append('avatar', file)
+
+        router.post('/settings/avatar', formData, {
+            forceFormData: true,
+            onFinish: () => {
+                setUploading(false)
+                if (fileInputRef.current) fileInputRef.current.value = ''
+            },
+        })
+    }
 
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -42,12 +65,36 @@ export default function UpdateProfile({ profile }:Props) {
                 <div className="rounded-2xl border border-border-soft bg-muted/10 p-6">
                     <p className="text-sm font-bold text-ink mb-4">Foto de perfil</p>
                     <div className="flex items-center gap-4">
-                        <div className="flex size-16 items-center justify-center aspect-square bg-accent/15 text-accent text-2xl font-bold">
-                            {profile.name.charAt(0).toUpperCase()}
-                        </div>
-                        <button type="button" className="text-xs font-bold text-accent hover:text-accent-dark cursor-pointer transition-colors">
-                            ¿Necesitas editar tu avatar?
+                        {profile.avatar_url ? (
+                            <img
+                                src={profile.avatar_url}
+                                alt={profile.name}
+                                className="flex size-16 aspect-square rounded object-cover"
+                            />
+                        ) : (
+                            <div className="flex size-16 items-center justify-center aspect-square rounded bg-accent/15 text-accent text-2xl font-bold">
+                                {profile.name.charAt(0).toUpperCase()}
+                            </div>
+                        )}
+                        <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploading}
+                            className="text-xs font-bold text-accent hover:text-accent-dark cursor-pointer transition-colors"
+                        >
+                            {uploading ? 'Subiendo...' : '¿Necesitas editar tu avatar?'}
                         </button>
+
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleAvatarChange}
+                        />
+                    </div>
+                    <div className="mt-2">
+                        {pageErrors.avatar && <InputError>{pageErrors.avatar}</InputError>}
                     </div>
                 </div>
 

@@ -12,6 +12,7 @@ declare module '@inertiajs/core' {
                 user: {
                     name: string
                     email: string
+                    avatar_url: string | null
                 } | null
                 subscribed: boolean
                 plan: string | null

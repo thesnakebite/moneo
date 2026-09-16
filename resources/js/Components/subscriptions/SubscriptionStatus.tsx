@@ -39,7 +39,7 @@ export default function SubscriptionStatus({ plan, onGracePeriod, endsAt, price,
                 <img
                     src={plan === 'monthly' ? '/images/pro-mensual.png' : '/images/pro-anual.png'}
                     alt={plan === 'monthly' ? 'Plan Pro Mensual' : 'Plan Pro Anual'}
-                    className="size-20 sm:size-28 aspect-square"
+                    className="size-20 sm:size-28 aspect-square rounded"
                     />
 
                 <div>
