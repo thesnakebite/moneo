@@ -13,6 +13,7 @@ use App\Http\Controllers\UpdateProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 // Auth and Register
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -25,11 +26,11 @@ Route::post('/logout', [LogoutController::class, 'destroy'])
 // Email verification
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-    return redirect()->route('dashboard');
+    return redirect()->route('dashboard')->with('success', '¡Cuenta verificada con éxito! Ya puedes gestionar tus proyectos.');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/email/verify', function () {
-    return view('auth.verify-email');
+    return Inertia::render('Auth/VerifyEmail');
 })->middleware('auth')->name('verification.notice');
 
 Route::post('/email/verification-notification', function (Request $request) {
@@ -45,6 +46,7 @@ Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard')
 Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/profile', [UpdateProfileController::class, 'edit'])->name('profile');
     Route::put('/profile', [UpdateProfileController::class, 'update'])->name('profile.update');
+    Route::get('/verify-email', [UpdateProfileController::class, 'verifyEmailNotice'])->name('verify-email');
 });
 
 Route::prefix('budgets')->name('budgets.')->group(function () {

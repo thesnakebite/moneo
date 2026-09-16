@@ -19,29 +19,35 @@ class UpdateProfileController extends Controller
         ]);
     }
 
-    public function update(UpdateProfileRequest $request): RedirectResponse
+    public function update(UpdateProfileRequest $request): Response|RedirectResponse
     {
         $user = $request->user();
         $validated = $request->validated();
 
-        // $emailChanged = $validated['email'] !== $user->email;
+        $emailChanged = $validated['email'] !== $user->email;
         $user->fill($validated);
 
-        // if ($emailChanged) {
-        //     $user->email_verified_at = null;
-        // }
+        if ($emailChanged) {
+            $user->email_verified_at = null;
+        }
 
         $user->save();
 
-        // if ($emailChanged) {
-        //     $user->sendEmailVerificationNotification();
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
 
-        //     return redirect()
-        //         ->route('verification.notice')
-        //         ->with('success', 'Perfil actualizado. Confirma tu nuevo email para seguir usando la app.');
-        // }
+            return redirect()
+                ->route('verification.notice')
+                ->with('success', 'Perfil actualizado. Confirma tu nuevo email para seguir usando la app.');
+        }
 
         return redirect()
-            ->route('settings.profile')->with('success', 'Perfil actualizado correctamente.');
+            ->route('settings.profile')
+            ->with('success', 'Perfil actualizado correctamente.');
+        }
+
+    public function verifyEmailNotice(): Response
+    {
+        return Inertia::render('Profile/VerifyEmail');
     }
 }
