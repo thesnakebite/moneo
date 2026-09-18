@@ -8,13 +8,14 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class RegisterController extends Controller
 {
-    public function index(): View
+    public function index(): Response
     {
-        return view('auth.register');
+        return Inertia::render('Auth/Register');
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -26,7 +27,7 @@ class RegisterController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-        
+
         return redirect()->route('verification.notice');
     }
 }

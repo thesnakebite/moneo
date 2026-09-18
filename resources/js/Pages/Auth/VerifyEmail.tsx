@@ -1,4 +1,4 @@
-import { Head, router, usePage } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
 import { useState } from 'react'
 import { route } from 'ziggy-js'
 
@@ -54,12 +54,12 @@ export default function VerifyEmail() {
                             {sending ? 'Enviando...' : 'Reenviar email de verificación'}
                         </button>
 
-                        <a
+                        <Link
                             href="/login"
                             className="block text-center text-sm font-bold border border-border-soft hover:bg-accent/10 w-full p-3 rounded-lg transition-colors"
                         >
                             Volver a inicio de sesión
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
