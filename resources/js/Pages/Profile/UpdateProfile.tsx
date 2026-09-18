@@ -15,7 +15,9 @@ type Props = {
 }
 
 export default function UpdateProfile({ profile }: Props) {
-    const { errors: pageErrors } = usePage().props
+    const { errors: pageErrors, user } = usePage().props
+    const subscribed = user?.subscribed ?? false
+    const plan = user?.plan
 
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [uploading, setUploading] = useState(false)
@@ -151,14 +153,18 @@ export default function UpdateProfile({ profile }: Props) {
                 {/* Danger */}
                 <div className="rounded-2xl border border-red-200 bg-red-50 p-6">
                     <p className="text-sm font-bold text-red-700 mb-1">Eliminar cuenta</p>
-                    <p className="text-xs text-red-600/80 mb-3">
-                        Si deseas borrar toda tu presencia en Moneo, haz clic en el botón de abajo.
-                        Ten en cuenta que esta es una acción irreversible que eliminará tu cuenta
-                        de Moneo y toda la actividad asociada a ella.
-                    </p>
-                    <button type="button" className="text-sm font-bold bg-red-400 text-white hover:bg-red-500 px-4 py-2.5 rounded-lg transition-colors">
-                        Eliminar mi cuenta
-                    </button>
+                        <p className="text-xs text-red-600/80 mb-3">
+                            Si deseas borrar toda tu presencia en Moneo, haz clic en el botón de abajo.
+                            Ten en cuenta que esta es una acción irreversible que eliminará tu cuenta
+                            de Moneo y toda la actividad asociada a ella.
+                        </p>
+                        <Link
+                            type="button"
+                            href="/settings/account/delete"
+                            className="text-sm font-bold bg-red-400 text-white hover:bg-red-500 px-4 py-2.5 rounded-lg transition-colors"
+                        >
+                            Eliminar mi cuenta
+                        </Link>
                 </div>
             </div>
         </>

@@ -48,6 +48,8 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::put('/profile', [UpdateProfileController::class, 'update'])->name('profile.update');
     Route::post('/avatar', [UpdateProfileController::class, 'updateAvatar'])->name('avatar.update');
     Route::get('/verify-email', [UpdateProfileController::class, 'verifyEmailNotice'])->name('verify-email');
+    Route::delete('/account', [UpdateProfileController::class, 'destroy'])->name('account.destroy');
+    Route::get('/account/delete', [UpdateProfileController::class, 'confirmDelete'])->name('account.delete');
 });
 
 Route::prefix('budgets')->name('budgets.')->group(function () {

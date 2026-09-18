@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAvatarRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Models\AccountDeletion;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -75,5 +77,41 @@ class UpdateProfileController extends Controller
         return redirect()
             ->route('settings.profile')
             ->with('success', 'Foto de perfil actualizada correctamente.');
+    }
+
+    public function confirmDelete(): Response
+    {
+        $user = auth()->user();
+
+        return Inertia::render('Profile/DeleteAccount', [
+            'subscribed' => $user->subscribed(),
+            'plan' => $user->currentPlan(),
+        ]);
+    }
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+
+        abort_if($user->subscribed(), 403, 'No puedes eliminar tu cuenta mientras tengas una suscripción activa.');
+
+        AccountDeletion::create([
+            'email' => $user->email,
+            'reason' => $request->input('reason'), // optional: can be null
+        ]);
+
+        // Delete avatar before delete
+        if ($user->avatar_path) {
+            Storage::disk('public')->delete($user->avatar_path);
+        }
+
+        auth()->logout();
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')
+            ->with('success', 'Tu cuenta hah sido eliminada del sistema de Moneo.');
     }
 }
