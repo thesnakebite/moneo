@@ -29,8 +29,8 @@ class BudgetRequest extends FormRequest
                 $this->routeIs('budgets.store') ? 'required' : 'sometimes',
                 Rule::enum(BudgetType::class),
             ],
-            'starts_at' => ['nullable', 'date', 'required_with:ends_at'],
-            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at', 'required_with:starts_at'],
+            'starts_at' => ['nullable', 'date'],
+            'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
         ];
     }
 
@@ -51,10 +51,8 @@ class BudgetRequest extends FormRequest
             'type.required' => 'El tipo de presupuesto es obligatorio.',
             'type.enum' => 'El tipo de presupuesto no es válido.',
             'starts_at.date' => 'La fecha de inicio debe ser una fecha válida.',
-            'starts_at.required_with' => 'Debes indicar la fecha de inicio si añades una fecha de fin.',
             'ends_at.date' => 'La fecha de fin debe ser una fecha válida.',
             'ends_at.after_or_equal' => 'La fecha de fin no puede ser anterior a la fecha de inicio.',
-            'ends_at.required_with' => 'Debes indicar la fecha de fin si añades una fecha de inicio.',
         ];
     }
 }

@@ -3,13 +3,14 @@ import ExpenseModal from "@/Components/ExpenseModal"
 import { useExpenseModalStore } from "@/stores/expense-modal-store"
 import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
-import { formatCurrency } from "@/utils"
+import { formatCurrency, formatDate } from "@/utils"
 import { toast, Toaster } from "sonner"
 import { useEffect, useState } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
+import { ArrowRightIcon, CalendarRangeIcon } from "@animateicons/react/lucide"
 
 type Props = {
     budget: Budget
@@ -50,7 +51,7 @@ export default function Show({budget, categories, spent} : Props) {
 
             <div className="max-w-2xl mx-auto mt-16 px-4">
                 <div className="p-8 sm:p-10 space-y-8">
-                    <h1 className="text-gray-900 text-2xl font-bold">Presupuesto: {budget.name}</h1>
+                    <h1 className="text-muted text-2xl font-bold">Presupuesto: {budget.name}</h1>
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
@@ -67,6 +68,25 @@ export default function Show({budget, categories, spent} : Props) {
                             </div>
                         </div>
                     </div>
+
+                    {(budget.starts_at || budget.ends_at) && (
+                        <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-border-soft/60 bg-ink/5">
+                            <CalendarRangeIcon size={16} duration={0} color="var(--color-accent)"/>
+                            {budget.starts_at && !budget.ends_at && (
+                                <span className="text-xs text-muted">Desde {formatDate(budget.starts_at)}</span>
+                            )}
+                            {budget.ends_at && !budget.starts_at && (
+                                <span className="text-xs text-muted">Hasta {formatDate(budget.ends_at)}</span>
+                            )}
+                            {budget.starts_at && budget.ends_at && (
+                                <>
+                                    <span className="text-xs text-muted">{formatDate(budget.starts_at)}</span>
+                                    <ArrowRightIcon className="size-3 text-border-soft" />
+                                    <span className="text-xs text-muted">{formatDate(budget.ends_at)}</span>
+                                </>
+                            )}
+                        </div>
+                    )}
 
                     <div className="flex flex-col gap-1">
                         <ExpenseModal />
