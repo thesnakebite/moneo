@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BillingController;
@@ -24,6 +25,7 @@ Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::post('/logout', [LogoutController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
+
 // Email verification
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -41,6 +43,9 @@ Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('success', 'Se ha reenviado el correo de verificación.');
 })->middleware(['auth', 'throttle:6,1'])->name('verification-send');
+
+Route::get('/auth/forgot-password', [ForgotPasswordController::class, 'index'])->name('forgot.password');
+Route::post('/auth/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
 
 Route::get('/dashboard', [BudgetController::class, 'index'] )->name('dashboard');
 

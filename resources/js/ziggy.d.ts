@@ -26,6 +26,8 @@ declare module 'ziggy-js' {
     ],
     "verification.notice": [],
     "verification-send": [],
+    "forgot.password": [],
+    "password.email": [],
     "dashboard": [],
     "settings.profile": [],
     "settings.profile.update": [],

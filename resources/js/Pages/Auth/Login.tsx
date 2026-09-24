@@ -38,7 +38,13 @@ export default function Login() {
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between">
                         <label className="font-bold text-sm sm:text-base" htmlFor="password">Password</label>
-                        <a href="#" className="text-accent-dark text-xs font-semibold" tabIndex={3}>¿Olvidaste tu Contraseña?</a>
+                        <Link
+                            href="/auth/forgot-password"
+                            className="text-accent-dark text-xs font-semibold"
+                            tabIndex={3}
+                        >
+                            ¿Olvidaste tu Contraseña?
+                        </Link>
                     </div>
                     <input
                         id="password"
