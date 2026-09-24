@@ -9,6 +9,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TicketScanController;
+use App\Http\Controllers\UpdatePasswordController;
 use App\Http\Controllers\UpdateProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -50,6 +51,8 @@ Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/verify-email', [UpdateProfileController::class, 'verifyEmailNotice'])->name('verify-email');
     Route::delete('/account', [UpdateProfileController::class, 'destroy'])->name('account.destroy');
     Route::get('/account/delete', [UpdateProfileController::class, 'confirmDelete'])->name('account.delete');
+    Route::get('/password', [UpdatePasswordController::class, 'edit'])->name('password');
+    Route::put('/password', [UpdatePasswordController::class, 'update'])->name('password.update');
 });
 
 Route::prefix('budgets')->name('budgets.')->group(function () {

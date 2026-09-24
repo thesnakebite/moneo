@@ -72,15 +72,15 @@ export default function UserDropdown({ userName, avatarUrl, subscribed }: Props)
                 </MenuItem>
 
                 <MenuItem>
-                    <a
-                        href="#"
+                    <Link
+                        href="/settings/password"
                         onMouseEnter={() => passwordIconRef.current?.startAnimation()}
                         onMouseLeave={() => passwordIconRef.current?.stopAnimation()}
                         className="flex items-center gap-3 px-4 py-2 text-sm text-ink data-focus:bg-accent/10"
                     >
                         <KeySquareIcon ref={passwordIconRef} size={18} duration={1} color='currentColor'/>
                         Cambiar contraseña
-                    </a>
+                    </Link>
                 </MenuItem>
 
                 <div className="my-0.5 h-px bg-muted/20" />

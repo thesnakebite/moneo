@@ -33,6 +33,8 @@ declare module 'ziggy-js' {
     "settings.verify-email": [],
     "settings.account.destroy": [],
     "settings.account.delete": [],
+    "settings.password": [],
+    "settings.password.update": [],
     "budgets.create": [],
     "budgets.store": [],
     "budgets.edit": [
