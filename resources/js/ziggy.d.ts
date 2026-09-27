@@ -28,6 +28,13 @@ declare module 'ziggy-js' {
     "verification-send": [],
     "forgot.password": [],
     "password.email": [],
+    "password.reset": [
+        {
+            "name": "token",
+            "required": true
+        }
+    ],
+    "password.reset.update": [],
     "dashboard": [],
     "settings.profile": [],
     "settings.profile.update": [],

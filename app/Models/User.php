@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Notifications\ForgotPasswordNotification;
 use App\Notifications\VerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -64,5 +66,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isOnYearlyPlan(): bool
     {
         return $this->currentPlan() === 'yearly';
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ForgotPasswordNotification($token));
     }
 }
