@@ -8,6 +8,7 @@ import { ReactElement } from 'react'
 import CancelSubscriptionModal from '@/Components/subscriptions/CancelSubscriptionModal'
 import { useCancelSubscriptionModalStore } from '@/stores/cancel-subscription-modal-store'
 import ResumeSubscription from '@/Components/subscriptions/ResumeSubscription'
+import { CreditCardIcon } from "@animateicons/react/lucide"
 
 type Props = Subscription
 
@@ -21,6 +22,9 @@ export default function Manage({ plan, onGracePeriod, endsAt, price, status_labe
             <PageHeader
                 title="Administra tu suscripción"
                 description="Consulta el estado de tu plan y gestiona tu membresía."
+                backHref="/settings/profile"
+                backLabel="Volver a mi perfil"
+                icon={<CreditCardIcon size={24} color="var(--color-accent)" />}
             />
 
             <div className="max-w-2xl mx-auto">

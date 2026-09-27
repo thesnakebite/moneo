@@ -59,7 +59,7 @@ export default function UpdateProfile({ profile }: Props) {
                 description="Actualiza tu información personal y gestiona tu cuenta."
                 backHref="/dashboard"
                 backLabel="Vuelve a dashboard"
-                icon={<UserCogIcon size={22} color="var(--color-accent)" />}
+                icon={<UserCogIcon size={24} color="var(--color-accent)" />}
             />
 
             <div className="max-w-2xl mx-auto space-y-6 mb-10">

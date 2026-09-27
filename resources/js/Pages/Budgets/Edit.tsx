@@ -31,7 +31,7 @@ export default function Edit({ budget }: Props) {
             <PageHeader
                 title='Editar presupuesto'
                 description='Realiza los ajustes necesarios de tu presupuesto.'
-                icon={<PencilIcon size={18} color="var(--color-accent)" />}
+                icon={<PencilIcon size={24} color="var(--color-accent)" />}
             />
 
             <div className="max-w-2xl mx-auto">
