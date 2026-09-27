@@ -9,6 +9,7 @@ declare module 'ziggy-js' {
         }
     ],
     "cashier.webhook": [],
+    "home": [],
     "register": [],
     "register.store": [],
     "login": [],
