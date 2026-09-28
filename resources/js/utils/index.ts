@@ -7,5 +7,9 @@ export function formatDate(date: string) {
 }
 
 export function formatCurrency(amount: number) {
-    return new Intl.NumberFormat('es-ES', {style: 'currency', currency: 'EUR'}).format(amount)
+    return new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: 'EUR',
+        useGrouping: 'always',
+    }).format(amount)
 }
