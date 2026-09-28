@@ -9,6 +9,7 @@ import ProgressBar from '@/Components/ProgressBar'
 import BudgetDropdown from '@/Components/BudgetDropdown'
 import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
 import WelcomeProModal from '@/Components/WelcomeAiModal'
+import { getBudgetStatusColor } from '@/utils/budget'
 
 type Props = {
     budgets: Budget[]
@@ -48,6 +49,7 @@ function Dashboard({ budgets, totalManaged }: Props) {
                     {budgets.map((budget) => {
                         const spent = budget.expenses.reduce((sum, e) => sum + Number(e.amount), 0)
                         const percentageUsed = Number(budget.amount) > 0 ? Math.round((spent / Number(budget.amount)) * 100) : 0
+                        const isOverBudget = percentageUsed >= 100
 
                         return (
                             <div
@@ -75,13 +77,23 @@ function Dashboard({ budgets, totalManaged }: Props) {
                                         </div>
 
                                         <div className="w-16 shrink-0">
-                                            <ProgressBar percentageUsed={percentageUsed} trailColor="#2D383E" textColor="#D4C9C7" textSize="20px" />
+                                            <ProgressBar
+                                                percentageUsed={percentageUsed}
+                                                pathColor={getBudgetStatusColor(percentageUsed)}
+                                                trailColor="#2D383E"
+                                                textColor="#D4C9C7"
+                                                textSize="20px"
+                                                alertRing="ring-ink"
+                                                alertIconSize={12}
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-lg font-bold text-accent">{formatCurrency(spent)}</p>
+                                            <p className={`text-lg font-bold ${isOverBudget ? 'text-red-400' : 'text-accent'}`}>
+                                                {formatCurrency(spent)}
+                                            </p>
                                             <p className="text-xs text-surface/60 mt-0.5">de {formatCurrency(Number(budget.amount))}</p>
                                         </div>
 

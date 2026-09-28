@@ -11,6 +11,7 @@ import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
 import { ArrowRightIcon, CalendarRangeIcon } from "@animateicons/react/lucide"
+import { getBudgetStatusColor } from "@/utils/budget"
 
 type Props = {
     budget: Budget
@@ -29,6 +30,7 @@ export default function Show({budget, categories, spent} : Props) {
 
     const remaining = Number(budget.amount) - Number(spent)
     const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
+    const isOverBudget = percentageUsed >= 100
 
     const [progress, setProgress] = useState(0)
 
@@ -55,13 +57,17 @@ export default function Show({budget, categories, spent} : Props) {
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
-                            <ProgressBar percentageUsed={progress} />
+                            <ProgressBar percentageUsed={percentageUsed} pathColor={getBudgetStatusColor(percentageUsed)} />
                         </div>
 
                         <div>
                             <div>
-                                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Te queda</p>
-                                <p className="text-3xl font-bold text-gray-900 mt-0.5">{formatCurrency(remaining)}</p>
+                                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                                    {isOverBudget ? 'Te has excedido' : 'Te queda'}
+                                </p>
+                                <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-600' : 'text-gray-900'}`}>
+                                    {formatCurrency(Math.abs(remaining))}
+                                </p>
                                 <p className="text-xs text-gray-500 mt-2">
                                     {formatCurrency(Number(spent))} gastados de {formatCurrency(Number(budget.amount))}
                                 </p>
@@ -103,7 +109,7 @@ export default function Show({budget, categories, spent} : Props) {
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
                     {user?.subscribed ? (
-                        <MoneoAgent budgetId={budget.id} userName={user?.user.name ?? 'Tú'} />
+                        <MoneoAgent budgetId={budget.id} userName={user?.user?.name ?? 'Tú'} />
                     ) : (
                         <div className="mt-10 rounded-2xl border border-border-soft p-6 text-center">
                             <p className="text-sm text-muted">
