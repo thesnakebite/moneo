@@ -65,10 +65,16 @@ class AddExpense implements Tool
      */
     public function schema(JsonSchema $schema): array
     {
+        $categories = collect(ExpenseCategory::cases())
+            ->map(fn ($category) => $category->value)
+            ->implode(', ');
+
         return [
             'name' => $schema->string()->description('Nombre del gasto (ej: Cemento, Uber, Renta)')->required(),
             'amount' => $schema->number()->description('Importe del gasto en número (ej: 30, 100.50)')->required(),
-            'category' => $schema->string()->description('Categoría del gasto. Valores permitidos: food, transport, housing, leisure, health, shopping, other'),
+            'category' => $schema->string()
+                ->enum(ExpenseCategory::cases())
+                ->description("Categoría del gasto. Valores permitidos: {$categories}"),
         ];
     }
 }

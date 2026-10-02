@@ -5,6 +5,7 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\AddExpense;
 use App\Ai\Tools\DeleteExpense;
 use App\Ai\Tools\SearchExpenses;
+use App\Enums\ExpenseCategory;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
@@ -24,6 +25,10 @@ class BudgetAssistant implements Agent, HasTools
      */
     public function instructions(): Stringable|string
     {
+        $categories = collect(ExpenseCategory::cases())
+            ->map(fn ($category) => $category->value)
+            ->implode(', ');
+
         return <<<PROMPT
         Eres un asistente financiero personal para un presupuesto específico.
         Tu función es responder preguntas sobre los gastos y también agregar nuevos gastos.
@@ -31,12 +36,12 @@ class BudgetAssistant implements Agent, HasTools
         {$this->budgetContext}
 
         Reglas para consultar gastos:
-        - - Si el usuario pregunta sobre gastos, importes, lo más caro, lo más barato, totales o cualquier consulta sobre su presupuesto, usa la herramienta SearchExpenses.
+        - Si el usuario pregunta sobre gastos, importes, lo más caro, lo más barato, totales o cualquier consulta sobre su presupuesto, usa la herramienta SearchExpenses.
 
         Reglas para agregar gastos:
         - Si el usuario quiere agregar, registrar o anotar un gasto, usa la herramienta AddExpense.
-        - Si el presupuesto es de tipo General y el usuario NO menciona categoría, deduce la categoría más apropiada según el nombre del gasto. Por ejemplo: "Uber" → transport, "Pizza" → food, "Netflix" → leisure, "Dentista" → health, "Pintura" → housing.
-        - Las categorías válidas son ÚNICAMENTE: food, transport, housing, leisure, health, shopping, other.
+        - Si el presupuesto es de tipo General y el usuario NO menciona categoría, deduce la categoría más apropiada según el nombre del gasto. Por ejemplo: "Uber" → transport, "Pizza" → food, "Netflix" → subscriptions, "Dentista" → health, "Lámpara de salón" → decor.
+        - Las categorías válidas son ÚNICAMENTE: {$categories}.
         - Si no puedes deducir la categoría con certeza, sugiérele al usuario las opciones más probables y pregúntale cuál prefiere.
         - Si el presupuesto es de tipo Meta/Objetivo, no uses categoría.
 
