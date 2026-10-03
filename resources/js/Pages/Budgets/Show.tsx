@@ -10,7 +10,7 @@ import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
-import { ArrowRightIcon, CalendarRangeIcon } from "@animateicons/react/lucide"
+import { ArrowRightIcon, CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
 import { getBudgetStatusColor } from "@/utils/budget"
 
 type Props = {
@@ -50,6 +50,14 @@ export default function Show({budget, categories, spent} : Props) {
     return (
         <>
             <Head title={`Presupuesto: ${budget.name}`} />
+
+            <div
+                
+                className="pointer-events-none fixed bottom-6 -right-72 sm:bottom-10 sm:-right-52 md:-right-44 lg:bottom-14 lg:-right-36 xl:-right-28 -z-10 rotate-[-26deg] opacity-[0.04] scale-50 sm:scale-75 md:scale-[0.85] lg:scale-90 xl:scale-100"
+                aria-hidden="true"
+            >
+                <PiggyBankIcon size={920} duration={0} color="var(--color-ink)" />
+            </div>
 
             <div className="max-w-2xl mx-auto mt-16 px-4">
                 <div className="p-8 sm:p-10 space-y-8">
