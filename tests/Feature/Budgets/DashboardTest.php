@@ -44,3 +44,20 @@ it('only shows the authenticated user budgets', function () {
     $response->assertSee('Mi presupuesto');
     $response->assertDontSee('Otro presupuesto');
 });
+
+it('splits budgets into active and finished by end date', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    Budget::factory()->for($user)->create(['name' => 'Sin fecha', 'ends_at' => null]);
+    Budget::factory()->for($user)->create(['name' => 'Termina hoy', 'ends_at' => today()]);
+    Budget::factory()->for($user)->create(['name' => 'Terminó ayer', 'ends_at' => today()->subDay()]);
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Dashboard')
+            ->has('activeBudgets', 2)
+            ->has('finishedBudgets', 1)
+            ->where('finishedBudgets.0.name', 'Terminó ayer')
+        );
+});

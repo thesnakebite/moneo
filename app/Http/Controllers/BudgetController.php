@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExpenseCategory;
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
@@ -28,11 +29,15 @@ class BudgetController extends Controller
             ->latest()
             ->get();
 
-        $totalManaged = $budgets->sum('amount');
+        [$finished, $active] = $budgets->partition(
+            fn (Budget $budget) => $budget->ends_at !== null
+                && Carbon::parse($budget->ends_at)->endOfDay()->isPast()
+        );
 
         return Inertia::render('Dashboard', [
-            'budgets' => $budgets,
-            'totalManaged' => (string) $totalManaged,
+            'activeBudgets' => $active->values(),
+            'finishedBudgets' => $finished->values(),
+            'totalManaged' => (string) $active->sum('amount'),
         ]);
     }
 

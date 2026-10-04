@@ -1,22 +1,21 @@
 import { Head, Link, usePage } from '@inertiajs/react'
 import { useEffect, useState } from 'react'
 import AppLayout from '@/Layouts/AppLayout'
-import { formatCurrency } from '@/utils'
+import BudgetCard from '@/Components/BudgetCard'
 import { Budget } from '@/types/budget'
+import { formatCurrency } from '@/utils'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { ReactElement } from 'react'
-import ProgressBar from '@/Components/ProgressBar'
-import BudgetDropdown from '@/Components/BudgetDropdown'
 import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
 import WelcomeProModal from '@/Components/WelcomeAiModal'
-import { getBudgetStatusColor } from '@/utils/budget'
 
 type Props = {
-    budgets: Budget[]
+    activeBudgets: Budget[]
+    finishedBudgets: Budget[]
     totalManaged: string
 }
 
-function Dashboard({ budgets, totalManaged }: Props) {
+function Dashboard({ activeBudgets, finishedBudgets, totalManaged }: Props) {
     const { flash } = usePage().props
     const [showWelcome, setShowWelcome] = useState(false)
 
@@ -26,16 +25,18 @@ function Dashboard({ budgets, totalManaged }: Props) {
         }
     }, [flash.subscribed])
 
+    const hasNoBudgets = activeBudgets.length === 0 && finishedBudgets.length === 0
+
     return (
         <>
             <Head title="Tus presupuestos" />
 
             <div className="max-w-5xl mx-auto">
-                <div className="flex items-start justify-between mb-6">
+                <div className="flex items-start justify-between mb-8">
                     <div>
                         <h1 className="text-2xl font-bold text-ink">Tus presupuestos</h1>
                         <p className="text-sm text-muted mt-1">
-                            {budgets.length} {budgets.length === 1 ? 'presupuesto activo' : 'presupuestos activos'} · {formatCurrency(Number(totalManaged))} gestionados en total
+                            {formatCurrency(Number(totalManaged))} gestionados en presupuestos activos
                         </p>
                     </div>
 
@@ -45,75 +46,43 @@ function Dashboard({ budgets, totalManaged }: Props) {
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {budgets.map((budget) => {
-                        const spent = budget.expenses.reduce((sum, e) => sum + Number(e.amount), 0)
-                        const percentageUsed = Number(budget.amount) > 0 ? Math.round((spent / Number(budget.amount)) * 100) : 0
-                        const isOverBudget = percentageUsed >= 100
+                <section>
+                    <div className="mb-4">
+                        <h2 className="text-lg font-bold text-ink">Activos</h2>
+                        <p className="text-sm text-muted">En curso o sin fecha de cierre.</p>
+                    </div>
 
-                        return (
-                            <div
-                                key={budget.id}
-                                className="relative overflow-hidden bg-linear-to-br from-ink via-ink to-muted border border-accent rounded-xl p-5 z-0"
-                            >
-                                {/* Capa de rejilla decorativa, sobre el gradiente */}
-                                <div
-                                    className="absolute inset-0 pointer-events-none opacity-40"
-                                    style={{
-                                        backgroundImage:
-                                            'linear-gradient(rgba(212,201,199,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(212,201,199,0.06) 1px, transparent 1px)',
-                                        backgroundSize: '16px 16px',
-                                    }}
-                                    aria-hidden="true"
-                                />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {activeBudgets.map((budget) => (
+                            <BudgetCard key={budget.id} budget={budget} />
+                        ))}
 
-                                <div className="relative z-10">
-                                    <div className="flex items-start justify-between mb-4">
-                                        <div className="space-y-0.5">
-                                            <p className="font-semibold text-surface">{budget.name}</p>
-                                            <span className="inline-block text-[10px] font-semibold text-surface/70 border border-surface/20 rounded-full px-2 py-0.5 mt-1">
-                                                {budget.type === 'general' ? 'General' : 'Proyecto'}
-                                            </span>
-                                        </div>
+                        <Link
+                            href="/budgets/create"
+                            className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
+                        >
+                            <PlusIcon className="size-5" />
+                            <p className="text-sm">Crear presupuesto</p>
+                        </Link>
+                    </div>
+                </section>
 
-                                        <div className="w-16 shrink-0">
-                                            <ProgressBar
-                                                percentageUsed={percentageUsed}
-                                                pathColor={getBudgetStatusColor(percentageUsed)}
-                                                trailColor="#2D383E"
-                                                textColor="#D4C9C7"
-                                                textSize="20px"
-                                                alertRing="ring-ink"
-                                                alertIconSize={12}
-                                            />
-                                        </div>
-                                    </div>
+                {finishedBudgets.length > 0 && (
+                    <section className="mt-12">
+                        <div className="mb-4">
+                            <h2 className="text-lg font-bold text-ink">Finalizados</h2>
+                            <p className="text-sm text-muted">Su fecha de finalización ya pasó. Puedes consultarlos o editarlos cuando quieras.</p>
+                        </div>
 
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className={`text-lg font-bold ${isOverBudget ? 'text-red-400' : 'text-accent'}`}>
-                                                {formatCurrency(spent)}
-                                            </p>
-                                            <p className="text-xs text-surface/60 mt-0.5">de {formatCurrency(Number(budget.amount))}</p>
-                                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {finishedBudgets.map((budget) => (
+                                <BudgetCard key={budget.id} budget={budget} finished />
+                            ))}
+                        </div>
+                    </section>
+                )}
 
-                                        <BudgetDropdown budget={budget} />
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-
-                    <Link
-                        href="/budgets/create"
-                        className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
-                    >
-                        <PlusIcon className="size-5" />
-                        <p className="text-sm">Crear presupuesto</p>
-                    </Link>
-                </div>
-
-                {budgets.length === 0 && (
+                {hasNoBudgets && (
                     <p className="text-sm text-muted text-center py-12">
                         Aún no tienes presupuestos. Crea el primero para empezar.
                     </p>
