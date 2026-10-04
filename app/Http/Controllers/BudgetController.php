@@ -34,10 +34,22 @@ class BudgetController extends Controller
                 && Carbon::parse($budget->ends_at)->endOfDay()->isPast()
         );
 
+        $attention = $active->filter(function (Budget $budget) {
+            $amount = (float) $budget->amount;
+
+            return $amount > 0
+                && round(($budget->expenses->sum('amount') / $amount) * 100) >= 90;
+        })->count();
+
         return Inertia::render('Dashboard', [
             'activeBudgets' => $active->values(),
             'finishedBudgets' => $finished->values(),
-            'totalManaged' => (string) $active->sum('amount'),
+            'summary' => [
+                'managed' => (string) $active->sum('amount'),
+                'spent' => (string) $active->sum(fn (Budget $budget) => $budget->expenses->sum('amount')),
+                'attention' => $attention,
+                'finished' => $finished->count(),
+            ],
         ]);
     }
 
