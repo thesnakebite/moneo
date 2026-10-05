@@ -1,10 +1,9 @@
-import { Head, Link, usePage } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { Head, Link } from '@inertiajs/react'
+import { ReactElement } from 'react'
 import AppLayout from '@/Layouts/AppLayout'
 import BudgetCard from '@/Components/BudgetCard'
 import { Budget } from '@/types/budget'
 import { PlusIcon } from '@heroicons/react/24/outline'
-import { ReactElement } from 'react'
 import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
 import WelcomeProModal from '@/Components/WelcomeAiModal'
 import DashboardHeader from '@/Components/DashboardHeader'
@@ -22,15 +21,6 @@ type Props = {
 }
 
 export default function Dashboard({ activeBudgets, finishedBudgets, summary }: Props) {
-    const { flash } = usePage().props
-    const [showWelcome, setShowWelcome] = useState(false)
-
-    useEffect(() => {
-        if (flash.subscribed) {
-            setShowWelcome(true)
-        }
-    }, [flash.subscribed])
-
     const hasNoBudgets = activeBudgets.length === 0 && finishedBudgets.length === 0
 
     return (
