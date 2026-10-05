@@ -1,6 +1,9 @@
 import { Link, usePage } from '@inertiajs/react'
-import { PlusIcon } from '@heroicons/react/24/outline'
+import { useRef } from 'react'
 import { formatCurrency } from '@/utils'
+import { PlusIcon } from "@animateicons/react/lucide"
+import type { PlusIconHandle } from "@animateicons/react/lucide"
+
 
 type Props = {
     managed: string
@@ -12,6 +15,7 @@ type Props = {
 export default function DashboardHeader({ managed, spent, attention, finished }: Props) {
     const { user } = usePage().props
     const name = user?.user?.name
+    const PlusIconRef = useRef<PlusIconHandle>(null)
 
     return (
         <div className="relative overflow-hidden rounded-2xl border border-border-soft bg-muted/10 p-6 mb-10">
@@ -27,7 +31,7 @@ export default function DashboardHeader({ managed, spent, attention, finished }:
 
             <div className="relative z-10">
                 <div className="flex items-start justify-between gap-4">
-                    <div className="text-center sm:text-left">
+                    <div className="text-center mx-auto sm:mx-0 sm:text-left">
                         <h1 className="text-2xl font-bold text-ink">
                             {name ? `Hola, ${name}` : 'Tus presupuestos'}
                         </h1>
@@ -36,9 +40,11 @@ export default function DashboardHeader({ managed, spent, attention, finished }:
 
                     <Link
                         href="/budgets/create"
+                        onMouseEnter={() => PlusIconRef.current?.startAnimation()}
+                        onMouseLeave={() => PlusIconRef.current?.stopAnimation()}
                         className="hidden sm:flex shrink-0 bg-accent hover:bg-accent-dark text-white px-4 py-2.5 rounded-lg text-sm font-bold items-center gap-2 transition-colors"
                     >
-                        <PlusIcon className="size-4" />
+                        <PlusIcon ref={PlusIconRef} size={16} duration={1} color="currentColor" />
                         Nuevo presupuesto
                     </Link>
                 </div>

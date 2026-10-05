@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react'
-import { ReactElement } from 'react'
+import { ReactElement, useRef } from 'react'
 import AppLayout from '@/Layouts/AppLayout'
 import BudgetCard from '@/Components/BudgetCard'
 import { Budget } from '@/types/budget'
-import { PlusIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from "@animateicons/react/lucide"
+import type { PlusIconHandle } from "@animateicons/react/lucide"
 import DeleteBudgetModal from '@/Components/DeleteBudgetModal'
 import WelcomeProModal from '@/Components/WelcomeAiModal'
 import DashboardHeader from '@/Components/DashboardHeader'
@@ -22,6 +23,7 @@ type Props = {
 
 export default function Dashboard({ activeBudgets, finishedBudgets, summary }: Props) {
     const hasNoBudgets = activeBudgets.length === 0 && finishedBudgets.length === 0
+    const PlusIconRef = useRef<PlusIconHandle>(null)
 
     return (
         <>
@@ -52,9 +54,11 @@ export default function Dashboard({ activeBudgets, finishedBudgets, summary }: P
 
                                 <Link
                                     href="/budgets/create"
+                                    onMouseEnter={() => PlusIconRef.current?.startAnimation()}
+                                    onMouseLeave={() => PlusIconRef.current?.stopAnimation()}
                                     className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
                                 >
-                                    <PlusIcon className="size-5" />
+                                    <PlusIcon ref={PlusIconRef} size={20} duration={1} color="currentColor" />
                                     <p className="text-sm">Crear presupuesto</p>
                                 </Link>
                             </div>

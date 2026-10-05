@@ -20,7 +20,7 @@ export default function BudgetDropdown({ budget }: Props) {
     return (
         <Menu>
             <MenuButton
-                className="text-muted outline-none"
+                className="text-muted outline-none cursor-pointer"
                 onClick={(e) => e.stopPropagation()}
             >
                 <EllipsisVerticalIcon size={20} duration={1} color="var(--color-accent)" />

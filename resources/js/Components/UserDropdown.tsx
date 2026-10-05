@@ -19,7 +19,7 @@ export default function UserDropdown({ userName, avatarUrl, subscribed }: Props)
 
     return (
         <Menu>
-            <MenuButton className="flex items-center gap-1.5 text-sm font-semibold text-muted outline-none hover:text-ink transition-colors">
+            <MenuButton className="flex items-center gap-1.5 text-sm font-semibold text-muted outline-none hover:text-ink transition-colors cursor-pointer">
                 <div className="relative">
                     {avatarUrl ? (
                         <img

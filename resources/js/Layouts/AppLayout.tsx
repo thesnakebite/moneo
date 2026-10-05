@@ -34,7 +34,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
                 </nav>
             </header>
 
-            <main className="flex-1 p-6">{children}</main>
+            <main className="flex-1 px-3 sm:px-6 py-6">{children}</main>
 
             <Footer />
             <Toaster position="bottom-center" />

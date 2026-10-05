@@ -52,15 +52,14 @@ export default function Show({budget, categories, spent} : Props) {
             <Head title={`Presupuesto: ${budget.name}`} />
 
             <div
-                
                 className="pointer-events-none fixed bottom-6 -right-72 sm:bottom-10 sm:-right-52 md:-right-44 lg:bottom-14 lg:-right-36 xl:-right-28 -z-10 rotate-[-26deg] opacity-[0.04] scale-50 sm:scale-75 md:scale-[0.85] lg:scale-90 xl:scale-100"
                 aria-hidden="true"
             >
                 <PiggyBankIcon size={920} duration={0} color="var(--color-ink)" />
             </div>
 
-            <div className="max-w-2xl mx-auto mt-16 px-4">
-                <div className="p-8 sm:p-10 space-y-8">
+            <div className="px-3 sm:px-6 mt-16">
+                <div className="max-w-2xl mx-auto py-8 sm:py-10 space-y-8">
                     <h1 className="text-muted text-2xl font-bold">Presupuesto: {budget.name}</h1>
 
                     <div className="flex items-center gap-8">
@@ -109,7 +108,7 @@ export default function Show({budget, categories, spent} : Props) {
 
                         <a
                             href="/dashboard"
-                            className="inline-block bg-accent text-white hover:bg-accent-dark text-center px-2 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-colors"
+                            className="inline-block bg-accent text-white hover:bg-accent-dark text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
                         >
                             Volver al dashboard
                         </a>

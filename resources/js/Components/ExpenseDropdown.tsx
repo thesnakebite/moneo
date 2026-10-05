@@ -1,8 +1,10 @@
+import { useRef } from 'react'
 import { useDeleteExpenseStore } from '@/stores/expense-delete-store'
 import { useExpenseModalStore } from '@/stores/expense-modal-store'
 import { Expense } from '@/types/expense'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { PencilIcon, TrashIcon } from '@heroicons/react/16/solid'
+import { PencilIcon, Trash2Icon } from "@animateicons/react/lucide"
+import type { PencilIconHandle, Trash2IconHandle } from "@animateicons/react/lucide"
 
 type Props = {
     expense: Expense
@@ -11,6 +13,8 @@ type Props = {
 export default function ExpenseDropdown({ expense }: Props) {
     const openEditModal = useExpenseModalStore(state => state.openEditModal)
     const openDeleteModal = useDeleteExpenseStore(state => state.openModal)
+    const PencilIconRef = useRef<PencilIconHandle>(null)
+    const Trash2IconRef = useRef<Trash2IconHandle>(null)
 
     return (
         <Menu>
@@ -30,10 +34,12 @@ export default function ExpenseDropdown({ expense }: Props) {
                 <MenuItem>
                     <button
                         type="button"
+                        onMouseEnter={() => PencilIconRef.current?.startAnimation()}
+                        onMouseLeave={() => PencilIconRef.current?.stopAnimation()}
                         onClick={() => openEditModal(expense)}
                         className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-focus:bg-gray-100 focus:outline-none"
                     >
-                        <PencilIcon className="size-4 fill-gray-400" />
+                        <PencilIcon ref={PencilIconRef} size={16} duration={1} color="currentColor" />
                         Editar
                     </button>
                 </MenuItem>
@@ -42,10 +48,12 @@ export default function ExpenseDropdown({ expense }: Props) {
 
                 <MenuItem>
                     <button
+                        onMouseEnter={() => Trash2IconRef.current?.startAnimation()}
+                        onMouseLeave={() => Trash2IconRef.current?.stopAnimation()}
                         onClick={() => openDeleteModal(expense)}
                         className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-red-600 data-focus:bg-red-50 focus:outline-none"
                     >
-                        <TrashIcon className="size-4 fill-red-400" />
+                        <Trash2Icon ref={Trash2IconRef} size={16} duration={1} color="currentColor" />
                         Eliminar
                     </button>
                 </MenuItem>
