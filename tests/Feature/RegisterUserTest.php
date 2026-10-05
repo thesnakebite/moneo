@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Inertia\Testing\AssertableInertia as Assert;
 
 uses (RefreshDatabase::class);
 
@@ -14,8 +15,9 @@ it('shows the registration screen', function () {
     $response = $this->get(route('register'));
 
     $response->assertOk();
-    $response->assertStatus(200);
-    $response->assertSee('Crear una cuenta');
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Auth/Register')
+    );
 });
 
 it('register a new user as unverified and dispatches the registered event', function () {
