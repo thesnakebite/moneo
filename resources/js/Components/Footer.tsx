@@ -41,7 +41,7 @@ export default function Footer() {
                             <ul className="text-sm space-y-1.5">
                                 <li><a href="#">Inicio</a></li>
                                 <li><a href="#">Quiénes somos</a></li>
-                                <li><a href="#">Contacto</a></li>
+                                <li><Link href="/contact">Contacto</Link></li>
                                 <li><Link href="/privacy">Política de Privacidad</Link></li>
                             </ul>
                         </div>

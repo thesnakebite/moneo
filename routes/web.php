@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BudgetChatController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\SubscriptionController;
@@ -98,4 +99,7 @@ Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->
 Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 Route::get('/subscription/invoices', [SubscriptionController::class, 'invoices'])->name('subscription.invoices');
 // Footer
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 Route::get('/privacy', fn () => Inertia::render('Legal/Privacy'))->name('legal.privacy');
