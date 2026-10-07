@@ -39,7 +39,7 @@ export default function Footer() {
                         <div>
                             <h2 className="font-semibold mb-5">Compañía</h2>
                             <ul className="text-sm space-y-1.5">
-                                <li><a href="#">Inicio</a></li>
+                                <li><Link href="/">Inicio</Link></li>
                                 <li><Link href="/about">Quiénes somos</Link></li>
                                 <li><Link href="/contact">Contacto</Link></li>
                                 <li><Link href="/privacy">Política de Privacidad</Link></li>
