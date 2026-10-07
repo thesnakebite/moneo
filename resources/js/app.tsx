@@ -5,5 +5,10 @@ createInertiaApp({
     pages: {
         path: './Pages',
         extension: '.tsx',
+    },
+    defaults: {
+        visitOptions: (href, options) => ({
+            viewTransition: options.method === 'get' && !options.only?.length,
+        })
     }
 })

@@ -52,4 +52,28 @@
         text-rendering: optimizeLegibility;
         font-display: swap;
     }
+
+    /* View transitions: Fixed header and footer during navigation */
+    ::view-transition-group(app-header),
+    ::view-transition-group(app-footer) {
+        animation: none;
+    }
+
+    ::view-transition-old(app-header),
+    ::view-transition-old(app-footer) {
+        display: none;
+    }
+
+    ::view-transition-new(app-header),
+    ::view-transition-new(app-footer) {
+        animation: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+            animation: none !important;
+        }
+    }
 }

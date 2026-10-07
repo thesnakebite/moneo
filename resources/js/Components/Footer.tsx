@@ -3,7 +3,9 @@ import { FacebookIcon, InstagramIcon, PiggyBankIcon, TwitterIcon } from "@animat
 
 export default function Footer() {
     return (
-        <footer className="bg-accent-dark/95 border-t border-accent px-6 pt-8 md:px-16 w-full text-surface">
+        <footer
+            className="bg-accent-dark/95 border-t border-accent px-6 pt-8 md:px-16 w-full text-surface [view-transition-name:app-footer]"
+        >
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row justify-between w-full gap-10 border-b border-accent pb-10">
                     <div className="md:max-w-96">

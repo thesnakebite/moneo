@@ -5,8 +5,7 @@ import Footer from '@/Components/Footer'
 import { toast, Toaster } from 'sonner'
 
 export default function AppLayout({ children }: PropsWithChildren) {
-    const { user } = usePage().props
-    const { flash } = usePage().props
+    const { user, flash } = usePage().props
 
     useEffect(() => {
         if (flash.success) {
@@ -19,7 +18,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <header className="border-b border-border-soft">
+            <header className="border-b border-border-soft [view-transition-name:app-header]">
                 <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between py-1 px-6 lg:px-8">
                     <div className="flex lg:flex-1">
                         <Link href="/" className="-m-1.5 p-1.5">
