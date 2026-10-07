@@ -97,3 +97,5 @@ Route::post('/subscription/swap/{plan}', [SubscriptionController::class, 'swap']
 Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
 Route::post('/subscription/resume', [SubscriptionController::class, 'resume'])->name('subscription.resume');
 Route::get('/subscription/invoices', [SubscriptionController::class, 'invoices'])->name('subscription.invoices');
+// Footer
+Route::get('/privacy', fn () => Inertia::render('Legal/Privacy'))->name('legal.privacy');

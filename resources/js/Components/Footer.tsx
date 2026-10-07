@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react'
 import { FacebookIcon, InstagramIcon, PiggyBankIcon, TwitterIcon } from "@animateicons/react/lucide"
 
 export default function Footer() {
@@ -41,7 +42,7 @@ export default function Footer() {
                                 <li><a href="#">Inicio</a></li>
                                 <li><a href="#">Quiénes somos</a></li>
                                 <li><a href="#">Contacto</a></li>
-                                <li><a href="#">Política de Privacidad</a></li>
+                                <li><Link href="/privacy">Política de Privacidad</Link></li>
                             </ul>
                         </div>
 
