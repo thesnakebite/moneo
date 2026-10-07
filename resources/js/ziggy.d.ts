@@ -147,6 +147,7 @@ declare module 'ziggy-js' {
     "subscription.invoices": [],
     "contact": [],
     "contact.store": [],
+    "about": [],
     "legal.privacy": [],
     "storage.local": [
         {

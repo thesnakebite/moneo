@@ -101,5 +101,5 @@ Route::get('/subscription/invoices', [SubscriptionController::class, 'invoices']
 // Footer
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
-
+Route::get('/about', fn () => Inertia::render('About'))->name('about');
 Route::get('/privacy', fn () => Inertia::render('Legal/Privacy'))->name('legal.privacy');
