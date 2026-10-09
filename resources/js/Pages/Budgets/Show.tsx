@@ -11,7 +11,7 @@ import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
 import { ArrowRightIcon, CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
-import { getBudgetStatusColor } from "@/utils/budget"
+import { getBudgetStatusColor, getBudgetStatusTextColor } from "@/utils/budget"
 
 type Props = {
     budget: Budget
@@ -64,7 +64,11 @@ export default function Show({budget, categories, spent} : Props) {
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
-                            <ProgressBar percentageUsed={percentageUsed} pathColor={getBudgetStatusColor(percentageUsed)} />
+                            <ProgressBar
+                                percentageUsed={percentageUsed}
+                                pathColor={getBudgetStatusColor(percentageUsed)}
+                                textColor={getBudgetStatusTextColor(percentageUsed, 'light')}
+                            />
                         </div>
 
                         <div>
@@ -72,7 +76,7 @@ export default function Show({budget, categories, spent} : Props) {
                                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                     {isOverBudget ? 'Te has excedido' : 'Te queda'}
                                 </p>
-                                <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-600' : 'text-gray-900'}`}>
+                                <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-700' : 'text-ink'}`}>
                                     {formatCurrency(Math.abs(remaining))}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-2">

@@ -1,6 +1,6 @@
 import { Budget } from "@/types/budget"
 import ProgressBar from '@/Components/ProgressBar'
-import { getBudgetStatusColor } from '@/utils/budget'
+import { getBudgetStatusColor, getBudgetStatusTextColor } from '@/utils/budget'
 import { formatCurrency } from '@/utils'
 import BudgetDropdown from '@/Components/BudgetDropdown'
 
@@ -48,7 +48,7 @@ export default function BudgetCard({ budget, finished = false }: Props) {
                             percentageUsed={percentageUsed}
                             pathColor={getBudgetStatusColor(percentageUsed)}
                             trailColor="#2D383E"
-                            textColor="#D4C9C7"
+                            textColor={getBudgetStatusTextColor(percentageUsed, 'dark')}
                             textSize="20px"
                             alertRing="ring-ink"
                             alertIconSize={12}
