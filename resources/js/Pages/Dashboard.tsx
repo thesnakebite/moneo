@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react'
-import { ReactElement, useRef } from 'react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
+import { ReactElement, useRef, useState } from 'react'
+import { route } from 'ziggy-js'
 import AppLayout from '@/Layouts/AppLayout'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import BudgetCard from '@/Components/BudgetCard'
@@ -27,9 +28,29 @@ export default function Dashboard({ activeBudgets, finishedBudgets, summary }: P
     const PlusIconRef = useRef<PlusIconHandle>(null)
 
     const tabs = [
-        { label: 'Activos', count: activeBudgets.length },
-        { label: 'Finalizados', count: finishedBudgets.length }
+        { key: 'active', label: 'Activos', count: activeBudgets.length },
+        { key: 'finished', label: 'Finalizados', count: finishedBudgets.length }
     ]
+
+    const { url } = usePage()
+    const initialTab = new URLSearchParams(url.split('?')[1] ?? '').get('tab')
+
+    const [selectedIndex, setSelectedIndex] = useState(() =>
+        Math.max(0, tabs.findIndex((tab) => tab.key === initialTab))
+    )
+
+    const handleTabChange = (index: number) => {
+        setSelectedIndex(index)
+
+        const key = tabs[index].key
+
+        router.replace({
+            url: route('dashboard', key === 'active' ? {} : { tab: key }),
+            preserveScroll: true,
+            preserveState: true,
+            viewTransition: false,
+        })
+    }
 
     return (
         <>
@@ -47,11 +68,11 @@ export default function Dashboard({ activeBudgets, finishedBudgets, summary }: P
                             finished={summary.finished}
                         />
 
-                        <TabGroup>
+                        <TabGroup selectedIndex={selectedIndex} onChange={handleTabChange}>
                             <TabList className="flex gap-6 border-b border-border-soft/40">
                                 {tabs.map((tab) => (
                                     <Tab
-                                        key={tab.label}
+                                        key={tab.key}
                                         className="group -mb-px flex items-center gap-2 border-b-2 border-transparent pb-2.5 text-sm font-semibold text-muted outline-none transition-colors cursor-pointer data-hover:text-ink data-selected:border-accent data-selected:text-ink data-focus:text-ink"
                                     >
                                         {tab.label}
