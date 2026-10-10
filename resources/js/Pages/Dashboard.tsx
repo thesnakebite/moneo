@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react'
 import { ReactElement, useRef } from 'react'
 import AppLayout from '@/Layouts/AppLayout'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import BudgetCard from '@/Components/BudgetCard'
 import { Budget } from '@/types/budget'
 import { PlusIcon } from "@animateicons/react/lucide"
@@ -25,6 +26,11 @@ export default function Dashboard({ activeBudgets, finishedBudgets, summary }: P
     const hasNoBudgets = activeBudgets.length === 0 && finishedBudgets.length === 0
     const PlusIconRef = useRef<PlusIconHandle>(null)
 
+    const tabs = [
+        { label: 'Activos', count: activeBudgets.length },
+        { label: 'Finalizados', count: finishedBudgets.length }
+    ]
+
     return (
         <>
             <Head title="Tus presupuestos" />
@@ -41,43 +47,63 @@ export default function Dashboard({ activeBudgets, finishedBudgets, summary }: P
                             finished={summary.finished}
                         />
 
-                        <section>
-                            <div className="mb-4">
-                                <h2 className="text-lg font-bold text-ink">Activos</h2>
-                                <p className="text-sm text-muted">En curso o sin fecha de cierre.</p>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {activeBudgets.map((budget) => (
-                                    <BudgetCard key={budget.id} budget={budget} />
+                        <TabGroup>
+                            <TabList className="flex gap-6 border-b border-border-soft/40">
+                                {tabs.map((tab) => (
+                                    <Tab
+                                        key={tab.label}
+                                        className="group -mb-px flex items-center gap-2 border-b-2 border-transparent pb-2.5 text-sm font-semibold text-muted outline-none transition-colors cursor-pointer data-hover:text-ink data-selected:border-accent data-selected:text-ink data-focus:text-ink"
+                                    >
+                                        {tab.label}
+                                        <span className="rounded-full bg-ink/10 px-2 py-0.5 text-xs font-bold text-ink transition-colors group-data-selected:bg-ink group-data-selected:text-surface">
+                                            {tab.count}
+                                        </span>
+                                    </Tab>
                                 ))}
+                            </TabList>
 
-                                <Link
-                                    href="/budgets/create"
-                                    onMouseEnter={() => PlusIconRef.current?.startAnimation()}
-                                    onMouseLeave={() => PlusIconRef.current?.stopAnimation()}
-                                    className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
-                                >
-                                    <PlusIcon ref={PlusIconRef} size={20} duration={1} color="currentColor" />
-                                    <p className="text-sm">Crear presupuesto</p>
-                                </Link>
-                            </div>
-                        </section>
+                            <TabPanels className="mt-4">
+                                <TabPanel className="focus:outline-none transition duration-200 ease-out starting:opacity-0 starting:translate-y-1 motion-reduce:transition-none">
+                                    <p className="mb-4 text-sm text-muted">En curso o sin fecha de cierre.</p>
 
-                        {finishedBudgets.length > 0 && (
-                            <section className="mt-12">
-                                <div className="mb-4">
-                                    <h2 className="text-lg font-bold text-ink">Finalizados</h2>
-                                    <p className="text-sm text-muted">Su fecha de finalización ya pasó. Puedes consultarlos o editarlos cuando quieras.</p>
-                                </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {activeBudgets.map((budget) => (
+                                            <BudgetCard key={budget.id} budget={budget} />
+                                        ))}
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {finishedBudgets.map((budget) => (
-                                        <BudgetCard key={budget.id} budget={budget} finished />
-                                    ))}
-                                </div>
-                            </section>
-                        )}
+                                        <Link
+                                            href="/budgets/create"
+                                            onMouseEnter={() => PlusIconRef.current?.startAnimation()}
+                                            onMouseLeave={() => PlusIconRef.current?.stopAnimation()}
+                                            className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
+                                        >
+                                            <PlusIcon ref={PlusIconRef} size={20} duration={1} color="currentColor" />
+                                            <p className="text-sm">Crear presupuesto</p>
+                                        </Link>
+                                    </div>
+                                </TabPanel>
+
+                                <TabPanel className="focus:outline-none transition duration-200 ease-out starting:opacity-0 starting:translate-y-1 motion-reduce:transition-none">
+                                    <p className="mb-4 text-sm text-muted">
+                                        Su fecha de finalización ya pasó. Puedes consultarlos o editarlos cuando quieras.
+                                    </p>
+
+                                    {finishedBudgets.length > 0 ? (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {finishedBudgets.map((budget) => (
+                                                <BudgetCard key={budget.id} budget={budget} finished />
+                                            ))}
+                                        </div>
+
+                                    ) : (
+                                        <div className="rounded-xl border border-dashed border-border-soft p-10 text-center text-sm text-muted">
+                                            Aún no tienes presupuestos finalizados. Aparecerán aquí cuando pase su fecha de cierre.
+                                        </div>
+                                    )}
+                                </TabPanel>
+
+                            </TabPanels>
+                        </TabGroup>
                     </>
                 )}
             </div>
