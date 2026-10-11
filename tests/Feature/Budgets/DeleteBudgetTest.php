@@ -33,7 +33,7 @@ it('does not allow guests to delete budgets', function () {
 
     $response->assertRedirect(route('login'));
 
-    $this->assertDatabaseHas('budgets', [
+    $this->assertNotSoftDeleted('budgets', [
         'id' => $budget->id
     ]);
 });
@@ -49,7 +49,7 @@ it('does not allow unverified users to delete budgets', function () {
 
     $response->assertRedirect(route('verification.notice'));
 
-    $this->assertDatabaseHas('budgets', [
+    $this->assertNotSoftDeleted('budgets', [
         'id' => $budget->id
     ]);
 });
