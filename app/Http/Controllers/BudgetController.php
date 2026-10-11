@@ -29,6 +29,13 @@ class BudgetController extends Controller
             ->latest()
             ->get();
 
+        $trashed = Auth::user()
+            ->budgets()
+            ->onlyTrashed()
+            ->with('expenses')
+            ->latest('deleted_at')
+            ->get();
+
         [$finished, $active] = $budgets->partition(
             fn (Budget $budget) => $budget->ends_at !== null
                 && Carbon::parse($budget->ends_at)->endOfDay()->isPast()
@@ -44,6 +51,7 @@ class BudgetController extends Controller
         return Inertia::render('Dashboard', [
             'activeBudgets' => $active->values(),
             'finishedBudgets' => $finished->values(),
+            'trashedBudgets' => $trashed,
             'summary' => [
                 'managed' => (string) $active->sum('amount'),
                 'spent' => (string) $active->sum(fn (Budget $budget) => $budget->expenses->sum('amount')),
@@ -128,6 +136,28 @@ class BudgetController extends Controller
         $budget->delete();
 
         return redirect()->route('dashboard')
-            ->with('success', 'Presupuesto eliminado correctamente.');
+            ->with('success', 'Presupuesto movido a la papelera.');
+    }
+
+    #[Authorize('restore', 'budget')]
+    public function restore(Budget $budget): RedirectResponse
+    {
+        abort_unless($budget->trashed(), 404);
+
+        $budget->restore();
+
+        return redirect()->route('dashboard', ['tab' => 'trash'])
+            ->with('success', 'Presupuesto restaurado.');
+    }
+
+    #[Authorize('forceDelete', 'budget')]
+    public function forceDelete(Budget $budget): RedirectResponse
+    {
+        abort_unless($budget->trashed(), 404);
+
+        $budget->forceDelete();
+
+        return redirect()->route('dashboard', ['tab' => 'trash'])
+            ->with('success', 'Presupuesto eliminado definitivamente.');
     }
 }

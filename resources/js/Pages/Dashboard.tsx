@@ -21,6 +21,7 @@ type Props = {
         attention: number
         finished: number
     }
+    trashedBudgets: Budget[]
 }
 
 export default function Dashboard({ activeBudgets, finishedBudgets, summary }: Props) {

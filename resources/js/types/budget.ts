@@ -10,5 +10,6 @@ export type Budget = {
     starts_at: string | null
     ends_at: string | null
     created_at: string
+    deleted_at: string | null
     expenses: Expense[]
 }

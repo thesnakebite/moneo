@@ -31,4 +31,20 @@ class BudgetPolicy
     {
         return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permiso para eliminar este presupuesto.');
     }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Budget $budget): Response
+    {
+        return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permiso para restaurar este presupuesto.');
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Budget $budget): Response
+    {
+        return $user->id === $budget->user_id ? Response::allow() : Response::deny('No tienes permiso para eliminar definitivamente este presupuesto.');
+    }
 }

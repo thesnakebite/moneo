@@ -106,6 +106,20 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "budgets.restore": [
+        {
+            "name": "budget",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "budgets.force-delete": [
+        {
+            "name": "budget",
+            "required": true,
+            "binding": "id"
+        }
+    ],
     "budgets.chat": [
         {
             "name": "budget",
