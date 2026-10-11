@@ -15,3 +15,12 @@ export function getBudgetStatusTextColor(percentageUsed: number, surface: Surfac
 
     return surface === 'dark' ? 'var(--color-surface)' : 'var(--color-ink)'
 }
+
+export const TRASH_RETENTION_DAYS = 30
+
+export function getDaysUntilPurge(deletedAt: string): number {
+    const dayInMs = 1000 * 60 * 60 * 24
+    const purgeAt = new Date(deletedAt).getTime() + TRASH_RETENTION_DAYS * dayInMs
+
+    return Math.max(0, Math.ceil((purgeAt - Date.now()) / dayInMs))
+}
