@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\ExpenseCategory;
 use App\Http\Requests\BudgetRequest;
 use App\Models\Budget;
-use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,21 +21,14 @@ class BudgetController extends Controller
      */
     public function index(): Response
     {
-        $active = Auth::user()
+        $activeSummary = Auth::user()
             ->budgets()
             ->active()
+            ->select(['budgets.id', 'budgets.amount'])
             ->withSum('expenses', 'amount')
-            ->latest()
             ->get();
 
-        $finished = Auth::user()
-            ->budgets()
-            ->finished()
-            ->withSum('expenses', 'amount')
-            ->latest('ends_at')
-            ->get();
-
-        $attention = $active->filter(function (Budget $budget) {
+        $attention = $activeSummary->filter(function (Budget $budget) {
             $amount = (float) $budget->amount;
 
             return $amount > 0
@@ -52,14 +43,27 @@ class BudgetController extends Controller
             ->get();
 
         return Inertia::render('Dashboard', [
-            'activeBudgets' => $active,
-            'finishedBudgets' => $finished,
+            'activeBudgets' => Inertia::scroll(fn () => Auth::user()
+                ->budgets()
+                ->active()
+                ->withSum('expenses', 'amount')
+                ->latest()
+                ->paginate(6, ['*'], 'active')
+            ),
+            'finishedBudgets' => Inertia::scroll(fn () => Auth::user()
+                ->budgets()
+                ->finished()
+                ->withSum('expenses', 'amount')
+                ->latest('ends_at')
+                ->paginate(6, ['*'], 'finished')
+            ),
             'trashedBudgets' => $trashed,
             'summary' => [
-                'managed' => (string) $active->sum('amount'),
-                'spent' => (string) $active->sum(fn (Budget $budget) => (float) $budget->expenses_sum_amount),
+                'active' => $activeSummary->count(),
+                'managed' => (string) $activeSummary->sum('amount'),
+                'spent' => (string) $activeSummary->sum(fn (Budget $budget) => (float) $budget->expenses_sum_amount),
                 'attention' => $attention,
-                'finished' => $finished->count(),
+                'finished' => Auth::user()->budgets()->finished()->count(),
             ],
         ]);
     }

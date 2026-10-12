@@ -1,7 +1,8 @@
-import { Head, Link, router, usePage } from '@inertiajs/react'
+import { Head, InfiniteScroll, Link, router, usePage } from '@inertiajs/react'
 import { ReactElement, useRef, useState } from 'react'
 import { route } from 'ziggy-js'
 import AppLayout from '@/Layouts/AppLayout'
+import BudgetScrollGrid from '@/Components/BudgetScrollGrid'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import BudgetCard from '@/Components/BudgetCard'
 import { DashboardBudget } from '@/types/budget'
@@ -14,27 +15,28 @@ import DashboardHeader from '@/Components/DashboardHeader'
 import DashboardEmpty from '@/Components/DashboardEmpty'
 
 type Props = {
-    activeBudgets: DashboardBudget[]
-    finishedBudgets: DashboardBudget[]
+    activeBudgets: { data: DashboardBudget[] }
+    finishedBudgets: { data: DashboardBudget[] }
+    trashedBudgets: DashboardBudget[]
     summary: {
+        active: number
         managed: string
         spent: string
         attention: number
         finished: number
     }
-    trashedBudgets: DashboardBudget[]
 }
 
 export default function Dashboard({ activeBudgets, finishedBudgets, trashedBudgets, summary }: Props) {
-    const hasNoBudgets = activeBudgets.length === 0 && finishedBudgets.length === 0 && trashedBudgets.length === 0
+    const hasNoBudgets = summary.active === 0 && summary.finished === 0 && trashedBudgets.length === 0
     const PlusIconRef = useRef<PlusIconHandle>(null)
     const ActiveIconRef = useRef<CalendarClockIconHandle>(null)
     const FinishedIconRef = useRef<CalendarCheckIconHandle>(null)
     const TrashIconRef = useRef<Trash2IconHandle>(null)
 
     const tabs = [
-        { key: 'active', label: 'Activos', count: activeBudgets.length },
-        { key: 'finished', label: 'Finalizados', count: finishedBudgets.length },
+        { key: 'active', label: 'Activos', count: summary.active },
+        { key: 'finished', label: 'Finalizados', count: summary.finished },
         { key: 'trash', label: 'Papelera', count: trashedBudgets.length },
     ]
 
@@ -118,8 +120,8 @@ export default function Dashboard({ activeBudgets, finishedBudgets, trashedBudge
                                 <TabPanel className="focus:outline-none transition duration-200 ease-out starting:opacity-0 starting:translate-y-1 motion-reduce:transition-none">
                                     <p className="mb-4 text-sm text-muted">En curso o sin fecha de cierre.</p>
 
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {activeBudgets.map((budget) => (
+                                    <BudgetScrollGrid data="activeBudgets" loadedCount={activeBudgets.data.length}>
+                                        {activeBudgets.data.map((budget) => (
                                             <BudgetCard key={budget.id} budget={budget} />
                                         ))}
 
@@ -127,12 +129,12 @@ export default function Dashboard({ activeBudgets, finishedBudgets, trashedBudge
                                             href="/budgets/create"
                                             onMouseEnter={() => PlusIconRef.current?.startAnimation()}
                                             onMouseLeave={() => PlusIconRef.current?.stopAnimation()}
-                                            className="border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
+                                            className="order-first sm:order-last border border-dashed border-border-soft rounded-xl p-5 flex flex-col items-center justify-center gap-2 text-muted hover:border-accent/40 hover:text-accent transition-colors min-h-35"
                                         >
                                             <PlusIcon ref={PlusIconRef} size={20} duration={1} color="currentColor" />
                                             <p className="text-sm">Crear presupuesto</p>
                                         </Link>
-                                    </div>
+                                    </BudgetScrollGrid>
                                 </TabPanel>
 
                                 <TabPanel className="focus:outline-none transition duration-200 ease-out starting:opacity-0 starting:translate-y-1 motion-reduce:transition-none">
@@ -140,13 +142,12 @@ export default function Dashboard({ activeBudgets, finishedBudgets, trashedBudge
                                         Su fecha de finalización ya pasó. Puedes consultarlos o editarlos cuando quieras.
                                     </p>
 
-                                    {finishedBudgets.length > 0 ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                            {finishedBudgets.map((budget) => (
+                                    {summary.finished > 0 ? (
+                                        <BudgetScrollGrid data="finishedBudgets" loadedCount={finishedBudgets.data.length}>
+                                            {finishedBudgets.data.map((budget) => (
                                                 <BudgetCard key={budget.id} budget={budget} finished />
                                             ))}
-                                        </div>
-
+                                        </BudgetScrollGrid>
                                     ) : (
                                         <div className="rounded-xl border border-dashed border-border-soft p-10 text-center text-sm text-muted">
                                             Aún no tienes presupuestos finalizados. Aparecerán aquí cuando pase su fecha de cierre.

@@ -90,9 +90,9 @@ it('lists trashed budgets separately and excludes them from the summary', functi
 
     $response->assertInertia(fn (Assert $page) => $page
         ->component('Dashboard')
-        ->has('activeBudgets', 1)
-        ->where('activeBudgets.0.id', $active->id)
-        ->has('finishedBudgets', 0)
+        ->has('activeBudgets.data', 1)
+        ->where('activeBudgets.data.0.id', $active->id)
+        ->has('finishedBudgets.data', 0)
         ->has('trashedBudgets', 1)
         ->where('trashedBudgets.0.id', $trashed->id)
     );

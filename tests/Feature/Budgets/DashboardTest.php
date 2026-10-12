@@ -18,8 +18,10 @@ it('shows empty state when the user has no budgets', function () {
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page
         ->component('Dashboard')
-        ->has('activeBudgets', 0)
-        ->has('finishedBudgets', 0)
+        ->has('activeBudgets.data', 0)
+        ->has('finishedBudgets.data', 0)
+        ->has('trashedBudgets', 0)
+        ->where('summary.active', 0)
         ->where('summary.attention', 0)
         ->where('summary.finished', 0)
     );
@@ -60,9 +62,9 @@ it('splits budgets into active and finished by end date', function () {
         ->get(route('dashboard'))
         ->assertInertia(fn (Assert $page) => $page
             ->component('Dashboard')
-            ->has('activeBudgets', 2)
-            ->has('finishedBudgets', 1)
-            ->where('finishedBudgets.0.name', 'Terminó ayer')
+            ->has('activeBudgets.data', 2)
+            ->has('finishedBudgets.data', 1)
+            ->where('finishedBudgets.data.0.name', 'Terminó ayer')
         );
 });
 
@@ -105,17 +107,34 @@ it('counts budgets at 90% or more as requiring attention', function () {
         );
 });
 
-it('treats budgets ending today as active and ending yesterday as finished', function () {
+it('paginates active budgets nine at a time', function () {
     $user = User::factory()->create(['email_verified_at' => now()]);
-    $endsToday = Budget::factory()->for($user)->create(['ends_at' => today()]);
-    $endedYesterday = Budget::factory()->for($user)->create(['ends_at' => today()->subDay()]);
+    Budget::factory()->count(7)->for($user)->create(['ends_at' => null]);
 
-    $response = $this->actingAs($user)->get(route('dashboard'));
+    $this->actingAs($user)->get(route('dashboard'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('activeBudgets.data', 6)
+            ->where('summary.active', 7)
+        );
 
-    $response->assertInertia(fn (Assert $page) => $page
-        ->has('activeBudgets', 1)
-        ->where('activeBudgets.0.id', $endsToday->id)
-        ->has('finishedBudgets', 1)
-        ->where('finishedBudgets.0.id', $endedYesterday->id)
-    );
+    $this->actingAs($user)->get(route('dashboard', ['active' => 2]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('activeBudgets.data', 1)
+        );
+});
+
+it('paginates finished budgets nine at a time', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+    Budget::factory()->count(7)->for($user)->create(['ends_at' => today()->subWeek()]);
+
+    $this->actingAs($user)->get(route('dashboard'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('finishedBudgets.data',6)
+            ->where('summary.finished', 7)
+        );
+
+    $this->actingAs($user)->get(route('dashboard', ['finished' => 2]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('finishedBudgets.data', 1)
+        );
 });
