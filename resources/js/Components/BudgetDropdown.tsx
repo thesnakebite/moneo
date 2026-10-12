@@ -7,7 +7,7 @@ import type { PencilIconHandle, Trash2IconHandle, EyeIconHandle } from '@animate
 import { useBudgetDeleteModalStore } from '@/stores/budget-delete-store'
 
 type Props = {
-    budget: Budget
+    budget: Pick<Budget, 'id' | 'name'>
 }
 
 export default function BudgetDropdown({ budget }: Props) {

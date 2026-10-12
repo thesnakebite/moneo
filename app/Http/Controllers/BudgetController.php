@@ -25,15 +25,8 @@ class BudgetController extends Controller
     {
         $budgets = Auth::user()
             ->budgets()
-            ->with('expenses')
+            ->withSum('expenses', 'amount')
             ->latest()
-            ->get();
-
-        $trashed = Auth::user()
-            ->budgets()
-            ->onlyTrashed()
-            ->with('expenses')
-            ->latest('deleted_at')
             ->get();
 
         [$finished, $active] = $budgets->partition(
@@ -45,8 +38,15 @@ class BudgetController extends Controller
             $amount = (float) $budget->amount;
 
             return $amount > 0
-                && round(($budget->expenses->sum('amount') / $amount) * 100) >= 90;
+                && round(((float) $budget->expenses_sum_amount / $amount) * 100) >= 90;
         })->count();
+
+        $trashed = Auth::user()
+            ->budgets()
+            ->onlyTrashed()
+            ->withSum('expenses', 'amount')
+            ->latest('deleted_at')
+            ->get();
 
         return Inertia::render('Dashboard', [
             'activeBudgets' => $active->values(),
@@ -54,7 +54,7 @@ class BudgetController extends Controller
             'trashedBudgets' => $trashed,
             'summary' => [
                 'managed' => (string) $active->sum('amount'),
-                'spent' => (string) $active->sum(fn (Budget $budget) => $budget->expenses->sum('amount')),
+                'spent' => (string) $active->sum(fn (Budget $budget) => (float) $budget->expenses_sum_amount),
                 'attention' => $attention,
                 'finished' => $finished->count(),
             ],

@@ -1,10 +1,12 @@
 import { create } from 'zustand'
 import { Budget } from "@/types/budget"
 
+type DeletableBudget = Pick<Budget, 'id' | 'name'>
+
 type Store = {
     open: boolean
-    budget: Budget | null
-    openModal: (budget: Budget) => void
+    budget: DeletableBudget | null
+    openModal: (budget: DeletableBudget) => void
     closeModal: () => void
 }
 

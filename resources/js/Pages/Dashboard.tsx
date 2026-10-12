@@ -4,7 +4,7 @@ import { route } from 'ziggy-js'
 import AppLayout from '@/Layouts/AppLayout'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import BudgetCard from '@/Components/BudgetCard'
-import { Budget } from '@/types/budget'
+import { DashboardBudget } from '@/types/budget'
 import { PlusIcon, CalendarCheckIcon, CalendarClockIcon, Trash2Icon } from "@animateicons/react/lucide"
 import type { PlusIconHandle, CalendarClockIconHandle, CalendarCheckIconHandle, Trash2IconHandle } from "@animateicons/react/lucide"
 import TrashedBudgetCard from '@/Components/TrashedBudgetCard'
@@ -14,15 +14,15 @@ import DashboardHeader from '@/Components/DashboardHeader'
 import DashboardEmpty from '@/Components/DashboardEmpty'
 
 type Props = {
-    activeBudgets: Budget[]
-    finishedBudgets: Budget[]
+    activeBudgets: DashboardBudget[]
+    finishedBudgets: DashboardBudget[]
     summary: {
         managed: string
         spent: string
         attention: number
         finished: number
     }
-    trashedBudgets: Budget[]
+    trashedBudgets: DashboardBudget[]
 }
 
 export default function Dashboard({ activeBudgets, finishedBudgets, trashedBudgets, summary }: Props) {

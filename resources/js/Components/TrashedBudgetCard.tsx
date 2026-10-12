@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { router } from '@inertiajs/react'
 import { route } from 'ziggy-js'
-import { Budget } from '@/types/budget'
+import { Budget, DashboardBudget } from '@/types/budget'
 import { formatCurrency } from '@/utils'
 import { getDaysUntilPurge } from '@/utils/budget'
 
 type Props = {
-    budget: Budget
+    budget: DashboardBudget
 }
 
 export default function TrashedBudgetCard({ budget }: Props) {
     const [confirming, setConfirming] = useState(false)
     const [processing, setProcessing] = useState(false)
 
-    const spent = budget.expenses.reduce((sum, expense) => sum + Number(expense.amount), 0)
+    const spent = Number(budget.expenses_sum_amount ?? 0)
     const daysLeft = getDaysUntilPurge(budget.deleted_at!)
     const isUrgent = daysLeft <= 3
 

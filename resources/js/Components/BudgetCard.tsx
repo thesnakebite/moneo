@@ -1,16 +1,16 @@
-import { Budget } from "@/types/budget"
+import { DashboardBudget } from "@/types/budget"
 import ProgressBar from '@/Components/ProgressBar'
 import { getBudgetStatusColor, getBudgetStatusTextColor } from '@/utils/budget'
 import { formatCurrency } from '@/utils'
 import BudgetDropdown from '@/Components/BudgetDropdown'
 
 type Props = {
-    budget: Budget
+    budget: DashboardBudget
     finished?: boolean
 }
 
 export default function BudgetCard({ budget, finished = false }: Props) {
-    const spent = budget.expenses.reduce((sum, e) => sum + Number(e.amount), 0)
+    const spent = Number(budget.expenses_sum_amount ?? 0)
     const percentageUsed = Number(budget.amount) > 0 ? Math.round((spent / Number(budget.amount)) * 100) : 0
     const isOverBudget = percentageUsed >= 100
 

@@ -13,3 +13,7 @@ export type Budget = {
     deleted_at: string | null
     expenses: Expense[]
 }
+
+export type DashboardBudget = Omit<Budget, 'expenses'> & {
+    expenses_sum_amount: string | null
+}
