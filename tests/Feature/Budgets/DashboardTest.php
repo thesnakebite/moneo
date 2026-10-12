@@ -104,3 +104,18 @@ it('counts budgets at 90% or more as requiring attention', function () {
             ->where('summary.attention', 1)
         );
 });
+
+it('treats budgets ending today as active and ending yesterday as finished', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+    $endsToday = Budget::factory()->for($user)->create(['ends_at' => today()]);
+    $endedYesterday = Budget::factory()->for($user)->create(['ends_at' => today()->subDay()]);
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+
+    $response->assertInertia(fn (Assert $page) => $page
+        ->has('activeBudgets', 1)
+        ->where('activeBudgets.0.id', $endsToday->id)
+        ->has('finishedBudgets', 1)
+        ->where('finishedBudgets.0.id', $endedYesterday->id)
+    );
+});

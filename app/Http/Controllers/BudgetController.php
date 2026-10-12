@@ -23,16 +23,19 @@ class BudgetController extends Controller
      */
     public function index(): Response
     {
-        $budgets = Auth::user()
+        $active = Auth::user()
             ->budgets()
+            ->active()
             ->withSum('expenses', 'amount')
             ->latest()
             ->get();
 
-        [$finished, $active] = $budgets->partition(
-            fn (Budget $budget) => $budget->ends_at !== null
-                && Carbon::parse($budget->ends_at)->endOfDay()->isPast()
-        );
+        $finished = Auth::user()
+            ->budgets()
+            ->finished()
+            ->withSum('expenses', 'amount')
+            ->latest('ends_at')
+            ->get();
 
         $attention = $active->filter(function (Budget $budget) {
             $amount = (float) $budget->amount;
@@ -49,8 +52,8 @@ class BudgetController extends Controller
             ->get();
 
         return Inertia::render('Dashboard', [
-            'activeBudgets' => $active->values(),
-            'finishedBudgets' => $finished->values(),
+            'activeBudgets' => $active,
+            'finishedBudgets' => $finished,
             'trashedBudgets' => $trashed,
             'summary' => [
                 'managed' => (string) $active->sum('amount'),

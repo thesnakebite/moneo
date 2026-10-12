@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enums\BudgetType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,5 +42,21 @@ class Budget extends Model
     public function expenses(): HasMany
     {
         return $this->hasMany(Expense::class);
+    }
+
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where(fn (Builder $query) => $query
+            ->whereNull('ends_at')
+            ->orWhere('ends_at', '>=', today())
+        );
+    }
+
+    #[Scope]
+    protected function finished(Builder $query): void
+    {
+        $query->whereNotNull('ends_at')
+            ->where('ends_at', '<', today());
     }
 }
