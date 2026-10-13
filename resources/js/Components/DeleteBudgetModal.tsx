@@ -2,15 +2,16 @@ import { router } from '@inertiajs/react'
 import { route } from 'ziggy-js'
 import { useEffect, useRef, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { TriangleAlertIcon, type TriangleAlertIconHandle } from '@animateicons/react/lucide'
+import { Trash2Icon, type Trash2IconHandle } from '@animateicons/react/lucide'
 import { useBudgetDeleteModalStore } from '@/stores/budget-delete-store'
+import { TRASH_RETENTION_DAYS } from '@/utils/budget'
 
 export default function DeleteBudgetModal() {
     const open = useBudgetDeleteModalStore((state) => state.open)
     const budget = useBudgetDeleteModalStore((state) => state.budget)
     const closeModal = useBudgetDeleteModalStore((state) => state.closeModal)
 
-    const alertIconRef = useRef<TriangleAlertIconHandle>(null)
+    const trashIconRef = useRef<Trash2IconHandle>(null)
     const [animationKey, setAnimationKey] = useState(0)
     const [processing, setProcessing] = useState(false)
 
@@ -22,7 +23,7 @@ export default function DeleteBudgetModal() {
 
     useEffect(() => {
         if (open) {
-            const timeout = setTimeout(() => alertIconRef.current?.startAnimation(), 50)
+            const timeout = setTimeout(() => trashIconRef.current?.startAnimation(), 50)
             return () => clearTimeout(timeout)
         }
     }, [open, animationKey])
@@ -59,15 +60,15 @@ export default function DeleteBudgetModal() {
                 >
                     <div className="flex items-start gap-4">
                         <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-red-100">
-                            <TriangleAlertIcon key={animationKey} ref={alertIconRef} size={20} color="#dc2626" />
+                            <Trash2Icon key={animationKey} ref={trashIconRef} size={20} color="var(--color-ink)" />
                         </div>
 
                         <div>
                             <DialogTitle className="text-base font-bold text-ink">
-                                Eliminar presupuesto
+                                ¿Mover a la papelera?
                             </DialogTitle>
                             <p className="mt-1 text-sm text-muted">
-                                «{budget.name}» y todos sus gastos asociados se eliminarán permanentemente. Esta acción no se puede deshacer.
+                                «{budget.name}» se moverá a la papelera. Podrás restaurarlo durante {TRASH_RETENTION_DAYS} días; después se eliminará definitivamente junto con sus gastos.
                             </p>
                         </div>
                     </div>
@@ -87,7 +88,7 @@ export default function DeleteBudgetModal() {
                             disabled={processing}
                             className="bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white px-4 py-2.5 rounded-lg text-sm font-bold"
                         >
-                            {processing ? 'Eliminando...' : 'Eliminar'}
+                            {processing ? 'Moviendo...' : 'Mover a la papelera'}
                         </button>
                     </div>
                 </DialogPanel>
