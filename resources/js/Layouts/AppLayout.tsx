@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react'
+import { Link, usePage, router } from '@inertiajs/react'
 import { PropsWithChildren, useEffect } from 'react'
 import UserDropdown from '@/Components/UserDropdown'
 import Footer from '@/Components/Footer'
@@ -9,12 +9,18 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
     useEffect(() => {
         if (flash.success) {
-            toast.success(flash.success)
+            toast.success(flash.success, flash.undo ? {
+                duration: 6000,
+                action: {
+                    label: 'Deshacer',
+                    onClick: () => router.patch(flash.undo!, {}, { preserveScroll: true }),
+                },
+            } : undefined)
         }
         if (flash.error) {
             toast.error(flash.error)
         }
-    }, [flash.success])
+    }, [flash])
 
     return (
         <div className="min-h-screen flex flex-col">

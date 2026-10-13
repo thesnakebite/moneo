@@ -7,6 +7,7 @@ declare module '@inertiajs/core' {
                 success?: string
                 error?: string
                 subscribed?: boolean
+                undo?: string | null
             },
             user: {
                 user: {

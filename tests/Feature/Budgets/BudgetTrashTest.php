@@ -12,10 +12,14 @@ it('allows the owner to restore a trashed budget', function () {
     $user = User::factory()->create(['email_verified_at' => now()]);
     $budget = Budget::factory()->for($user)->trashed()->create();
 
-    $response = $this->actingAs($user)->patch(route('budgets.restore', $budget));
+   $response = $this->actingAs($user)
+        ->from(route('dashboard', ['tab' => 'trash']))
+        ->patch(route('budgets.restore', $budget));
 
     $response->assertRedirect(route('dashboard', ['tab' => 'trash']));
     $this->assertNotSoftDeleted($budget);
+
+    $response->assertSessionHas('success', 'Presupuesto restaurado.');
 });
 
 it('does not allow other users to restore a budget', function () {

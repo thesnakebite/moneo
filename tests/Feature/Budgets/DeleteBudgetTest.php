@@ -16,9 +16,11 @@ it('allows the owner to delete a budget', function () {
     $response = $this->actingAs($user)->delete(route('budgets.destroy', $budget));
 
     $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('success', 'Presupuesto movido a la papelera.');
+    $response->assertSessionHas('undo', route('budgets.restore', $budget));
 
     $this->assertSoftDeleted('budgets', [
-        'id' => $budget->id
+        'id' => $budget->id,
     ]);
 });
 

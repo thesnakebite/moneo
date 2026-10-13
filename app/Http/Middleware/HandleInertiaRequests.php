@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'subscribed' => fn () => $request->session()->get('subscribed', false),
+                'undo' => fn () => $request->session()->get('undo'),
             ],
             'user' => [
                 'user' => $authUser ? new UserResource($authUser) : null,

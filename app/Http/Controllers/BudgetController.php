@@ -143,7 +143,8 @@ class BudgetController extends Controller
         $budget->delete();
 
         return redirect()->route('dashboard')
-            ->with('success', 'Presupuesto movido a la papelera.');
+            ->with('success', 'Presupuesto movido a la papelera.')
+            ->with('undo', route('budgets.restore', $budget));
     }
 
     #[Authorize('restore', 'budget')]
@@ -153,8 +154,7 @@ class BudgetController extends Controller
 
         $budget->restore();
 
-        return redirect()->route('dashboard', ['tab' => 'trash'])
-            ->with('success', 'Presupuesto restaurado.');
+        return back()->with('success', 'Presupuesto restaurado.');
     }
 
     #[Authorize('forceDelete', 'budget')]
