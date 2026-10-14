@@ -9,7 +9,7 @@ export default function Privacy() {
 
             <article className="max-w-2xl mx-auto py-10">
                 <h1 className="text-3xl font-bold text-ink">Política de privacidad</h1>
-                <p className="mt-2 text-sm text-muted">Última actualización: 5 de octubre de 2026</p>
+                <p className="mt-2 text-sm text-muted">Última actualización: 14 de octubre de 2026</p>
 
                 <div className="mt-10 space-y-8 text-sm leading-relaxed text-ink [&_h2]:text-lg [&_h2]:font-bold [&_h2]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_p+p]:mt-2">
                     <section>
@@ -18,7 +18,7 @@ export default function Privacy() {
                             <li>Titular: Álvaro Navarro (thesnakebite)</li>
                             <li>NIF: 46059375N</li>
                             <li>Domicilio: Carrer Joan Llampallas, 35, local, 08320, Barcelona</li>
-                            <li>Email: alvaro@thesnakebite.es</li>
+                            <li>Email: soporte@moneo.es</li>
                         </ul>
                         <p className="mt-2.5">Moneo es un proyecto de estudio personal en desarrollo.</p>
                     </section>
@@ -73,6 +73,10 @@ export default function Privacy() {
                             Mientras tu cuenta esté activa. Si la eliminas, se borran tus datos, presupuestos, gastos
                             y foto de perfil. Solo se conserva tu email junto al motivo de baja que indiques, si
                             decides indicarlo.
+                        </p>
+                        <p>
+                            Los presupuestos que eliminas se guardan en la papelera durante 30 días, durante los cuales
+                            puedes restaurarlos. Transcurrido ese plazo, se eliminan definitivamente junto con todos sus gastos.
                         </p>
                     </section>
 
