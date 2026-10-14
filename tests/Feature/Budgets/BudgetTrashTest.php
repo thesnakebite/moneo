@@ -113,3 +113,20 @@ it('does not show trashed budgets from other users', function () {
         ->has('trashedBudgets', 0)
     );
 });
+
+it('prunes budgets trashed more than 30 days ago along with their expenses', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    $expired = Budget::factory()->for($user)->create(['deleted_at' => now()->subDays(31)]);
+    Expense::factory()->count(2)->for($expired)->create();
+
+    $recent = Budget::factory()->for($user)->create(['deleted_at' => now()->subDays(29)]);
+    $active = Budget::factory()->for($user)->create();
+
+    $this->artisan('model:prune', ['--model' => Budget::class])->assertSuccessful();
+
+    $this->assertDatabaseMissing('budgets', ['id' => $expired->id]);
+    $this->assertDatabaseMissing('expenses', ['budget_id' => $expired->id]);
+    $this->assertSoftDeleted($recent);
+    $this->assertNotSoftDeleted($active);
+});
