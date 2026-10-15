@@ -4,6 +4,7 @@ import { DefaultChatTransport } from 'ai'
 import ChatMessages from './ChatMessages'
 import { toast } from 'sonner'
 import { router } from '@inertiajs/react'
+import { compressImage } from '@/utils/image'
 
 type Props = {
     budgetId: string,
@@ -55,14 +56,28 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 id: crypto.randomUUID(),
                 role: 'user' as const,
                 content: 'Ticket de compra subido',
-                parts: [{type: 'text' as const, text: 'Ticket de compra subido 🧾'}]
+                parts: [{ type: 'text' as const, text: 'Ticket de compra subido 🧾' }]
             }
         ])
 
+        const addAssistantMessage = (text: string) => {
+            setMessages(prev => [
+                ...prev,
+                {
+                    id: crypto.randomUUID(),
+                    role: 'assistant' as const,
+                    content: text,
+                    parts: [{ type: 'text' as const, text }]
+                }
+            ])
+        }
+
         try {
+            const image = await compressImage(file).catch(() => file)
+
             const csrfToken = document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content ?? ''
             const formData = new FormData()
-            formData.append('image', file)
+            formData.append('image', image)
 
             const response = await fetch(`/budgets/${budgetId}/scan-ticket`, {
                 method: 'POST',
@@ -74,38 +89,31 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 body: formData,
             })
 
+            const isJson = response.headers.get('content-type')?.includes('application/json')
+
+            if (!isJson) {
+                throw new Error(`Respuesta inesperada del servidor (${response.status})`)
+            }
+
             const data = await response.json()
 
-            setMessages(prev => [
-                ...prev,
-                {
-                    id: crypto.randomUUID(),
-                    role: 'assistant' as const,
-                    content: data.message,
-                    parts: [{ type: 'text' as const, text: data.message }]
-                }
-            ])
+            if (!response.ok) {
+                addAssistantMessage(data.errors?.image?.[0] ?? data.message ?? 'No se pudo procesar el ticket 🧾. Prueba de nuevo.')
+                return
+            }
+
+            addAssistantMessage(data.message)
 
             if (data.success) {
                 toast.success('Gastos del ticket registrados')
                 router.reload()
             }
-
         } catch (error) {
-            console.error('Error al procesar el ticket: ' , error)
-
-            setMessages(prev => [
-            ...prev,
-            {
-                id: crypto.randomUUID(),
-                role: 'assistant' as const,
-                content: 'Error al procesar el ticket 🧾. Prueba de nuevo.',
-                parts: [{type: 'text' as const, text: 'Error al procesar el ticket. Prueba de nuevo.'}]
-            }
-        ])
+            console.error('Error al procesar el ticket: ', error)
+            addAssistantMessage('Error al procesar el ticket 🧾. Prueba de nuevo.')
         } finally {
             setIsUploadingReceipt(false)
-            if(fileInputRef.current) fileInputRef.current.value = ''
+            if (fileInputRef.current) fileInputRef.current.value = ''
         }
     }
 

@@ -21,7 +21,11 @@ class TicketScanController extends Controller
     public function store(Request $request, Budget $budget): JsonResponse
     {
         $request->validate([
-            'image' => ['required', 'image', 'max:1240'],
+            'image' => ['required', 'image', 'max:4096'],
+        ], [
+            'image.required' => 'Selecciona una imagen del ticket.',
+            'image.image' => 'El archivo debe ser una imagen (JPG, PNG o WebP).',
+            'image.max' => 'La imagen no puede superar los 4 MB.',
         ]);
 
         /**@var \Laravel\Ai\Responses\StructuredAgentResponse $response */
