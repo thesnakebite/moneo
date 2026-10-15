@@ -16,7 +16,7 @@ class BudgetAssistant implements Agent, HasTools
 {
     use Promptable;
 
-    public int $budgetId = 0;
+    public string $budgetId;
     public string $budgetContext = '';
     public bool $hasCategories = true;
 

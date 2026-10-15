@@ -11,7 +11,7 @@ use Stringable;
 class SearchExpenses implements Tool
 {
     public function __construct(
-        public int $budgetId,
+        public string $budgetId,
     ){}
 
     /**

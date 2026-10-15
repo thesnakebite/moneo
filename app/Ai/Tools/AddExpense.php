@@ -12,7 +12,7 @@ use Stringable;
 class AddExpense implements Tool
 {
     public function __construct(
-        public int $budgetId,
+        public string $budgetId,
         public bool $hasCategories = true,
     ) {}
 
