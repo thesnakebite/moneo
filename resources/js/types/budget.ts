@@ -3,7 +3,7 @@ import { Expense } from "./expense"
 export type BudgetType = 'general' | 'goal'
 
 export type Budget = {
-    id: number
+    id: string
     name: string
     amount: string
     type: BudgetType

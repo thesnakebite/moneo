@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { router } from '@inertiajs/react'
 
 type Props = {
-    budgetId: number,
+    budgetId: string,
     userName: string,
 }
 

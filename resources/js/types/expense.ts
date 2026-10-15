@@ -8,7 +8,7 @@ export type CategoryValue =
     | 'other';
 
 export type Expense = {
-    id: number
+    id: string
     name: string
     amount: string
     created_at: string

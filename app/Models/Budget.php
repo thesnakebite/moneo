@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Enums\BudgetType;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -14,9 +16,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['user_id', 'name', 'amount', 'type', 'starts_at', 'ends_at'])]
+#[Hidden(['user_id'])]
 class Budget extends Model
 {
-    use SoftDeletes, HasFactory, Prunable;
+    use SoftDeletes, HasFactory, Prunable, HasUuids;
 
     // Keep in sync with TRASH_RETENTION_DAYS in resources/js/utils/budget.ts
     public const TRASH_RETENTION_DAYS = 30;
