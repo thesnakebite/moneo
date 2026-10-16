@@ -46,8 +46,19 @@ class ExpenseController extends Controller
     {
         $expense->delete();
 
-        return redirect()
-            ->route('budgets.show', $budget)
-            ->with('success', 'Gasto eliminado correctamente');
+        return back()
+            ->with('success', 'Gasto eliminado.')
+            ->with('undo', route('budgets.expenses.restore', [$budget, $expense]));
+    }
+
+    #[Authorize('update', 'budget')]
+    public function restore(Budget $budget, Expense $expense)
+    {
+        abort_if($budget->trashed(), 404);
+        abort_unless($expense->budget_id === $budget->id && $expense->trashed(), 404);
+
+        $expense->restore();
+
+        return back()->with('success', 'Gasto restaurado.');
     }
 }

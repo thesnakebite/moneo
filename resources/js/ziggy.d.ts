@@ -106,6 +106,18 @@ declare module 'ziggy-js' {
             "binding": "id"
         }
     ],
+    "budgets.expenses.restore": [
+        {
+            "name": "budget",
+            "required": true,
+            "binding": "id"
+        },
+        {
+            "name": "expense",
+            "required": true,
+            "binding": "id"
+        }
+    ],
     "budgets.restore": [
         {
             "name": "budget",
