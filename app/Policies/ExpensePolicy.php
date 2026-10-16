@@ -44,4 +44,16 @@ class ExpensePolicy
             :
             Response::deny('No tienes permiso para eliminar gastos a este presupuesto');
     }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Expense $expense): Response
+    {
+        return $user->id === $expense->budget?->user_id
+            ?
+            Response::allow()
+            :
+            Response::deny('No tienes permiso para restaurar este gasto.');
+    }
 }
