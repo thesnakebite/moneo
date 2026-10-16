@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Ai\Agents\BudgetAssistant;
 use App\Models\Budget;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Laravel\Ai\Messages\AssistantMessage;
 use Laravel\Ai\Messages\UserMessage;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
 #[Middleware('subscribed')]
+#[Middleware('auth')]
+#[Middleware('verified')]
+#[Middleware('subscribed')]
+#[Middleware('throttle:ai-chat')]
 class BudgetChatController extends Controller
 {
     public function store(Request $request, Budget $budget)

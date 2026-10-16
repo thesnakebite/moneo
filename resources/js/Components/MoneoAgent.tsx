@@ -42,6 +42,24 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 router.reload({ only: ['budget', 'spent'] })
             }
         },
+        onError: (error) => {
+            let text = 'No se pudo enviar el mensaje. Prueba de nuevo.'
+
+            try {
+                text = JSON.parse(error.message).message ?? text
+            } catch {
+                // El cuerpo no era JSON: se usa el mensaje por defecto
+            }
+
+            setMessages(prev => [
+                ...prev,
+                {
+                    id: crypto.randomUUID(),
+                    role: 'assistant' as const,
+                    parts: [{ type: 'text' as const, text }],
+                },
+            ])
+        },
     })
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

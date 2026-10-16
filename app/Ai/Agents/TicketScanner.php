@@ -4,11 +4,13 @@ namespace App\Ai\Agents;
 
 use App\Enums\ExpenseCategory;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
 use Stringable;
 
+#[Middleware('throttle:ai-tickets')]
 class TicketScanner implements Agent, HasStructuredOutput
 {
     use Promptable;
