@@ -1,26 +1,14 @@
-import { Link, usePage, router } from '@inertiajs/react'
-import { PropsWithChildren, useEffect } from 'react'
+import { Link, usePage } from '@inertiajs/react'
+import { PropsWithChildren } from 'react'
 import UserDropdown from '@/Components/UserDropdown'
 import Footer from '@/Components/Footer'
-import { toast, Toaster } from 'sonner'
+import { Toaster } from 'sonner'
+import { useFlashToasts } from '@/hooks/useFlashToasts'
 
 export default function AppLayout({ children }: PropsWithChildren) {
-    const { user, flash } = usePage().props
+    const { user } = usePage().props
 
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success, flash.undo ? {
-                duration: 6000,
-                action: {
-                    label: 'Deshacer',
-                    onClick: () => router.patch(flash.undo!, {}, { preserveScroll: true }),
-                },
-            } : undefined)
-        }
-        if (flash.error) {
-            toast.error(flash.error)
-        }
-    }, [flash])
+    useFlashToasts()
 
     return (
         <div className="min-h-screen flex flex-col">

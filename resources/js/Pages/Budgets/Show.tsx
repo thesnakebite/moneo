@@ -4,7 +4,7 @@ import { useExpenseModalStore } from "@/stores/expense-modal-store"
 import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
 import { formatCurrency, formatDate } from "@/utils"
-import { toast, Toaster } from "sonner"
+import { Toaster } from "sonner"
 import { useEffect, useState } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
@@ -12,6 +12,7 @@ import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
 import { ArrowRightIcon, CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
 import { getBudgetStatusColor, getBudgetStatusTextColor } from "@/utils/budget"
+import { useFlashToasts } from "@/hooks/useFlashToasts"
 
 type Props = {
     budget: Budget
@@ -20,13 +21,9 @@ type Props = {
 }
 
 export default function Show({budget, categories, spent} : Props) {
-    const { flash, user } = usePage().props
+    const { user } = usePage().props
 
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success)
-        }
-    }, [flash.success])
+    useFlashToasts()
 
     const remaining = Number(budget.amount) - Number(spent)
     const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
