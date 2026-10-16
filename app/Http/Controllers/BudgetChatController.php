@@ -6,6 +6,8 @@ use App\Ai\Agents\BudgetAssistant;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Middleware;
+use Laravel\Ai\Messages\AssistantMessage;
+use Laravel\Ai\Messages\UserMessage;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
@@ -14,19 +16,28 @@ class BudgetChatController extends Controller
 {
     public function store(Request $request, Budget $budget)
     {
-        $messages = $request->input('messages', []);
+        $messages = collect($request->input('messages', []));
 
-        $lastMessage = collect($messages)->last();
-
-        $prompt = collect(data_get($lastMessage, 'parts', []))
+        $textOf = fn (array $message): string => collect(data_get($message, 'parts', []))
             ->where('type', 'text')
             ->pluck('text')
             ->implode(' ')
-            ?: data_get($lastMessage, 'content', '');
+            ?: (string) data_get($message, 'content', '');
+
+        $prompt = $textOf($messages->pop() ?? []);
 
         $agent = new BudgetAssistant;
         $agent->budgetId = $budget->id;
         $agent->hasCategories = $budget->isGeneral();
+        $agent->history = $messages
+            ->take(-20)
+            ->filter(fn (array $message) => in_array(data_get($message, 'role'), ['user', 'assistant'], true))
+            ->map(fn (array $message) => data_get($message, 'role') === 'user'
+                ? new UserMessage($textOf($message))
+                : new AssistantMessage($textOf($message)))
+            ->filter(fn ($message) => $message->content !== '')
+            ->values()
+            ->all();
 
         if ($budget->isGoal()) {
             $agent->budgetContext = "Este presupuesto es de tipo Meta/Objetivo llamado '{$budget->name}' con un importe total de {$budget->amount}€. Los gastos NO tienen categorías, solo nombre e importe.";

@@ -7,18 +7,27 @@ use App\Ai\Tools\DeleteExpense;
 use App\Ai\Tools\SearchExpenses;
 use App\Enums\ExpenseCategory;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-class BudgetAssistant implements Agent, HasTools
+class BudgetAssistant implements Agent, Conversational, HasTools
 {
     use Promptable;
 
     public string $budgetId;
     public string $budgetContext = '';
     public bool $hasCategories = true;
+
+    /** @var array<int, \Laravel\Ai\Messages\Message> */
+    public array $history = [];
+
+    public function messages(): iterable
+    {
+        return $this->history;
+    }
 
     /**
      * Get the instructions that the agent should follow.
@@ -46,7 +55,7 @@ class BudgetAssistant implements Agent, HasTools
         - Si el presupuesto es de tipo Meta/Objetivo, no uses categoría.
 
         Reglas generales:
-        - Si el usuario pregunta algo que NO tiene que ver con sus gastos o presupuesto, responde amablemente que solo puedes ayudar con consultas sobre sus gastos.
+        - - Si el usuario comenta algo relacionado con sus compras o gastos (por ejemplo, de dónde viene el dinero o para qué es una compra), tenlo en cuenta como contexto. Solo si pregunta algo claramente ajeno a sus finanzas, indica amablemente que solo puedes ayudar con sus gastos y presupuesto.
         - Nunca inventes datos de gastos existentes. Solo responde con la información que devuelven las herramientas.
         - Responde siempre en español.
         - IMPORTANTE: Cuando la herramienta AddExpense confirme que un gasto fue agregado, tu respuesta DEBE comenzar con [EXPENSE_CREATED]. Ejemplo: "[EXPENSE_CREATED] El gasto de Uber por 30€ fue registrado en Transporte. " Nunca omitas este prefijo.
