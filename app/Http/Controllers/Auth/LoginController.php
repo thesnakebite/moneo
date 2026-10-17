@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignInRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,13 +17,7 @@ class LoginController extends Controller
 
     public function store(SignInRequest $request): RedirectResponse
     {
-        $credentials = $request->validated();
-
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'email' => 'Las credenciales no coinciden con nuestros registros.',
-            ]);
-        }
+        $request->authenticate();
 
         $request->session()->regenerate();
 

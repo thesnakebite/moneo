@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\RateLimiter;
 
 uses(RefreshDatabase::class);
 
@@ -96,4 +97,42 @@ it('fails login if user does not exist', function () {
     ]);
 
     $this->assertGuest();
+});
+
+it('locks the login after five failed attempts', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    foreach (range(1, 5) as $attempt) {
+        $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+    }
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertSessionHasErrors('email');
+    $this->assertGuest();
+    expect(session('errors')->first('email'))->toContain('Demasiados intentos');
+});
+
+it('clears failed login attempts after a successful login', function () {
+    $user = User::factory()->create(['email_verified_at' => now()]);
+
+    foreach (range(1, 3) as $attempt) {
+        $this->post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'wrong-password',
+        ]);
+    }
+
+    $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ])->assertRedirect(route('dashboard'));
+
+    expect(RateLimiter::attempts(strtolower($user->email).'|127.0.0.1'))->toBe(0);
 });
