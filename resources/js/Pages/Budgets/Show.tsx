@@ -5,7 +5,7 @@ import { Budget } from "@/types/budget"
 import { Category } from "@/types/category"
 import { formatCurrency, formatDate } from "@/utils"
 import { Toaster } from "sonner"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
@@ -28,16 +28,6 @@ export default function Show({budget, categories, spent} : Props) {
     const remaining = Number(budget.amount) - Number(spent)
     const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
     const isOverBudget = percentageUsed >= 100
-
-    const [progress, setProgress] = useState(0)
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            setProgress(percentageUsed)
-        }, 200);
-
-        return () => clearTimeout(timeout)
-    }, [percentageUsed])
 
     useEffect(() => {
         useExpenseModalStore.getState().setBudget(budget)
