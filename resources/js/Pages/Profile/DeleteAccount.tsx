@@ -3,9 +3,8 @@ import AppLayout from '@/Layouts/AppLayout'
 import PageHeader from '@/Components/PageHeader'
 import { ReactElement, useState } from 'react'
 import { Radio, RadioGroup } from '@headlessui/react'
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import { route } from 'ziggy-js'
-import { TrashIcon } from '@animateicons/react/lucide'
+import { CircleCheckIcon, TrashIcon } from '@animateicons/react/lucide'
 
 type Props = {
     subscribed: boolean
@@ -86,7 +85,12 @@ export default function DeleteAccount ({ subscribed, plan }: Props) {
                                     >
                                         <div className="flex w-full items-center justify-between">
                                             <span>{r}</span>
-                                            <CheckCircleIcon className="size-5 text-accent opacity-0 transition group-data-checked:opacity-100" />
+                                            <CircleCheckIcon
+                                                size={20}
+                                                color="var(--color-accent)"
+                                                isAnimated={false}
+                                                className="shrink-0 opacity-0 transition group-data-checked:opacity-100"
+                                            />
                                         </div>
                                     </Radio>
                                 ))}

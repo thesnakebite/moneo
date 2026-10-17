@@ -21,7 +21,6 @@
         "@ai-sdk/react": "^4.0.69",
         "@animateicons/react": "^0.12.0",
         "@headlessui/react": "^2.2.10",
-        "@heroicons/react": "^2.2.0",
         "@inertiajs/react": "^3.6.1",
         "@inertiajs/vite": "^3.6.1",
         "@vitejs/plugin-react": "^6.0.5",

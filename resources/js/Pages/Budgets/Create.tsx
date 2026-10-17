@@ -3,9 +3,8 @@ import { Head, useForm } from "@inertiajs/react"
 import { ReactElement } from "react"
 import InputError from "@/Components/InputError"
 import { Field, Label, Description, Input, Radio, RadioGroup } from "@headlessui/react"
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import PageHeader from "@/Components/PageHeader"
-import { PlusIcon } from "@animateicons/react/lucide"
+import { CircleCheckIcon, PlusIcon } from "@animateicons/react/lucide"
 
 
 export default function Create()
@@ -90,7 +89,13 @@ export default function Create()
                                             <span className="text-xs text-muted">{option.description}</span>
                                         </div>
 
-                                        <CheckCircleIcon className="size-6 fill-accent opacity-0 transition group-data-checked:opacity-100" />
+                                        {/* <CheckCircleIcon className="size-6 fill-accent opacity-0 transition group-data-checked:opacity-100" /> */}
+                                        <CircleCheckIcon
+                                            size={24}
+                                            color="var(--color-accent)"
+                                            isAnimated={false}
+                                            className="shrink-0 opacity-0 transition group-data-checked:opacity-100"
+                                        />
                                     </div>
                                 </Radio>
                             </Field>
