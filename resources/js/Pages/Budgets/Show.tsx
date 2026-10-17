@@ -70,13 +70,13 @@ export default function Show({budget, categories, spent} : Props) {
 
                         <div>
                             <div>
-                                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                                <p className="text-xs font-semibold text-muted uppercase tracking-wide">
                                     {isOverBudget ? 'Te has excedido' : 'Te queda'}
                                 </p>
                                 <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-700' : 'text-ink'}`}>
                                     {formatCurrency(Math.abs(remaining))}
                                 </p>
-                                <p className="text-xs text-gray-500 mt-2">
+                                <p className="text-xs text-muted mt-2">
                                     {formatCurrency(Number(spent))} gastados de {formatCurrency(Number(budget.amount))}
                                 </p>
                             </div>
@@ -107,12 +107,12 @@ export default function Show({budget, categories, spent} : Props) {
                         <DeleteExpenseModal />
                         <Toaster position="bottom-center" />
 
-                        <a
+                        <Link
                             href="/dashboard"
                             className="inline-block bg-accent text-white hover:bg-accent-dark text-center px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
                         >
                             Volver al dashboard
-                        </a>
+                        </Link>
                     </div>
 
                     <ExpenseList expenses={budget.expenses} budgetType={budget.type} />
