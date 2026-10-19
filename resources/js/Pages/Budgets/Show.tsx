@@ -10,9 +10,10 @@ import ExpenseList from "@/Components/ExpenseList"
 import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
-import { ArrowRightIcon, CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
-import { getBudgetStatusColor, getBudgetStatusTextColor } from "@/utils/budget"
+import { CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
+import { getBudgetPeriod, getBudgetStatusColor, getBudgetStatusTextColor } from "@/utils/budget"
 import { useFlashToasts } from "@/hooks/useFlashToasts"
+import BudgetTimeline from "@/Components/BudgetTimeline"
 
 type Props = {
     budget: Budget
@@ -28,6 +29,8 @@ export default function Show({budget, categories, spent} : Props) {
     const remaining = Number(budget.amount) - Number(spent)
     const percentageUsed = Math.round((Number(spent) / Number(budget.amount)) * 100)
     const isOverBudget = percentageUsed >= 100
+    const period = getBudgetPeriod(budget.starts_at, budget.ends_at)
+    const dailyAllowance = period?.status === 'active' && remaining > 0 ? remaining / period.daysLeft : null
 
     useEffect(() => {
         useExpenseModalStore.getState().setBudget(budget)
@@ -67,29 +70,25 @@ export default function Show({budget, categories, spent} : Props) {
                                     {formatCurrency(Math.abs(remaining))}
                                 </p>
                                 <p className="text-xs text-muted mt-2">
-                                    {formatCurrency(Number(spent))} gastados de {formatCurrency(Number(budget.amount))}
+                                    {formatCurrency(Number(spent))} gastados de <span className="text-accent-dark font-semibold">{formatCurrency(Number(budget.amount))}</span>
                                 </p>
+                                {dailyAllowance !==null && period?.status === 'active' && (
+                                    <p className="text-xs text-muted mt-0.5">
+                                        <span className="font-semibold text-ink">{formatCurrency(dailyAllowance)}</span>
+                                        {period.daysLeft === 1 ? ' para hoy, último día' : ` al día durante ${period.daysLeft} días`}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    {(budget.starts_at || budget.ends_at) && (
-                        <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-border-soft/60 bg-ink/5">
-                            <CalendarRangeIcon size={16} duration={0} color="var(--color-accent)"/>
-                            {budget.starts_at && !budget.ends_at && (
-                                <span className="text-xs text-muted">Desde {formatDate(budget.starts_at)}</span>
-                            )}
-                            {budget.ends_at && !budget.starts_at && (
-                                <span className="text-xs text-muted">Hasta {formatDate(budget.ends_at)}</span>
-                            )}
-                            {budget.starts_at && budget.ends_at && (
-                                <>
-                                    <span className="text-xs text-muted">{formatDate(budget.starts_at)}</span>
-                                    <ArrowRightIcon className="size-3 text-border-soft" />
-                                    <span className="text-xs text-muted">{formatDate(budget.ends_at)}</span>
-                                </>
-                            )}
-                        </div>
+                    {period && budget.starts_at && budget.ends_at ? (
+                        <BudgetTimeline startsAt={budget.starts_at} endsAt={budget.ends_at} period={period} />
+                    ) : (budget.starts_at || budget.ends_at) && (
+                        <p className="inline-flex items-center gap-2 text-xs text-muted">
+                            <CalendarRangeIcon size={16} duration={0} color="var(--color-accent)" />
+                            {budget.starts_at ? `Desde ${formatDate(budget.starts_at)}` : `Hasta ${formatDate(budget.ends_at!)}`}
+                        </p>
                     )}
 
                     <div className="flex flex-col gap-1">
