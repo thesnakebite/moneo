@@ -5,6 +5,8 @@ import { getCategoryBreakdown } from '@/utils/expense'
 import ExpenseDropdown from '@/Components/ExpenseDropdown'
 import CategoryBreakdown from '@/Components/CategoryBreakdown'
 import { useMemo, useState } from 'react'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { ChevronDownIcon } from '@animateicons/react/lucide'
 
 type Props = {
     expenses: Expense[]
@@ -12,6 +14,23 @@ type Props = {
 }
 
 const VISIBLE_LIMIT = 5
+const BREAKDOWN_STORAGE_KEY = 'moneo:category-breakdown-open'
+
+function readBreakdownOpen(): boolean {
+    try {
+        return localStorage.getItem(BREAKDOWN_STORAGE_KEY) !== 'false'
+    } catch {
+        return true
+    }
+}
+
+function saveBreakdownOpen(open: boolean) {
+    try {
+        localStorage.setItem(BREAKDOWN_STORAGE_KEY, String(open))
+    } catch {
+        // Sin almacenamiento disponible (modo privado): simplemente no se recuerda
+    }
+}
 
 export default function ExpenseList({ expenses, budgetType }: Props) {
     const [showAll, setShowAll] = useState(false)
@@ -39,16 +58,39 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
     return (
         <div className="border-t border-border-soft pt-6">
             {showBreakdown && (
-                <div className="mb-8">
-                    <p className="text-xs font-bold text-muted uppercase tracking-wide mb-3">
-                        En qué gastas
-                    </p>
-                    <CategoryBreakdown
-                        items={breakdown}
-                        selected={activeItem?.category ?? null}
-                        onSelect={handleSelect}
-                    />
-                </div>
+                <Disclosure as="div" className="mb-8" defaultOpen={readBreakdownOpen()}>
+                    {({open}) => (
+                        <>
+                            <DisclosureButton
+                                onClick={() => saveBreakdownOpen(!open)}
+                                className="group mb-3 flex w-full items-center gap-2 text-left focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded"
+                            >
+                                <span className="text-xs font-bold text-muted uppercase tracking-wide">En qué gastas</span>
+
+                                {!open && (
+                                    <span className="text-xs text-muted">
+                                        · {breakdown[0].label} {breakdown[0].percentage} %
+                                    </span>
+                                )}
+
+                                <span className="ml-auto transition-transform duration-200 group-data-open:rotate-180 motion-reduce:transition-none">
+                                    <ChevronDownIcon size={16} isAnimated={false} color="var(--color-accent-dark)" />
+                                </span>
+                            </DisclosureButton>
+
+                            <DisclosurePanel
+                                transition
+                                className="origin-top transition duration-200 ease-out data-closed:-translate-y-1 data-closed:opacity-0 motion-reduce:transition-none"
+                            >
+                                <CategoryBreakdown
+                                    items={breakdown}
+                                    selected={activeItem?.category ?? null}
+                                    onSelect={handleSelect}
+                                />
+                            </DisclosurePanel>
+                        </>
+                    )}
+                </Disclosure>
             )}
 
             <div className="flex items-baseline justify-between gap-3 mb-3">
