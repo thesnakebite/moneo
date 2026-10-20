@@ -11,9 +11,10 @@ import ProgressBar from "@/Components/ProgressBar"
 import DeleteExpenseModal from "@/Components/DeleteExpenseModal"
 import MoneoAgent from "@/Components/MoneoAgent"
 import { CalendarRangeIcon, PiggyBankIcon } from "@animateicons/react/lucide"
-import { getBudgetPeriod, getBudgetStatusColor, getBudgetStatusTextColor } from "@/utils/budget"
+import { getBudgetPeriod, getBudgetStatus, getBudgetStatusColor, getBudgetStatusTextColor, BUDGET_TYPE_LABELS, } from "@/utils/budget"
 import { useFlashToasts } from "@/hooks/useFlashToasts"
 import BudgetTimeline from "@/Components/BudgetTimeline"
+import BudgetStatusBadge from "@/Components/BudgetStatusBadge"
 
 type Props = {
     budget: Budget
@@ -31,6 +32,7 @@ export default function Show({budget, categories, spent} : Props) {
     const isOverBudget = percentageUsed >= 100
     const period = getBudgetPeriod(budget.starts_at, budget.ends_at)
     const dailyAllowance = period?.status === 'active' && remaining > 0 ? remaining / period.daysLeft : null
+    const status = getBudgetStatus(budget.starts_at, budget.ends_at)
 
     useEffect(() => {
         useExpenseModalStore.getState().setBudget(budget)
@@ -50,7 +52,12 @@ export default function Show({budget, categories, spent} : Props) {
 
             <div className="px-3 sm:px-6 mt-16">
                 <div className="max-w-2xl mx-auto py-8 sm:py-10 space-y-8">
-                    <h1 className="text-muted text-2xl font-bold">Presupuesto: {budget.name}</h1>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center rounded-full border border-border-soft/60 bg-ink/5 px-3 py-1 text-xs font-semibold text-ink">
+                            {BUDGET_TYPE_LABELS[budget.type]}
+                        </span>
+                        <BudgetStatusBadge status={status} />
+                    </div>
 
                     <div className="flex items-center gap-8">
                         <div className="w-28 shrink-0">
