@@ -1,6 +1,6 @@
 import { DashboardBudget } from "@/types/budget"
 import ProgressBar from '@/Components/ProgressBar'
-import { getBudgetStatusColor, getBudgetStatusTextColor } from '@/utils/budget'
+import { BUDGET_TYPE_LABELS, getBudgetStatusColor, getBudgetStatusTextColor } from '@/utils/budget'
 import { formatCurrency } from '@/utils'
 import BudgetDropdown from '@/Components/BudgetDropdown'
 
@@ -33,7 +33,8 @@ export default function BudgetCard({ budget, finished = false }: Props) {
                         <p className="font-semibold text-surface">{budget.name}</p>
                         <div className="flex flex-wrap items-center gap-1 pt-1">
                             <span className="inline-block text-[10px] font-semibold text-surface/70 border border-surface/20 rounded-full px-2 py-0.5">
-                                {budget.type === 'general' ? 'General' : 'Proyecto'}
+                                {/* {budget.type === 'general' ? 'General' : 'Proyecto'} */}
+                                {BUDGET_TYPE_LABELS[budget.type]}
                             </span>
                             {finished && (
                                 <span className="inline-block text-[10px] font-semibold text-red-500 border border-red-500 bg-surface/15 rounded-full px-2 py-0.5">

@@ -1,3 +1,5 @@
+import { BudgetType } from "@/types/budget"
+
 export function getBudgetStatusColor(percentageUsed: number): string {
     if (percentageUsed >= 100) return 'var(--color-red-600)'
     if (percentageUsed >= 90) return 'var(--color-orange-600)'
@@ -73,4 +75,22 @@ export function getBudgetPeriod(startsAt: string | null, endsAt: string | null):
         daysLeft,
         elapsedPercentage: Math.round((currentDay / totalDays) * 100),
     }
+}
+
+export type BudgetStatus = 'upcoming' | 'active' | 'finished'
+
+export function getBudgetStatus(startsAt: string | null, endsAt: string | null): BudgetStatus {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    if (endsAt && toLocalDate(endsAt) < today) return 'finished'
+    if (startsAt && toLocalDate(startsAt) > today) return 'upcoming'
+
+    return 'active'
+}
+
+// Mantener sincronizado con BudgetType::label() en App\Enums\BudgetType
+export const BUDGET_TYPE_LABELS: Record<BudgetType, string> = {
+    general: 'General',
+    goal: 'Proyecto',
 }
