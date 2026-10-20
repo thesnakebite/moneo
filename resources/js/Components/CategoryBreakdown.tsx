@@ -35,7 +35,7 @@ export default function CategoryBreakdown({ items, selected, onSelect }: Props) 
                         type="button"
                         aria-pressed={isSelected}
                         onClick={() => onSelect(isSelected ? null : item.category)}
-                        className={`grid w-full grid-cols-[6.5rem_1fr_auto] items-center gap-4 rounded-lg border px-3 py-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+                        className={`grid w-full grid-cols-[6.5rem_1fr_6rem] items-center gap-4 rounded-lg border px-3 py-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
                             isSelected ? 'border-accent bg-accent/10' : 'border-transparent hover:bg-ink/5'
                         }`}
                     >
