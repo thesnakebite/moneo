@@ -31,6 +31,15 @@ export default function BudgetTimeline({ startsAt, endsAt, period }: Props) {
         : period.status === 'upcoming' ? `Empieza en ${pluralDays(period.daysUntilStart)}`
         : 'Finalizado'
 
+    function ResponsiveDate({ date }: { date: string }) {
+        return (
+            <span>
+                <span className="sm:hidden">{formatDate(date, 'short')}</span>
+                <span className="hidden sm:inline">{formatDate(date)}</span>
+            </span>
+        )
+    }
+
     return (
         <div>
             <div className="relative h-1 rounded-full bg-border-soft/35" aria-hidden="true">
@@ -57,9 +66,9 @@ export default function BudgetTimeline({ startsAt, endsAt, period }: Props) {
             </div>
 
             <div className="mt-2 flex items-baseline justify-between gap-3 text-xs text-muted">
-                <span>{formatDate(startsAt)}</span>
+                <ResponsiveDate date={startsAt} />
                 <span className="font-semibold text-ink">{centerLabel}</span>
-                <span>{formatDate(endsAt)}</span>
+                <ResponsiveDate date={endsAt} />
             </div>
         </div>
     )

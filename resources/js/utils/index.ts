@@ -1,7 +1,9 @@
-export function formatDate(date: string) {
+type DateFormat = 'long' | 'short'
+
+export function formatDate(date: string, format: DateFormat = 'long') {
     return new Intl.DateTimeFormat('es-ES', {
         day: 'numeric',
-        month: 'long',
+        month: format,
         year: 'numeric',
     }).format(new Date(date))
 }
