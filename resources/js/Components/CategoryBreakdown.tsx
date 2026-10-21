@@ -41,7 +41,7 @@ export default function CategoryBreakdown({ items, selected, onSelect }: Props) 
                     >
                         <span className="min-w-0">
                             <span className="block truncate text-sm font-semibold text-ink">{item.label}</span>
-                            <span className="block text-xs text-muted">{pluralExpenses(item.count)}</span>
+                            <span className="block text-xs text-accent-dark">{pluralExpenses(item.count)}</span>
                         </span>
 
                         <span className="h-1.5 rounded-full bg-border-soft/35" aria-hidden="true">
@@ -55,7 +55,7 @@ export default function CategoryBreakdown({ items, selected, onSelect }: Props) 
 
                         <span className="text-right">
                             <span className="block text-sm font-bold text-ink">{formatCurrency(item.total)}</span>
-                            <span className="block text-xs text-muted">{item.percentage} %</span>
+                            <span className="block text-xs text-accent-dark">{item.percentage} %</span>
                         </span>
                     </button>
                 )

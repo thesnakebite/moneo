@@ -52,11 +52,14 @@ export default function Show({budget, categories, spent} : Props) {
 
             <div className="px-3 sm:px-6 mt-16">
                 <div className="max-w-2xl mx-auto py-8 sm:py-10 space-y-8">
-                    <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center rounded-full border border-border-soft/60 bg-ink/5 px-3 py-1 text-xs font-semibold text-ink">
-                            {BUDGET_TYPE_LABELS[budget.type]}
-                        </span>
-                        <BudgetStatusBadge status={status} />
+                    <div>
+                        <h1 className="text-3xl font-bold text-ink">{budget.name}</h1>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                            <span className="inline-flex items-center rounded-full border border-border-soft/60 bg-ink/5 px-3 py-1 text-xs font-semibold text-ink">
+                                {BUDGET_TYPE_LABELS[budget.type]}
+                            </span>
+                            <BudgetStatusBadge status={status} />
+                        </div>
                     </div>
 
                     <div className="flex items-center gap-8">

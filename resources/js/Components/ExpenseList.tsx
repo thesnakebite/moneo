@@ -69,7 +69,7 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
 
                                 {!open && (
                                     <span className="text-xs text-muted">
-                                        · {breakdown[0].label} {breakdown[0].percentage} %
+                                        · &nbsp; {breakdown[0].label} {breakdown[0].percentage} %
                                     </span>
                                 )}
 
@@ -110,7 +110,7 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
             </div>
 
             {visibleExpenses.length === 0 ? (
-                <p className="text-sm text-muted text-center py-6">
+                <p className="text-xs text-muted text-center py-6">
                     Aún no has registrado ningún gasto.
                 </p>
             ) : (

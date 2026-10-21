@@ -138,9 +138,9 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
     const isLoading = status === 'submitted' || status === 'streaming' || isUploadingReceipt
 
     return (
-        <section className="mt-10 rounded-2xl border border-border-soft p-6">
+        <section className="mt-10 rounded-2xl sm:border sm:border-border-soft px-0 xs:px-2 py-6 sm:py-6 sm:px-6">
             <div className="flex items-center gap-2 mb-1">
-                <div className="flex size-6 items-center justify-center rounded-md bg-ink">
+                <div className="flex size-6 items-center justify-center rounded-md bg-accent-dark sm:bg-ink">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="size-3.5">
                         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" strokeLinecap="round" />
                     </svg>
@@ -164,7 +164,7 @@ export default function MoneoAgent({ budgetId, userName }: Props) {
                 }}
                 className="flex flex-col gap-3"
             >
-                <div className="p-3">
+                <div className="p-0 sm:p-3">
                     <textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
