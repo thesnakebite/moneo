@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Ai\Agents\BudgetAssistant;
 use App\Models\Budget;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Routing\Attributes\Controllers\Middleware;
 use Laravel\Ai\Messages\AssistantMessage;
 use Laravel\Ai\Messages\UserMessage;
-use Illuminate\Routing\Attributes\Controllers\Middleware;
 
 #[Middleware('auth')]
 #[Middleware('verified')]
@@ -15,6 +16,7 @@ use Illuminate\Routing\Attributes\Controllers\Middleware;
 #[Middleware('throttle:ai-chat')]
 class BudgetChatController extends Controller
 {
+    #[Authorize('update', 'budget')]
     public function store(Request $request, Budget $budget)
     {
         $messages = collect($request->input('messages', []));
