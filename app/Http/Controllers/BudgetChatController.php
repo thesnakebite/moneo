@@ -12,9 +12,6 @@ use Illuminate\Routing\Attributes\Controllers\Middleware;
 #[Middleware('auth')]
 #[Middleware('verified')]
 #[Middleware('subscribed')]
-#[Middleware('auth')]
-#[Middleware('verified')]
-#[Middleware('subscribed')]
 #[Middleware('throttle:ai-chat')]
 class BudgetChatController extends Controller
 {
