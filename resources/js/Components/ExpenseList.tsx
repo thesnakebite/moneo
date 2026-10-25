@@ -1,4 +1,4 @@
-import { Expense, CategoryValue } from '@/types/expense'
+import { Expense } from '@/types/expense'
 import { BudgetType } from '@/types/budget'
 import { formatCurrency, formatDate } from '@/utils'
 import { getCategoryBreakdown } from '@/utils/expense'
@@ -34,7 +34,7 @@ function saveBreakdownOpen(open: boolean) {
 
 export default function ExpenseList({ expenses, budgetType }: Props) {
     const [showAll, setShowAll] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState<CategoryValue | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
     const breakdown = useMemo(() => getCategoryBreakdown(expenses), [expenses])
     const showBreakdown = budgetType === 'general' && breakdown.length >= 2
@@ -50,7 +50,7 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
 
     const visibleExpenses = showAll ? filteredExpenses : filteredExpenses.slice(0, VISIBLE_LIMIT)
 
-    const handleSelect = (category: CategoryValue | null) => {
+    const handleSelect = (category: string | null) => {
         setSelectedCategory(category)
         setShowAll(false)
     }

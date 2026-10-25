@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { formatCurrency } from '@/utils'
-import type { CategoryValue } from '@/types/expense'
 import type { CategoryBreakdownItem } from '@/utils/expense'
 
 type Props = {
     items: CategoryBreakdownItem[]
-    selected: CategoryValue | null
-    onSelect: (category: CategoryValue | null) => void
+    selected: string | null
+    onSelect: (category: string | null) => void
 }
 
 const pluralExpenses = (count: number) => (count === 1 ? '1 gasto' : `${count} gastos`)

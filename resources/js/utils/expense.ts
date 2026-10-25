@@ -1,7 +1,7 @@
-import type { CategoryValue, Expense } from '@/types/expense'
+import type { Expense } from '@/types/expense'
 
 export type CategoryBreakdownItem = {
-    category: CategoryValue
+    category: string
     label: string
     total: number
     count: number
@@ -9,7 +9,7 @@ export type CategoryBreakdownItem = {
 }
 
 export function getCategoryBreakdown(expenses: Expense[]): CategoryBreakdownItem[] {
-    const groups = new Map<CategoryValue, CategoryBreakdownItem>()
+    const groups = new Map<string, CategoryBreakdownItem>()
 
     for (const expense of expenses) {
         const category = expense.category ?? 'other'
