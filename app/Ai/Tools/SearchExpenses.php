@@ -31,11 +31,11 @@ class SearchExpenses implements Tool
         $query = Expense::where('budget_id', $this->budgetId);
 
         if ($request['name'] ?? null) {
-            $query->where('name', 'ilike', '%' . $request['name'] . '%');
+            $query->whereLike('name', '%' . $request['name'] . '%');
         }
 
         if ($request['category'] ?? null) {
-            $query->where('category', 'ilike', '%' . $request['category'] . '%');
+            $query->whereLike('category' , '%' . $request['category'] . '%');
         }
 
         $expenses = $query->get(['name', 'amount', 'category', 'created_at']);
