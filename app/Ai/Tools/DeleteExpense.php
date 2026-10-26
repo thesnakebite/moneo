@@ -34,7 +34,7 @@ class DeleteExpense implements Tool
         }
 
         $matches = Expense::where('budget_id', $this->budgetId)
-            ->where('name', 'ilike', '%'.$name.'%')
+            ->whereLike('name', '%'. $name .'%')
             ->get();
 
         if ($matches->count() > 1) {
