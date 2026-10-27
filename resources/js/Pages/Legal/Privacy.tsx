@@ -1,8 +1,10 @@
 import AppLayout from '@/Layouts/AppLayout'
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import { ReactElement } from 'react'
 
 export default function Privacy() {
+    const { contactEmail } = usePage().props
+
     return (
         <>
             <Head title='Política de privacidad' />
@@ -18,7 +20,7 @@ export default function Privacy() {
                             <li>Titular: Álvaro Navarro (thesnakebite)</li>
                             <li>NIF: 46059375N</li>
                             <li>Domicilio: Carrer Joan Llampallas, 35, local, 08320, Barcelona</li>
-                            <li>Email: soporte@moneo.es</li>
+                            <li>Email: { contactEmail }</li>
                         </ul>
                         <p className="mt-2.5">Moneo es un proyecto de estudio personal en desarrollo.</p>
                     </section>
@@ -84,7 +86,7 @@ export default function Privacy() {
                         <h2>7. Tus derechos</h2>
                         <p>
                             Puedes acceder a tus datos, corregirlos o eliminar tu cuenta desde los ajustes de tu
-                            perfil. Para cualquier otra solicitud, escribe a soporte@moneo.es. También puedes
+                            perfil. Para cualquier otra solicitud, escribe a { contactEmail }. También puedes
                             presentar una reclamación ante la Agencia Española de Protección de Datos.
                         </p>
                     </section>

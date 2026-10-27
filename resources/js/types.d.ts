@@ -17,7 +17,8 @@ declare module '@inertiajs/core' {
                 } | null
                 subscribed: boolean
                 plan: string | null
-            } | null
+            } | null,
+            contactEmail: string,
         }
     }
 }

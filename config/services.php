@@ -41,6 +41,6 @@ return [
     ],
 
     'contact' => [
-        'address' => env('CONTACT_EMAIL', 'soporte@moneo.es'),
+        'address' => env('CONTACT_EMAIL', 'soporte@moneo.thesnakebite.es'),
     ],
 ];

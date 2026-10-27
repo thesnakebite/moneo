@@ -17,7 +17,7 @@
                 <a href="{{ route('dashboard') }}" class="bg-gray-900 hover:bg-gray-800 text-white px-6 py-3 rounded-lg text-sm font-bold">
                     Volver al dashboard
                 </a>
-                <a href="mailto:soporte@moneo.app" class="border border-gray-300 hover:bg-gray-50 px-6 py-3 rounded-lg text-sm font-bold text-gray-700">
+                <a href="mailto:{{ config('services.contact.address') }}" class="border border-gray-300 hover:bg-gray-50 px-6 py-3 rounded-lg text-sm font-bold text-gray-700">
                     Contactar soporte
                 </a>
             </div>

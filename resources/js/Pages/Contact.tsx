@@ -9,7 +9,7 @@ const inputClasses =
     'w-full border border-border-soft bg-ink/5 p-3 rounded-lg text-sm outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]'
 
 export default function Contact() {
-    const { user } = usePage().props
+    const { user, contactEmail } = usePage().props
     const mailIconRef = useRef<MailIconHandle>(null)
 
     const { data, setData, post, errors, processing, reset } = useForm({
@@ -54,8 +54,8 @@ export default function Contact() {
                         <div>
                             <dt className="text-[11px] font-semibold text-muted uppercase">Email</dt>
                             <dd className="mt-1">
-                                <a href="mailto:soporte@moneo.es" className="font-semibold text-ink hover:text-accent transition-colors">
-                                    soporte@moneo.es
+                                <a href={`mailto:${contactEmail}`} className="font-semibold text-ink hover:text-accent transition-colors">
+                                    { contactEmail }
                                 </a>
                             </dd>
                         </div>

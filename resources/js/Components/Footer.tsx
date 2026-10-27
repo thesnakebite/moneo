@@ -1,7 +1,9 @@
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { FacebookIcon, InstagramIcon, PiggyBankIcon, TwitterIcon } from "@animateicons/react/lucide"
 
 export default function Footer() {
+    const { contactEmail } = usePage().props
+
     return (
         <footer
             className="bg-accent-dark/95 border-t border-accent px-6 pt-8 md:px-16 w-full text-surface [view-transition-name:app-footer]"
@@ -51,7 +53,7 @@ export default function Footer() {
                         <div>
                             <h2 className="font-semibold mb-5">Ponte en contacto</h2>
                             <div className="text-sm space-y-1.5">
-                                <p><a href="mailto:soporte@moneo.es">soporte@moneo.es</a></p>
+                                <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
                                 <p className="text-sm text-surface/60">Lun-Vie, 9:00-18:00</p>
                             </div>
                         </div>

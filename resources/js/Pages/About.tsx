@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react'
 import { ReactElement } from 'react'
 import AppLayout from '@/Layouts/AppLayout'
 import PageHeader from '@/Components/PageHeader'
@@ -30,6 +31,8 @@ const principles = [
 ]
 
 export default function About() {
+    const { contactEmail } = usePage().props
+
     return (
         <>
             <PageHeader
@@ -94,7 +97,7 @@ export default function About() {
                     <h2 className="text-lg font-bold text-ink">¿Tienes una idea o has encontrado un fallo?</h2>
                     <p className="text-sm text-muted mt-2">Me encantará leerte.</p>
                     <a
-                        href="mailto:soporte@moneo.es"
+                        href={`mailto:${contactEmail}`}
                         className="mt-4 inline-block bg-accent hover:bg-accent-dark text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors"
                     >
                         Escríbeme

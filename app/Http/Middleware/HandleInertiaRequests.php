@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
                 'subscribed' => $subscribed,
                 'plan' => $authUser?->currentPlan(),
             ],
+            'contactEmail' => config('services.contact.address'),
         ];
     }
 }
