@@ -18,7 +18,7 @@ export default function Privacy() {
                         <h2>1. Responsable del tratamiento</h2>
                         <ul>
                             <li>Titular: Álvaro Navarro (thesnakebite)</li>
-                            <li>NIF: 46059375N</li>
+                            <li>NIF: ***123***</li>
                             <li>Domicilio: Carrer Joan Llampallas, 35, local, 08320, Barcelona</li>
                             <li>Email: { contactEmail }</li>
                         </ul>
