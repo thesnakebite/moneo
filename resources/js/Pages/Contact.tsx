@@ -4,6 +4,7 @@ import AppLayout from '@/Layouts/AppLayout'
 import InputError from '@/Components/InputError'
 import { MailIcon } from '@animateicons/react/lucide'
 import type { MailIconHandle } from "@animateicons/react/lucide"
+import ContactEmail from '@/Components/ContactEmail'
 
 const inputClasses =
     'w-full border border-border-soft bg-ink/5 p-3 rounded-lg text-sm outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-autofill)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]'
@@ -54,9 +55,7 @@ export default function Contact() {
                         <div>
                             <dt className="text-[11px] font-semibold text-muted uppercase">Email</dt>
                             <dd className="mt-1">
-                                <a href={`mailto:${contactEmail}`} className="font-semibold text-ink hover:text-accent transition-colors">
-                                    { contactEmail }
-                                </a>
+                                <ContactEmail className="font-semibold text-ink hover:text-accent transition-colors" />
                             </dd>
                         </div>
                         <div>

@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react'
 import { FacebookIcon, InstagramIcon, PiggyBankIcon, TwitterIcon } from "@animateicons/react/lucide"
+import ContactEmail from './ContactEmail'
 
 export default function Footer() {
     const { contactEmail } = usePage().props
@@ -39,7 +40,7 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    <div className="flex-1 flex items-start lg:justify-end gap-20">
+                    <div className="flex-1 flex items-start lg:justify-end gap-8 sm:gap-20">
                         <div>
                             <h2 className="font-semibold mb-5">Compañía</h2>
                             <ul className="text-sm space-y-1.5">
@@ -50,10 +51,10 @@ export default function Footer() {
                             </ul>
                         </div>
 
-                        <div>
+                        <div className="min-w-0">
                             <h2 className="font-semibold mb-5">Ponte en contacto</h2>
                             <div className="text-sm space-y-1.5">
-                                <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+                                <p><ContactEmail /></p>
                                 <p className="text-sm text-surface/60">Lun-Vie, 9:00-18:00</p>
                             </div>
                         </div>
