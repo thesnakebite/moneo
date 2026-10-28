@@ -2,6 +2,7 @@
 
 namespace App\Ai\Tools;
 
+use App\Enums\ExpenseCategory;
 use App\Models\Expense;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Contracts\Tool;
@@ -35,7 +36,7 @@ class SearchExpenses implements Tool
         }
 
         if ($request['category'] ?? null) {
-            $query->whereLike('category' , '%' . $request['category'] . '%');
+            $query->where('category', $request['category']);
         }
 
         $expenses = $query->get(['name', 'amount', 'category', 'created_at']);
@@ -64,11 +65,12 @@ class SearchExpenses implements Tool
                 'Filtra los gastos por nombre. Búsqueda parcial e insensible a mayúsculas, por ejemplo "uber" '
                 . 'encontraría "Uber Eats". Déjalo vacío si el usuario no menciona ningún gasto en concreto.'
             ),
-            'category' => $schema->string()->description(
-                'Filtra los gastos por categoría. Valores válidos: food, transport, housing, leisure, health, '
-                . 'shopping, other. Solo aplica a presupuestos de tipo General; ignora este parámetro en '
-                . 'presupuestos de tipo Meta/Objetivo.'
-            ),
+            'category' => $schema->string()
+                ->enum(ExpenseCategory::class)
+                ->description(
+                    'Filtra los gastos por categoría. Solo aplica a presupuestos de tipo General; ignora este '
+                    . 'parámetro en presupuestos de tipo Meta/Objetivo.'
+                ),
         ];
     }
 }

@@ -36,8 +36,8 @@ class AddExpense implements Tool
         $name = $request['name'] ?? null;
         $amount = $request['amount'] ?? null;
 
-        if (!$name || !$amount) {
-            return '[EXPENSE_ERROR] Se necesita un nombre y un importe para agregar el gasto.';
+        if (! $name || ! is_numeric($amount) || $amount <= 0) {
+            return '[EXPENSE_ERROR] Se necesita un nombre y un importe mayor que cero para agregar el gasto.';
         }
 
         $data = [
@@ -65,16 +65,20 @@ class AddExpense implements Tool
      */
     public function schema(JsonSchema $schema): array
     {
-        $categories = collect(ExpenseCategory::cases())
-            ->map(fn ($category) => $category->value)
-            ->implode(', ');
-
         return [
-            'name' => $schema->string()->description('Nombre del gasto (ej: Cemento, Uber, Renta)')->required(),
-            'amount' => $schema->number()->description('Importe del gasto en número (ej: 30, 100.50)')->required(),
-            'category' => $schema->string()
-                ->enum(ExpenseCategory::cases())
-                ->description("Categoría del gasto. Valores permitidos: {$categories}"),
+            'name' => $schema->string()
+                ->description('Nombre del gasto (ej: Cemento, Uber, Renta)')
+                ->required(),
+            'amount' => $schema->number()
+                ->min(0.01)
+                ->description('Importe del gasto en euros, mayor que cero (ej: 30, 100.50)')
+                ->required(),
+            ...($this->hasCategories ? [
+                'category' => $schema->string()
+                    ->enum(ExpenseCategory::class)
+                    ->description('Categoría del gasto.')
+                    ->required(),
+            ] : []),
         ];
     }
 }
