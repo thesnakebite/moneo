@@ -28,18 +28,32 @@ class DeleteExpense implements Tool
     public function handle(Request $request): Stringable|string
     {
         $name = $request['name'] ?? null;
+        $amount = $request['amount'] ?? null;
 
         if (!$name) {
             return '[EXPENSE_ERROR] Necesito el nombre del gasto que quieres eliminar.';
         }
 
         $matches = Expense::where('budget_id', $this->budgetId)
-            ->whereLike('name', '%'. $name .'%')
+            ->whereLike('name', '%'.$name.'%')
+            ->when(is_numeric($amount), fn ($query) => $query->where('amount', $amount))
             ->get();
 
+        // Si una coincide exactamente con el nombre, es esa ("Uber" frente a "Uber Eats")
         if ($matches->count() > 1) {
-            $list = $matches->pluck('name')->implode(', ');
-            return "[EXPENSE_AMBIGUOUS] Encontré varios gastos que coinciden: {$list}. ¿Cuál quieres eliminar exactamente?";
+            $exact = $matches->filter(fn (Expense $expense) => mb_strtolower($expense->name) === mb_strtolower($name));
+
+            if ($exact->count() === 1) {
+                $matches = $exact;
+            }
+        }
+
+        if ($matches->count() > 1) {
+            $list = $matches
+                ->map(fn (Expense $expense) => "{$expense->name} ({$expense->amount}€, {$expense->created_at->format('d/m/Y')})")
+                ->implode('; ');
+
+            return "[EXPENSE_AMBIGUOUS] Encontré varios gastos que coinciden: {$list}. Pregunta al usuario cuál quiere eliminar; puedes usar el importe para distinguirlos.";
         }
 
         $expense = $matches->first();
@@ -60,7 +74,12 @@ class DeleteExpense implements Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'name' => $schema->string()->description('Nombre del gasto a eliminar (búsqueda parcial)')->required(),
+            'name' => $schema->string()
+                ->description('Nombre del gasto a eliminar (búsqueda parcial e insensible a mayúsculas).')
+                ->required(),
+            'amount' => $schema->number()
+                ->min(0.01)
+                ->description('Importe exacto del gasto. Úsalo solo para distinguir entre varios gastos con nombre parecido.'),
         ];
     }
 }

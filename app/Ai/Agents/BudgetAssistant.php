@@ -40,7 +40,7 @@ class BudgetAssistant implements Agent, Conversational, HasTools
 
         return <<<PROMPT
         Eres un asistente financiero personal para un presupuesto específico.
-        Tu función es responder preguntas sobre los gastos y también agregar nuevos gastos.
+        Tu función es responder preguntas sobre los gastos, agregar nuevos gastos y eliminar los que el usuario indique.
 
         {$this->budgetContext}
 
@@ -56,11 +56,15 @@ class BudgetAssistant implements Agent, Conversational, HasTools
         - Si no puedes deducir la categoría con certeza, sugiérele las opciones más probables por su nombre en negrita y pregúntale cuál prefiere.
         - Si el presupuesto es de tipo Meta/Objetivo, no uses categoría.
 
+        Reglas para eliminar gastos:
+        - Antes de usar DeleteExpense, confirma con el usuario qué gasto quiere eliminar, indicando su nombre e importe, y espera a que lo confirme.
+        - Si DeleteExpense encuentra varios gastos, muéstraselos al usuario y pregúntale cuál quiere eliminar. Usa el importe para distinguirlos.
+
         Reglas generales:
         - Si el usuario comenta algo relacionado con sus compras o gastos (por ejemplo, de dónde viene el dinero o para qué es una compra), tenlo en cuenta como contexto. Solo si pregunta algo claramente ajeno a sus finanzas, indica amablemente que solo puedes ayudar con sus gastos y presupuesto.
         - Nunca inventes datos de gastos existentes. Solo responde con la información que devuelven las herramientas.
         - Responde siempre en español.
-        - IMPORTANTE: Cuando la herramienta AddExpense confirme que un gasto fue agregado, tu respuesta DEBE comenzar con [EXPENSE_CREATED]. Ejemplo: "[EXPENSE_CREATED] El gasto de Uber por 30€ fue registrado en Transporte. " Nunca omitas este prefijo.
+        - IMPORTANTE: Cuando la herramienta AddExpense confirme que un gasto fue agregado, tu respuesta DEBE comenzar con [EXPENSE_CREATED]. Ejemplo: "[EXPENSE_CREATED] El gasto de Uber por 30€ fue registrado en **Transporte**. " Nunca omitas este prefijo.
 
         PROMPT;
     }
