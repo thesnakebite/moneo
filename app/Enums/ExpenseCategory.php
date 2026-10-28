@@ -7,6 +7,7 @@ enum ExpenseCategory: string
     case Food = 'food';
     case Transport = 'transport';
     case Housing = 'housing';
+    case Accommodation = 'accommodation';
     case Decor = 'decor';
     case Utilities = 'utilities';
     case Shopping = 'shopping';
@@ -28,6 +29,7 @@ enum ExpenseCategory: string
             self::Food => 'Comida',
             self::Transport => 'Transporte',
             self::Housing => 'Vivienda',
+            self::Accommodation => 'Alojamiento',
             self::Decor => 'Decoración',
             self::Utilities => 'Suministros',
             self::Shopping => 'Compras',
@@ -51,6 +53,7 @@ enum ExpenseCategory: string
             self::Food => 'bg-orange-100 text-orange-700',
             self::Transport => 'bg-blue-100 text-blue-700',
             self::Housing => 'bg-purple-100 text-purple-700',
+            self::Accommodation => 'bg-olive-100 text-olive-700',
             self::Decor => 'bg-rose-100 text-rose-700',
             self::Utilities => 'bg-cyan-100 text-cyan-700',
             self::Shopping => 'bg-amber-100 text-amber-700',
