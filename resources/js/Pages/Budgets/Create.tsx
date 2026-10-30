@@ -80,18 +80,17 @@ export default function Create()
                     <Label htmlFor="type" className="text-sm font-bold text-ink">Tipo de presupuesto</Label>
                     <RadioGroup value={data.type} onChange={(value) => setData('type', value)} className="grid grid-cols-2 gap-3">
                         {typeOptions.map((option) => (
-                            <Field key={option.value}>
+                            <Field key={option.value} className="h-full">
                                 <Radio
                                     value={option.value}
-                                    className="group relative flex cursor-pointer rounded-lg border border-border-soft bg-transparent p-3 focus:outline-none data-checked:border-accent data-checked:bg-accent/10"
+                                    className="group relative flex h-full cursor-pointer rounded-lg border border-border-soft bg-transparent p-3 focus:outline-none data-checked:border-accent data-checked:bg-accent/10"
                                 >
-                                    <div className="flex w-full items-center justify-between">
+                                    <div className="flex w-full items-start justify-between gap-2">
                                         <div className="flex flex-col">
                                             <span className="text-sm font-semibold text-ink">{option.label}</span>
                                             <span className="text-xs text-muted">{option.description}</span>
                                         </div>
 
-                                        {/* <CheckCircleIcon className="size-6 fill-accent opacity-0 transition group-data-checked:opacity-100" /> */}
                                         <CircleCheckIcon
                                             size={24}
                                             color="var(--color-accent)"
