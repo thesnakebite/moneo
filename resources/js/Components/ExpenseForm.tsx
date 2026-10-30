@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react'
 import Ziggy from '@/ziggy'
 import { route } from 'ziggy-js'
 import InputError from './InputError'
+import { EXPENSE_NAME_MAX_LENGTH } from '@/utils/expense'
 
 export default function ExpenseForm() {
     const budget = useExpenseModalStore(state => state.budget)
@@ -43,17 +44,21 @@ export default function ExpenseForm() {
         })
     }
 
+    const fieldClassName = 'w-full border border-border-soft bg-transparent p-3 rounded-lg text-sm text-ink outline-none focus:border-accent focus:ring-0 placeholder:text-xs autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]'
+    const labelClassName = 'text-sm font-bold text-ink'
+
     return (
         <form onSubmit={submit} className="space-y-4">
             <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="text-sm font-bold text-gray-700">
+                <label htmlFor="name" className={labelClassName}>
                     Nombre
                 </label>
                 <input
                     id="name"
                     type="text"
                     placeholder="Ej. Cena, Gasolina, Entradas"
-                    className="w-full border border-gray-300 p-3 rounded-lg text-sm"
+                    maxLength={EXPENSE_NAME_MAX_LENGTH}
+                    className={fieldClassName}
                     value={data.name}
                     onChange={e => setData('name', e.target.value)}
                 />
@@ -61,16 +66,16 @@ export default function ExpenseForm() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <label htmlFor="amount" className="text-sm font-bold text-gray-700">
+                <label htmlFor="amount" className={labelClassName}>
                     Cantidad
                 </label>
                 <input
                     id="amount"
                     type="number"
-                    min="0"
+                    min="0.01"
                     step="0.01"
                     placeholder="0,00"
-                    className="w-full border border-gray-300 p-3 rounded-lg text-sm"
+                    className={fieldClassName}
                     value={data.amount}
                     onChange={e => setData('amount', e.target.value)}
                 />
@@ -79,32 +84,33 @@ export default function ExpenseForm() {
 
             {budget.type === 'general' && (
                 <div className="flex flex-col gap-2">
-                    <label htmlFor="category" className="text-sm font-bold text-gray-700">
+                    <label htmlFor="category" className={labelClassName}>
                         Categoría
                     </label>
                     <select
                         id="category"
-                        className="w-full border border-gray-300 p-3 rounded-lg text-sm"
+                        className={fieldClassName}
                         value={data.category}
                         onChange={e => setData('category', e.target.value)}
                     >
                         <option value="">Selecciona una categoría</option>
-                        {categories.map(category => <option key={category.value} value={category.value}>
-                            {category.label}
-                        </option>)}
-
+                        {categories.map(category => (
+                            <option key={category.value} value={category.value}>
+                                {category.label}
+                            </option>
+                        ))}
                     </select>
                     {errors.category && <InputError>{errors.category}</InputError>}
                 </div>
             )}
 
-            <div className="flex justify-end gap-3 pt-2 mb-2">
+            <div className="pt-2 mb-2">
                 <button
-                    disabled={processing}
                     type="submit"
-                    className={`${processing ? 'opacity-60 cursor-not-allowed' : 'hover:bg-gray-800 cursor-pointer'} bg-gray-900 text-white px-4 py-2.5 w-full rounded-lg text-sm font-bold` }
+                    disabled={processing}
+                    className="w-full bg-ink hover:bg-ink/90 text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                    {processing ? 'Guardando...' : isEditing ? 'Guardando cambios' : 'Agregar gasto'}
+                    {processing ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Agregar gasto'}
                 </button>
             </div>
         </form>

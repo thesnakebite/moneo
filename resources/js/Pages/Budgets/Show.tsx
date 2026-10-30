@@ -53,7 +53,7 @@ export default function Show({budget, categories, spent} : Props) {
             <div className="px-3 sm:px-6 mt-16">
                 <div className="max-w-2xl mx-auto py-8 sm:py-10 space-y-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-ink">{budget.name}</h1>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-ink text-balance wrap-break-word">{budget.name}</h1>
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                             <span className="inline-flex items-center rounded-full border border-border-soft/60 bg-ink/5 px-3 py-1 text-xs font-semibold text-ink">
                                 {BUDGET_TYPE_LABELS[budget.type]}
@@ -62,8 +62,8 @@ export default function Show({budget, categories, spent} : Props) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-8">
-                        <div className="w-28 shrink-0">
+                    <div className="flex items-center gap-5 sm:gap-8">
+                        <div className="w-24 sm:w-28 shrink-0">
                             <ProgressBar
                                 percentageUsed={percentageUsed}
                                 pathColor={getBudgetStatusColor(percentageUsed)}
@@ -71,24 +71,22 @@ export default function Show({budget, categories, spent} : Props) {
                             />
                         </div>
 
-                        <div>
-                            <div>
-                                <p className="text-xs font-semibold text-muted uppercase tracking-wide">
-                                    {isOverBudget ? 'Te has excedido' : 'Te queda'}
+                        <div className="min-w-0">
+                            <p className="text-xs font-semibold text-muted uppercase tracking-wide">
+                                {isOverBudget ? 'Te has excedido' : 'Te queda'}
+                            </p>
+                            <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-700' : 'text-ink'}`}>
+                                {formatCurrency(Math.abs(remaining))}
+                            </p>
+                            <p className="text-xs text-muted mt-2">
+                                {formatCurrency(Number(spent))} gastados de <span className="text-accent-dark font-semibold">{formatCurrency(Number(budget.amount))}</span>
+                            </p>
+                            {dailyAllowance !==null && period?.status === 'active' && (
+                                <p className="text-xs text-muted mt-0.5">
+                                    <span className="font-semibold text-ink">{formatCurrency(dailyAllowance)}</span>
+                                    {period.daysLeft === 1 ? ' para hoy, último día' : ` al día durante ${period.daysLeft} días`}
                                 </p>
-                                <p className={`text-3xl font-bold mt-0.5 ${isOverBudget ? 'text-red-700' : 'text-ink'}`}>
-                                    {formatCurrency(Math.abs(remaining))}
-                                </p>
-                                <p className="text-xs text-muted mt-2">
-                                    {formatCurrency(Number(spent))} gastados de <span className="text-accent-dark font-semibold">{formatCurrency(Number(budget.amount))}</span>
-                                </p>
-                                {dailyAllowance !==null && period?.status === 'active' && (
-                                    <p className="text-xs text-muted mt-0.5">
-                                        <span className="font-semibold text-ink">{formatCurrency(dailyAllowance)}</span>
-                                        {period.daysLeft === 1 ? ' para hoy, último día' : ` al día durante ${period.daysLeft} días`}
-                                    </p>
-                                )}
-                            </div>
+                            )}
                         </div>
                     </div>
 

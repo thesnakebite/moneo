@@ -41,7 +41,7 @@ export default function BudgetTimeline({ startsAt, endsAt, period }: Props) {
     }
 
     return (
-        <div>
+        <div className="px-2 sm:px-0">
             <div className="relative h-1 rounded-full bg-border-soft/35" aria-hidden="true">
                 <div
                     className="h-full rounded-full bg-muted transition-[width] duration-700 ease-out motion-reduce:transition-none"

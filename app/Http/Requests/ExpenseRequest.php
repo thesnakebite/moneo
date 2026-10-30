@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\ExpenseCategory;
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Expense;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -30,8 +30,8 @@ class ExpenseRequest extends FormRequest
         $budget = $this->route('budget');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'amount' => ['required', 'decimal:0,2', 'min:0.01'],
+            'name' => ['required', 'string', 'max:' . Expense::NAME_MAX_LENGTH],
+            'amount' => ['required', 'decimal:0,2', 'min:0.01', 'max:' . Expense::MAX_AMOUNT],
             'category' => Rule::when(
                 $budget->isGeneral(),
                 ['required', new Enum(ExpenseCategory::class)],
@@ -49,6 +49,7 @@ class ExpenseRequest extends FormRequest
             'amount.required' => 'La cantidad es obligatoria.',
             'amount.decimal' => 'La cantidad debe tener como máximo 2 decimales.',
             'amount.min' => 'La cantidad debe ser mayor a 0.',
+            'amount.max' => 'La cantidad no puede superar 999.999,99 €.',
             'category.required' => 'La categoría es obligatoria para presupuestos generales.',
             'category.enum' => 'La categoría seleccionada no es válida.',
         ];

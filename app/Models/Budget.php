@@ -21,8 +21,10 @@ class Budget extends Model
 {
     use SoftDeletes, HasFactory, Prunable, HasUuids;
 
-    // Keep in sync with TRASH_RETENTION_DAYS in resources/js/utils/budget.ts
+    // Keep in sync with TRASH_RETENTION_DAYS, NAME_MAX_LENGTH in resources/js/utils/budget.ts
     public const TRASH_RETENTION_DAYS = 30;
+    public const NAME_MAX_LENGTH = 60;
+    public const MAX_AMOUNT = 999999.99;
 
     public function prunable(): Builder
     {

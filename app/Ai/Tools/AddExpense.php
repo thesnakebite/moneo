@@ -40,6 +40,10 @@ class AddExpense implements Tool
             return '[EXPENSE_ERROR] Se necesita un nombre y un importe mayor que cero para agregar el gasto.';
         }
 
+        if (mb_strlen($name) > Expense::NAME_MAX_LENGTH || $amount > Expense::MAX_AMOUNT) {
+            return '[EXPENSE_ERROR] El nombre no puede superar '.Expense::NAME_MAX_LENGTH.' caracteres y el importe no puede superar 999.999,99 €.';
+        }
+
         $data = [
             'budget_id' => $this->budgetId,
             'name' => $name,
@@ -67,10 +71,12 @@ class AddExpense implements Tool
     {
         return [
             'name' => $schema->string()
-                ->description('Nombre del gasto (ej: Cemento, Uber, Renta)')
+                ->max(Expense::NAME_MAX_LENGTH)
+                ->description('Nombre del gasto, corto y directo (ej: Cemento, Uber, Renta)')
                 ->required(),
             'amount' => $schema->number()
                 ->min(0.01)
+                ->max(Expense::MAX_AMOUNT)
                 ->description('Importe del gasto en euros, mayor que cero (ej: 30, 100.50)')
                 ->required(),
             ...($this->hasCategories ? [

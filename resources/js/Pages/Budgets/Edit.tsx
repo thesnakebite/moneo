@@ -6,6 +6,7 @@ import InputError from '@/Components/InputError'
 import { Budget } from '@/types/budget'
 import PageHeader from '@/Components/PageHeader'
 import { PencilIcon } from '@animateicons/react/lucide'
+import { BUDGET_NAME_MAX_LENGTH } from '@/utils/budget'
 
 type Props = {
     budget: Budget
@@ -43,6 +44,7 @@ export default function Edit({ budget }: Props) {
                             type="text"
                             value={data.name}
                             onChange={(e) => setData('name', e.target.value)}
+                            maxLength={BUDGET_NAME_MAX_LENGTH}
                             className="w-full border border-border-soft bg-transparent p-3 rounded-lg text-sm outline-none focus:border-accent placeholder:text-xs focus:ring-0 autofill:shadow-[0_0_0_1000px_var(--color-surface)_inset] autofill:[-webkit-text-fill-color:var(--color-ink)]"
                         />
                         {errors.name && <InputError>{errors.name}</InputError>}

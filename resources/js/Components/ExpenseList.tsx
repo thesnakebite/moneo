@@ -116,10 +116,10 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
             ) : (
                 <ul className="divide-y divide-border-soft/40">
                     {visibleExpenses.map((expense) => (
-                        <li key={expense.id} className="flex items-start justify-between py-3">
-                            <div>
+                        <li key={expense.id} className="flex items-start justify-between gap-3 py-3">
+                            <div className="min-w-0 flex-1">
                                 <p className="text-xs text-muted/70">{formatDate(expense.created_at)}</p>
-                                <p className="font-semibold text-sm mt-0.5 mb-1.5 text-ink">{expense.name}</p>
+                                <p className="font-semibold text-sm mt-0.5 mb-1.5 text-ink line-clamp-2 wrap-break-word">{expense.name}</p>
 
                                 {budgetType === 'general' && !activeItem && expense.category_label && (
                                     <span className={`inline-block text-xs font-semibold px-2.5 py-0.5 rounded-full ${expense.category_color}`}>
@@ -128,7 +128,7 @@ export default function ExpenseList({ expenses, budgetType }: Props) {
                                 )}
                             </div>
 
-                            <div className="flex items-center gap-3">
+                            <div className="flex shrink-0 items-center gap-3">
                                 <p className="font-bold text-ink text-sm">
                                     {formatCurrency(Number(expense.amount))}
                                 </p>

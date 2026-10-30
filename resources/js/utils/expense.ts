@@ -8,6 +8,8 @@ export type CategoryBreakdownItem = {
     percentage: number
 }
 
+export const EXPENSE_NAME_MAX_LENGTH = 80
+
 export function getCategoryBreakdown(expenses: Expense[]): CategoryBreakdownItem[] {
     const groups = new Map<string, CategoryBreakdownItem>()
 

@@ -19,6 +19,7 @@ export function getBudgetStatusTextColor(percentageUsed: number, surface: Surfac
 }
 
 export const TRASH_RETENTION_DAYS = 30
+export const BUDGET_NAME_MAX_LENGTH = 60
 
 export function getDaysUntilPurge(deletedAt: string): number {
     const dayInMs = 1000 * 60 * 60 * 24

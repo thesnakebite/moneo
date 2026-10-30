@@ -28,9 +28,11 @@ export default function BudgetCard({ budget, finished = false }: Props) {
             />
 
             <div className="relative z-10">
-                <div className="flex items-start justify-between mb-4">
-                    <div className="space-y-0.5">
-                        <p className="font-semibold text-surface">{budget.name}</p>
+                <div className="flex items-start justify-between gap-3 mb-4">
+                    <div className="min-w-0 flex-1 space-y-0.5">
+                        <p className="font-semibold text-surface line-clamp-2 wrap-break-word" title={budget.name}>
+                            {budget.name}
+                        </p>
                         <div className="flex flex-wrap items-center gap-1 pt-1">
                             <span className="inline-block text-[10px] font-semibold text-surface/70 border border-surface/20 rounded-full px-2 py-0.5">
                                 {/* {budget.type === 'general' ? 'General' : 'Proyecto'} */}

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\BudgetType;
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Models\Budget;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,8 +23,8 @@ class BudgetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'amount' => ['required', 'decimal:0,2', 'min:0.01'],
+            'name' => ['required', 'string', 'max:' . Budget::NAME_MAX_LENGTH],
+            'amount' => ['required', 'decimal:0,2', 'min:0.01', 'max:' . Budget::MAX_AMOUNT],
             'type' => [
                 $this->routeIs('budgets.store') ? 'required' : 'sometimes',
                 Rule::enum(BudgetType::class),
@@ -48,6 +48,7 @@ class BudgetRequest extends FormRequest
             'amount.required' => 'La cantidad es obligatoria.',
             'amount.decimal' => 'La cantidad debe tener como máximo 2 decimales.',
             'amount.min' => 'La cantidad debe ser mayor a 0.',
+            'amount.max' => 'La cantidad no puede superar 999.999,99 €.',
             'type.required' => 'El tipo de presupuesto es obligatorio.',
             'type.enum' => 'El tipo de presupuesto no es válido.',
             'starts_at.date' => 'La fecha de inicio debe ser una fecha válida.',

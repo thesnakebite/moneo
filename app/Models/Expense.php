@@ -16,6 +16,10 @@ class Expense extends Model
 {
     use SoftDeletes, HasFactory, HasUuids;
 
+    // Keep in sync with NAME_MAX_LENGTH in resources/js/utils/expense.ts
+    public const NAME_MAX_LENGTH = 80;
+    public const MAX_AMOUNT = 999999.99;
+
     protected $appends = ['category_label', 'category_color'];
 
     protected function categoryLabel(): Attribute
