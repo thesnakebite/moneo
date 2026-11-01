@@ -106,11 +106,11 @@ export default function ExpenseForm() {
 
             <div className="pt-2 mb-2">
                 <button
-                    type="submit"
                     disabled={processing}
-                    className="w-full bg-ink hover:bg-ink/90 text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                    type="submit"
+                    className={`${processing ? 'opacity-60 cursor-not-allowed' : 'hover:bg-ink/90 cursor-pointer'} bg-ink text-white px-4 py-2.5 w-full rounded-lg text-sm font-bold`}
                 >
-                    {processing ? 'Guardando…' : isEditing ? 'Guardar cambios' : 'Agregar gasto'}
+                    {processing ? 'Guardando...' : isEditing ? 'Guardando cambios' : 'Agregar gasto'}
                 </button>
             </div>
         </form>

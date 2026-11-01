@@ -44,7 +44,7 @@ export default function ExpenseModal() {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className="bg-red-500 hover:bg-red-400 text-white text-center px-2 sm:px-4 py-1.5 sm:py-2.5 w-full rounded-lg text-xs sm:text-sm font-bold"
+                                className="bg-red-500 hover:bg-red-400 text-white text-center px-4 py-2.5 w-full rounded-lg text-sm font-bold"
                             >
                                 Cancelar
                             </button>
