@@ -17,7 +17,11 @@ export default function AuthLayout({ children, image }: Props) {
 
                 <div className="relative z-10 flex flex-col justify-end p-10 text-white">
                     <span className="text-7xl font-unique text-accent">Moneo</span>
-                    <p className="mt-2 text-sm text-surface">Gestiona tus gastos e ingresos en un único lugar.</p>
+                    <p className="mt-2 text-sm text-surface">
+                        Tus presupuestos y gastos, bajo control.
+                        <br />
+                        Presupuestos y gastos, con un asistente de IA.
+                    </p>
                 </div>
             </div>
 
