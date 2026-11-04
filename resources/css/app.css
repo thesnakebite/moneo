@@ -28,6 +28,14 @@
         scrollbar-gutter: stable;
     }
 
+    /* Headless UI añade padding-right al abrir un Dialog para compensar la barra de scroll.
+       Con scrollbar-gutter el hueco ya está reservado, y Firefox y Safari lo compensarían dos veces. */
+    @supports (scrollbar-gutter: stable) {
+        html {
+            padding-right: 0 !important;
+        }
+    }
+
     body {
         background-color: var(--color-surface);
         color: var(--color-ink);
